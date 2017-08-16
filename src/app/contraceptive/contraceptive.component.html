@@ -1,7 +1,7 @@
-<div  class="container">
+<div  class="">
   <div class="row">
-   <div class="col m6">
-      <table class="bordered">
+   <div class="col m4 z-depth-3">
+      <table class="">
         <thead>
           <tr>
               <th>Name</th>
@@ -13,17 +13,20 @@
         <tbody>
           
           <tr *ngFor="let contraceptive of contraceptives">
-            <td><b><a routerLink="/dashboard/contraceptives/{{contraceptive?._id}}">{{contraceptive?.name}}</a></b></td>
+            <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
-            <td><a class=""><i class="material-icons small">delete</i></a></td>
-            <td><a class=""><i class="material-icons small">edit</i></a></td>
+            <td><a class="">delete</a></td>
+            <td><a class="">edit</a></td>
           </tr>
         </tbody>
       </table>
       <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" (click)="openModal()"><i class="material-icons">add</i></a>
    </div>
-   <div class="col m4">
-     <router-outlet></router-outlet>
+   <div class="col m4 z-depth-3">
+     <router-outlet name="details"></router-outlet>
+   </div>
+    <div class="col m4 z-depth-3">
+     <router-outlet name="assessment"></router-outlet>
    </div>
   </div>
 </div>

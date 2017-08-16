@@ -28,4 +28,41 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  getDetails(id: string) : Observable<any> {
+		return this.authHttp.get(`${this.host}/contraceptive/${id}/assessments`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  getAssessments() : Observable<any> {
+		return this.authHttp.get(`${this.host}/assessments`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  saveAssessment(assessmentInfo: any) : Observable<any> {
+		return this.authHttp.post(`${this.host}/assessments`, assessmentInfo)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  createAnswer(assessmentInfo: string, id: string) : Observable<any> {
+		return this.authHttp.post(`${this.host}/assessment/${id}/answers`, assessmentInfo)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  getAssementAnswer(id: string) : Observable<any> {
+    console.log(id);
+		return this.authHttp.get(`${this.host}/assessment/${id}/answers`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  
+
+  
+
+
+
 }

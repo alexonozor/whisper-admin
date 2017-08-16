@@ -1,10 +1,10 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ContraceptiveService } from '../contraceptive.service';
 import { MaterializeAction } from 'angular2-materialize';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
-import { Route, Router } from '@angular/router'
+import { Route, Router, ActivatedRoute } from '@angular/router'
 
 
 @Component({
@@ -13,47 +13,61 @@ import { Route, Router } from '@angular/router'
   styleUrls: ['./contraceptive.component.css']
 })
 
-export class ContraceptiveDetailsComponent implements OnInit {
+export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   loading: boolean = false;
   submit: boolean = false;
-  contraceptives: Array<any>;
+  contraceptive: Object = {};
+  assessments: Array<any> = [];
   modalActions = new EventEmitter<string|MaterializeAction>();
-  createContraceptiveForm: FormGroup;
+  createAssessmentForm: FormGroup;
+  id: string;
+  private sub: any;
 
 
   constructor(
     public _contraceptiveService: ContraceptiveService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    public route: ActivatedRoute,
+    public router: Router
   ) {
+    
     this.createForm();
    }
 
   createForm() {
-    this.createContraceptiveForm = this.fb.group({
-      name: ['', Validators.required ],
-      description: ['', Validators.required ]
+    this.createAssessmentForm = this.fb.group({
+      question: ['', Validators.required ],
+      contraceptive: ['']
     });
   }
 
   ngOnInit() {
-    this.getContraceptives()
+    this.createAssessmentForm.reset();
+    this.sub = this.route.params.subscribe(params => {
+       this.id = params['id'];
+       this.getContraceptive(this.id);
+       this.createAssessmentForm.patchValue({contraceptive: this.id});
+    });
   }
 
-  openModal() {
-    this.modalActions.emit({ action:"modal",params:['open'] });
+  openAssessment(id) {
+    this.router.navigate(['/dashboard/contraceptives', {outlets:{'assessment':[id]}}]);
   }
+
   
-  closeModal() {
-    this.modalActions.emit({ action:"modal",params:['close'] });
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
-  getContraceptives() {
+  getContraceptive(id) {
     this.loading = true;
-    this._contraceptiveService.get()
+    this._contraceptiveService.getDetails(id)
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.contraceptives = res.contraceptives
+        this.contraceptive = res.contraceptive;
+        this.assessments = res.assesments;
       } else {
         
       }
@@ -62,15 +76,14 @@ export class ContraceptiveDetailsComponent implements OnInit {
     })
   }
 
-  createContraceptive() {
+  createAssessment() {
     this.submit = true;
-    this._contraceptiveService.save(this.createContraceptiveForm.value)
+    this._contraceptiveService.saveAssessment(this.createAssessmentForm.value)
     .subscribe((res) => {
       if (res.success) {
+        this.getContraceptive(this.id);
         this.submit = false;
-        this.getContraceptives();
-        this.createContraceptiveForm.reset();
-        this.closeModal();
+        this.createAssessmentForm.reset();
       } else {
 
       }

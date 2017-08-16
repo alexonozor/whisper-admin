@@ -6,6 +6,8 @@ import { RouteModule } from './route/route.module';
 import { MaterializeModule } from 'angular2-materialize';
 import { AuthModule } from './auth/auth.module';
 
+import { UserService } from './user.service';
+import { AuthenticationService } from './authentication.service';
 
 
 import { AppComponent } from './app.component';
@@ -13,11 +15,10 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './dashboard/menu.component';
-
-import { UserService } from './user.service';
-import { AuthenticationService } from './authentication.service';
 import { ContraceptiveComponent } from './contraceptive/contraceptive.component';
-import { ContraceptiveDetailsComponent } from './contraceptive/contraceptive-details.component'
+import { ContraceptiveDetailsComponent } from './contraceptive/contraceptive-details.component';
+import { AssessmentComponent } from './contraceptive/assessment/assessment.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ContraceptiveDetailsComponent } from './contraceptive/contraceptive-det
     DashboardComponent,
     ContraceptiveComponent,
     MenuComponent,
-    ContraceptiveDetailsComponent
+    ContraceptiveDetailsComponent,
+    AssessmentComponent
   ],
   imports: [
     BrowserModule,
