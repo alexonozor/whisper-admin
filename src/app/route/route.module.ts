@@ -8,17 +8,19 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { MenuComponent } from '../dashboard/menu.component';
 import { ContraceptiveComponent } from '../contraceptive/contraceptive.component';
 import { ContraceptiveDetailsComponent } from '../contraceptive/contraceptive-details.component'
+import { AssessmentComponent } from '../contraceptive/assessment/assessment.component';
 
 
 const appRoutes: Routes = [
-   { path: '', component: LoginComponent },
+   { path: '',  component: LoginComponent },
    { path: 'signup', component: SignupComponent },
    { path: 'dashboard', component: DashboardComponent,
      children: [
         { path: '', component: MenuComponent },
         { path: 'contraceptives', component: ContraceptiveComponent,
         children: [
-         { path: ':id', component: ContraceptiveDetailsComponent }
+         { path: ':id', component: ContraceptiveDetailsComponent, outlet: 'details' },
+         { path: ':assessmentId',  component: AssessmentComponent, outlet: 'assessment' },
         ]
       }
      ]
