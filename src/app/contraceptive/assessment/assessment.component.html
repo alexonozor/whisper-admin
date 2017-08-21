@@ -8,12 +8,15 @@
  <ul class="collection with-header">
         <li class="collection-header"><h4>Answers</h4></li>
         <a *ngFor="let answer of assessmentAnswers" class="collection-item">{{answer?.name}}<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></a>
-    </ul>
+</ul>
+
+<a class="btn-floating btn-large waves-effect waves-light teal" (click)="toggleBUtton($event.target)"><i class="material-icons">add</i></a>
+
 
     
 
 
- <form [formGroup]="createAnswerForm" class="col s12" (ngSubmit)="createAnswer()">
+ <form [formGroup]="createAnswerForm" class="col s12" (ngSubmit)="createAnswer()" [hidden]="!showForm">
     <div class="row">
         <div class="input-field col s12">
             <input id="question" type="text" formControlName="name" class="validate">

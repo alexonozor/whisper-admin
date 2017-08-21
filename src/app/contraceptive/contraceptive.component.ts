@@ -17,6 +17,7 @@ export class ContraceptiveComponent implements OnInit {
   loading: boolean = false;
   submit: boolean = false;
   contraceptives: Array<any>;
+  responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
 
@@ -74,6 +75,21 @@ export class ContraceptiveComponent implements OnInit {
       } else {
 
       }
+    })
+  }
+
+  getAssessmentResponses() {
+    this.loading = true;
+    this._contraceptiveService.getAssementResponses()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.responses = res.responses
+      } else {
+        
+      }
+    }, err => {
+      // caught error
     })
   }
 

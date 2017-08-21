@@ -21,6 +21,7 @@ export class AssessmentComponent implements OnInit {
   createAnswerForm: FormGroup;
   id: string;
   private sub: any;
+  showForm: boolean = false;
 
 
   constructor(
@@ -52,6 +53,11 @@ export class AssessmentComponent implements OnInit {
       this.getAssessments();
       this.getAssessmentAnswers(this.id);
     });
+  }
+
+  toggleBUtton(event) {
+    let content = this.showForm = !this.showForm;
+    event.textContent = content?  "remove" : "add"
   }
 
 
