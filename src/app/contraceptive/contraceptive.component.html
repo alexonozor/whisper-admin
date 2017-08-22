@@ -20,11 +20,11 @@
           </tr>
         </thead>
         <tbody>       
-          <tr *ngFor="let contraceptive of contraceptives">
+          <tr *ngFor="let contraceptive of contraceptives; let i = index">
             <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
-            <td><a class="">delete</a></td>
-            <td><a class="">edit</a></td>
+            <td><a (click)="deleteContracpetive(contraceptive._id, i)" class="">delete</a></td>
+            <td><a class="modal-trigger" (click)="openEditModal(contraceptive)">edit</a></td>
           </tr>
         </tbody>
       </table>
@@ -72,7 +72,7 @@
   </div>
 </div>
 
-<!-- Modal Structure -->
+<!-- Create Modal Structure -->
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
   <div class="modal-content">
     <h4>Add Contraceptive</h4>
@@ -94,6 +94,36 @@
             </div>
             <div class="row">
                 <button type='submit'  [disabled]='!createContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
+            </div>
+        </form>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+  </div>
+</div>
+
+<!-- Edite Modal Structure -->
+<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <h4>Edit Contraceptive</h4>
+    <div class="progress" *ngIf="submited">
+            <div class="indeterminate"></div>
+        </div>
+        <form [formGroup]="updateContraceptiveForm" class="col s12" (ngSubmit)="updateContraceptive(editParams._id)">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" type="text" [(ngModel)]="editParams.name" formControlName="name" class="validate">
+                    <label for="name">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description"  ></textarea>
+                    <label for="description">Description</label>
+                </div>
+            </div>
+            <div class="row">
+                <button type='submit'  [disabled]='!updateContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
             </div>
         </form>
   </div>

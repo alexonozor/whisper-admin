@@ -22,8 +22,20 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  update(contraceptiveInfo: any, id) : Observable<any> {
+		return this.authHttp.put(`${this.host}/contraceptive/${id}`, contraceptiveInfo)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
   get() : Observable<any> {
 		return this.authHttp.get(`${this.host}/contraceptives`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  deleteContraceptive(id) : Observable<any> {
+		return this.authHttp.delete(`${this.host}/contraceptive/${id}`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
@@ -63,11 +75,4 @@ export class ContraceptiveService {
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
-
-  
-
-  
-
-
-
 }
