@@ -6,15 +6,11 @@
 
 
  <ul class="collection with-header">
-        <li class="collection-header"><h4>Answers</h4></li>
-        <a *ngFor="let answer of assessmentAnswers" class="collection-item">{{answer?.name}}<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></a>
+        <li class="collection-header"><h6>Answers</h6></li>
+        <a *ngFor="let answer of assessmentAnswers; let i = index" class="collection-item">{{answer?.name}}<a (click)="deleteAnswer(id, i)" class="secondary-content"><i class="material-icons">delete</i></a></a>
 </ul>
 
 <a class="btn-floating btn-large waves-effect waves-light teal" (click)="toggleBUtton($event.target)"><i class="material-icons">add</i></a>
-
-
-    
-
 
  <form [formGroup]="createAnswerForm" class="col s12" (ngSubmit)="createAnswer()" [hidden]="!showForm">
     <div class="row">
@@ -34,6 +30,16 @@
         </div>
     </div>
 
+    <div class="row">
+         <div class="input-field col s12">
+            <select materialize="material_select"  formControlName="eligible">
+              <option value="" disabled selected>Eligibility?</option>
+              <option  [value]="true">Eligible</option>
+               <option [value]="false">Not Eligible</option>
+            </select>
+        </div>
+    </div>
+
      <div class="row" *ngIf="createAnswerForm.value.hasRelativeQuestion == 'true'">
          <div class="input-field col s12">
             <select materialize="material_select" [materializeSelectOptions]="assessments" formControlName="nextQuestionNumber">
@@ -47,7 +53,7 @@
     <div class="row">
          <div class="input-field col s12">
             <select materialize="material_select"  formControlName="hasWarning">
-              <option value="" disabled selected>Will this answer has a Warning?</option>
+              <option value="" disabled selected>Add Warning?</option>
               <option  [value]="true">Yes</option>
               <option [value]="false">No</option>
             </select>

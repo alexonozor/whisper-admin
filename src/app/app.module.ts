@@ -18,6 +18,7 @@ import { MenuComponent } from './dashboard/menu.component';
 import { ContraceptiveComponent } from './contraceptive/contraceptive.component';
 import { ContraceptiveDetailsComponent } from './contraceptive/contraceptive-details.component';
 import { AssessmentComponent } from './contraceptive/assessment/assessment.component';
+import { UserComponent } from './user/user.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { AssessmentComponent } from './contraceptive/assessment/assessment.compo
     ContraceptiveComponent,
     MenuComponent,
     ContraceptiveDetailsComponent,
-    AssessmentComponent
+    AssessmentComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,

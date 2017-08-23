@@ -22,6 +22,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   createAssessmentForm: FormGroup;
   id: string;
   private sub: any;
+  showForm: boolean = false;
 
 
   constructor(
@@ -44,6 +45,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   ngOnInit() {
     this.createAssessmentForm.reset();
     this.sub = this.route.params.subscribe(params => {
+       this.showForm = false;
        this.id = params['id'];
        this.getContraceptive(this.id);
        this.createAssessmentForm.patchValue({contraceptive: this.id});
@@ -54,7 +56,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.router.navigate(['/dashboard/contraceptives', {outlets:{'assessment':[id]}}]);
   }
 
-  
 
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -76,6 +77,11 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     })
   }
 
+  toggleBUtton(event) {
+    let content = this.showForm = !this.showForm;
+    event.textContent = content?  "remove" : "add"
+  }
+
   createAssessment() {
     this.submit = true;
     this._contraceptiveService.saveAssessment(this.createAssessmentForm.value)
@@ -87,7 +93,24 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
       } else {
 
       }
+    }, err => {
+      // caught error
     })
+  }
+
+  deleteAssessment(id, index) {
+    let remove = confirm('Are you sure?');
+    if (remove) {
+      this.assessments.splice(index, 0)
+      this._contraceptiveService.deleteAssessment(id)
+      .subscribe((res) => {
+        if (res.success) {
+          this.getContraceptive(this.id);
+        } else {
+
+        }
+      })
+    }
   }
 
 }

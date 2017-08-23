@@ -52,6 +52,12 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  deleteAssessment(id) : Observable<any> {
+		return this.authHttp.delete(`${this.host}/assessment/${id}`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
   saveAssessment(assessmentInfo: any) : Observable<any> {
 		return this.authHttp.post(`${this.host}/assessments`, assessmentInfo)
 			.map((res:Response) => res.json())
@@ -66,6 +72,12 @@ export class ContraceptiveService {
 
   getAssementAnswer(id: string) : Observable<any> {
 		return this.authHttp.get(`${this.host}/assessment/${id}/answers`)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  deleteAnswer(id) : Observable<any> {
+		return this.authHttp.delete(`${this.host}/answer/${id}`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }

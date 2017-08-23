@@ -36,6 +36,7 @@ export class AssessmentComponent implements OnInit {
   createForm() {
     this.createAnswerForm = this.fb.group({
       name: ['', Validators.required ],
+      eligible: ['', Validators.required ],
       nextQuestionNumber: ['' ],
       hasRelativeQuestion: ['', Validators.required ],
       hasWarning: ['', Validators.required ],
@@ -84,7 +85,6 @@ export class AssessmentComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        console.log(res)
         this.assessmentAnswers = res.assesments._answers;
       } else {
         
@@ -92,6 +92,21 @@ export class AssessmentComponent implements OnInit {
     }, err => {
       // caught error
     })
+  }
+
+  deleteAnswer(id, i) {
+    const deleted = confirm("Are you sure?");
+    if (deleted) {
+      this.assessmentAnswers.splice(i, 0);
+      this._contraceptiveService.deleteAnswer(id)
+      .subscribe((res) => {
+        if (res.success) {
+          
+        }
+      }, err => {
+        // caught error
+      })
+    }
   }
 
   createAnswer() {
