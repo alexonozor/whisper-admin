@@ -20,6 +20,8 @@ export class ContraceptiveComponent implements OnInit {
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
+  updateContraceptiveForm: FormGroup;
+  editParams: Object = {};
 
 
   constructor(
@@ -27,10 +29,18 @@ export class ContraceptiveComponent implements OnInit {
     public fb: FormBuilder
   ) {
     this.createForm();
+    this.updateForm();
    }
 
   createForm() {
     this.createContraceptiveForm = this.fb.group({
+      name: ['', Validators.required ],
+      description: ['', Validators.required ]
+    });
+  }
+
+  updateForm() {
+    this.updateContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
       description: ['', Validators.required ]
     });
@@ -41,11 +51,20 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   openModal() {
-    this.modalActions.emit({ action:"modal",params:['open'] });
+    this.modalActions.emit({ action:"modal", params:['open'] });
   }
   
   closeModal() {
-    this.modalActions.emit({ action:"modal",params:['close'] });
+    this.modalActions.emit({ action:"modal", params:['close'] });
+  }
+
+  openEditModal(data) {
+    this.editParams = data;
+    this.modalActions.emit({ action:"modal", params:['open'] });
+  }
+  
+  closeEditModal() {
+    this.modalActions.emit({ action:"modal", params:['close'] });
   }
 
   getContraceptives() {
@@ -78,6 +97,21 @@ export class ContraceptiveComponent implements OnInit {
     })
   }
 
+  updateContraceptive(id) {    
+    this.submit = true;
+    this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
+    .subscribe((res) => {
+      if (res.success) {
+        this.submit = false;
+        this.getContraceptives();
+        this.updateContraceptiveForm.reset();
+        this.closeEditModal();
+      } else {
+
+      }
+    })
+  }
+
   getAssessmentResponses() {
     this.loading = true;
     this._contraceptiveService.getAssementResponses()
@@ -91,6 +125,23 @@ export class ContraceptiveComponent implements OnInit {
     }, err => {
       // caught error
     })
+  }
+
+  deleteContracpetive(id, index) {
+    let deleteContraceptive = confirm("Are you sure?");
+    if (deleteContraceptive) {
+      this.contraceptives.splice(index, 1)
+      this._contraceptiveService.deleteContraceptive(id)
+      .subscribe((res) => {
+        if (res.success) {
+          this.getContraceptives();
+        } else {
+          // caught errors
+        }
+      }, err => {
+        // caught errors
+      })
+    }
   }
 
 }

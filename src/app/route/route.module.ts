@@ -9,7 +9,7 @@ import { MenuComponent } from '../dashboard/menu.component';
 import { ContraceptiveComponent } from '../contraceptive/contraceptive.component';
 import { ContraceptiveDetailsComponent } from '../contraceptive/contraceptive-details.component'
 import { AssessmentComponent } from '../contraceptive/assessment/assessment.component';
-
+import { UserComponent } from '../user/user.component';
 
 const appRoutes: Routes = [
    { path: '',  component: LoginComponent },
@@ -17,6 +17,7 @@ const appRoutes: Routes = [
    { path: 'dashboard', component: DashboardComponent,
      children: [
         { path: '', component: MenuComponent },
+        { path: 'users', component: UserComponent },
         { path: 'contraceptives', component: ContraceptiveComponent,
         children: [
          { path: ':id', component: ContraceptiveDetailsComponent, outlet: 'details' },
