@@ -43,6 +43,7 @@
               {{response?.user?.firstName + " " + response?.user?.lastName }} took {{response?.contraceptive?.name }} assessment on {{response.createdAt | date}}
             </div>
             <div class="collapsible-body">
+              <div class="card-panel z-depth-1" *ngIf="response.note">{{response?.note}} </div>
               <table class="bordered">
                 <thead>
                   <tr>
