@@ -1,0 +1,141 @@
+<div class="card-panel"> 
+  <h4>Register a new user</h4>
+
+  <div class="row">
+    <form class="col s12" [formGroup]="signupForm" (ngSubmit)="createUser()" novalidate>
+      <div class="row">
+        <div class="input-field col s4">
+          <input placeholder="Enter User Name" id="first_name" formControlName="userName" type="text" class="validate">
+          <label for="first_name">User Name</label>
+        </div>
+        <div class="input-field col s4">
+          <input placeholder="Enter First Name" id="first_name" formControlName="firstName" type="text" class="validate">
+          <label for="first_name">First Name</label>
+        </div>
+        <div class="input-field col s4">
+          <input placeholder="Enter Last Name" id="last_name" formControlName="lastName" type="text" class="validate">
+          <label for="last_name">Last Name</label>
+        </div>
+      </div>
+
+      <div class="row">
+         <div class="input-field col s4">
+            <select materialize="material_select" [materializeSelectOptions]="['Male', 'Female']"  formControlName="gender">
+               <option *ngFor="let option of ['Male', 'Female']" [value]="option">{{option}}</option>
+            </select>
+            <label for="first_name">Gender</label>
+        </div>
+
+        <div class="input-field col s4">
+           <input id="birthdate" 
+                   formControlName="dateOfBirth"
+                   materialize="pickadate"
+                   [materializeActions]="birthDateActions"
+                   [materializeParams]="[{format: 'mm/dd/yyyy'}]"
+                   type="text" (blur)="openDatePicker()" />
+          <label for="last_name">Date of Birth</label>
+        </div>
+
+        <div class="input-field col s4">
+          <input placeholder="Enter Password" id="last_name" formControlName="password" type="password" class="validate">
+          <label for="last_name">Password</label>
+        </div>
+      </div>
+      <div class="row">
+        
+        <div class="input-field col s4">
+            <select materialize="material_select" [materializeSelectOptions]="['Member', 'Pharmacist', 'Doctor']"  formControlName="accountType">
+               <option *ngFor="let option of ['Member', 'Pharmacist', 'Doctor']" [value]="option">{{option}}</option>
+            </select>
+            <label for="first_name">Account Type</label>
+        </div>
+          
+        
+       <div class="input-field col s4">
+            <select materialize="material_select"  formControlName="admin">
+              <option value="" disabled selected>Admin</option>
+              <option  [value]="true">Yes</option>
+               <option [value]="false">No</option>
+            </select>
+            <label for="first_name">Admin</label>
+        </div>
+       <div class="input-field col s4">
+            <select materialize="material_select"  formControlName="verified">
+              <option value="" disabled selected>verified</option>
+              <option  [value]="true">Yes</option>
+               <option [value]="false">No</option>
+            </select>
+            <label for="first_name">verify</label>
+        </div>
+      </div>
+       
+
+       <fieldset formGroupName="contact">
+        <legend>Location</legend>
+          <div class="row" >
+            <div class="input-field col s6">
+              <input placeholder="Enter Email" id="first_name" formControlName="email" type="email" class="validate">
+              <label for="first_name">Email</label>
+            </div>
+            <div class="input-field col s6">
+              <input placeholder="Enter  Telephone" id="first_name" formControlName="tel" type="text" class="validate">
+              <label for="first_name">Telephone Number</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input placeholder="Enter Address" id="first_name" type="text"
+                 [options]='options' 
+                (setAddress) = "getAddress($event)"
+                (street_number) = 'street_number=$event'
+                (street)= 'street=$event'
+                (city)= 'city=$event'
+                (state)='state=$event'
+                (district)='district=$event'
+                (country)='country=$event'
+                (postal_code)='postal_code=$event'
+                (lat)='lat=$event' 
+                (lng)='lng=$event' 
+                (adr_address)='adr_address=$event' 
+                (name)='name=$event' 
+                (place_id)='place_id=$event' 
+                (types)='types=$event' 
+                (url)='url=$event'  
+                (utc_offset)='utc_offset=$event' 
+                (vicinity)='vicinity=$event' 
+                (photos)='photos=$event' 
+                (airport)='airport=$event' 
+                (CountryCodes)='CountryCodes=$event'
+                  id="autocomplete"
+                ng2-google-place-autocomplete
+              class="validate" formControlName="address">
+              <label for="first_name">Address</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="last_name" type="text" formControlName="city" class="validate">
+                <label for="last_name">City</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input  id="first_name" type="text" formControlName="lng" class="validate">
+            </div>
+            <div class="input-field col s6">
+              <input id="first_name" type="text" formControlName="lat" class="validate">
+            </div>
+          </div>
+      </fieldset>
+
+      <div class="row">
+        <div class="input-field col s1">
+          <a (click)="resetForm()" class="waves-effect waves-light red btn-large btn"><i class="material-icons right">cancel</i>Reset</a>
+        </div>
+ 
+   
+        <div class="input-field col s2">
+          <button [disabled]='!signupForm.valid && !submited' (click)="changeFormStatus($event)" class="waves-effect waves-light btn-large btn"><i class="material-icons right">send</i>Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

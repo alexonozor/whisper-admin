@@ -34,7 +34,17 @@ export class SignupComponent implements OnInit {
       lastName: ['', Validators.required ],
       userName: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      contact: this.fb.group({
+        email: ['', Validators.required],
+        tel: ''
+      }),
+      location: this.fb.group({
+        city: ['', Validators.required],
+        address: ['', Validators.required],
+        lng: ['', Validators.required],
+        lag: ['', Validators.required]
+      })
     });
   }
 
@@ -53,5 +63,7 @@ export class SignupComponent implements OnInit {
       // caught error
     })
   }
+
+  
 
 }
