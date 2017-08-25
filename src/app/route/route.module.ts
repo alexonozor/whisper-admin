@@ -12,6 +12,8 @@ import { AssessmentComponent } from '../contraceptive/assessment/assessment.comp
 import { UserComponent } from '../user/user.component';
 import { UserDetailsComponent } from '../user/user-details/user-details.component';
 import { UsersComponent } from '../user/users/users.component';
+import { UserNewComponent } from '../user/user-new/user-new.component';
+import { UserEditComponent } from '../user/user-edit/user-edit.component';
 
 const appRoutes: Routes = [
    { path: '',  component: LoginComponent },
@@ -21,15 +23,17 @@ const appRoutes: Routes = [
         { path: '', component: MenuComponent },
         { path: 'users', component: UserComponent,
           children: [
-           { path: '', component: UsersComponent},
-           { path: ':id', component: UserDetailsComponent}
+           { path: '', component: UsersComponent },
+           { path: 'new', component: UserNewComponent },
+           { path: ':id', component: UserDetailsComponent },
+           { path: ':id/edit', component: UserEditComponent }
           ]  
         },
         { path: 'contraceptives', component: ContraceptiveComponent,
-        children: [
-         { path: ':id', component: ContraceptiveDetailsComponent, outlet: 'details' },
-         { path: ':assessmentId',  component: AssessmentComponent, outlet: 'assessment' },
-        ]
+          children: [
+            { path: ':id', component: ContraceptiveDetailsComponent, outlet: 'details' },
+            { path: ':assessmentId',  component: AssessmentComponent, outlet: 'assessment' },
+          ]
       }
      ]
   },

@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouteModule } from './route/route.module';
 import { MaterializeModule } from 'angular2-materialize';
 import { AuthModule } from './auth/auth.module';
+import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
 
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
@@ -21,6 +22,9 @@ import { AssessmentComponent } from './contraceptive/assessment/assessment.compo
 import { UserComponent } from './user/user.component';
 import { UserDetailsComponent } from './user/user-details/user-details.component';
 import { UsersComponent } from './user/users/users.component';
+import { UserNewComponent } from './user/user-new/user-new.component';
+import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { PharmacyComponent } from './pharmacy/pharmacy.component';
 
 
 @NgModule({
@@ -35,7 +39,10 @@ import { UsersComponent } from './user/users/users.component';
     AssessmentComponent,
     UserComponent,
     UserDetailsComponent,
-    UsersComponent
+    UsersComponent,
+    UserNewComponent,
+    UserEditComponent,
+    PharmacyComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +51,8 @@ import { UsersComponent } from './user/users/users.component';
     RouteModule,
     MaterializeModule,
     ReactiveFormsModule,
-    AuthModule
+    AuthModule,
+    GooglePlaceModule
   ],
   providers: [
     UserService,

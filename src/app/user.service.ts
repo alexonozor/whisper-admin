@@ -31,6 +31,12 @@ export class UserService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  update(accountInfo: any, id) : Observable<any> {
+		return this.http.put(`${this.host}/user/${id}`, accountInfo)
+			.map((res:Response) => res.json())
+			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
   getUsers() : Observable<any> {
 		return this.http.get(`${this.host}/users`)
 			.map((res:Response) => res.json())
