@@ -11,11 +11,11 @@
   </div>
 </nav>
 
-<ul id="tabs-swipe-demo"  materialize="tabs" class="tabs">
-  <li class="tab col s3"><a href="#test-swipe-1" class="active">All Users</a></li>
-  <li class="tab col s3"><a href="#test-swipe-2">Admin</a></li>
-  <li class="tab col s3"><a href="#test-swipe-3">Doctors</a></li>
-  <li class="tab col s3"><a href="#test-swipe-3">Pharmacies</a></li>
+<ul id="tabs-swipe-demo"  materialize="tabs" class="center tabs">
+  <li class="tab col s3"><a href="#users" class="active">All Users</a></li>
+  <li class="tab col s3"><a href="#admin">Admin</a></li>
+  <li class="tab col s3"><a href="#doctors">Doctors</a></li>
+  <li class="tab col s3"><a href="#pharmacy">Pharmacies</a></li>
 </ul>
 <div align="center" *ngIf="loading">
   <div class="preloader-wrapper big active">
@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<div id="test-swipe-1" class="col s12 card-panel" [hidden]="loading">
+<div id="users" class="col s12 card-panel" [hidden]="loading">
       <table class="highlight">
       <thead>
         <tr>
@@ -38,6 +38,8 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
+            <th>Location</th>
+            <th>Verified</th>
             <th>User Group</th>
             <th>Deleted</th>
             <th>ban</th>
@@ -50,7 +52,16 @@
           <td><a [routerLink]="[user._id]">{{user?.userName}}</a></td>
           <td>{{user?.firstName}}</td>
           <td>{{user?.lastName}}</td>
-          <td>{{user?.email}}</td>
+          <td>{{user?.contact.email}}</td>
+          <td>{{user?.contact.city}}</td>
+          <td>
+            <div class="switch">
+              <label>
+                <input type="checkbox" [checked]='user?.verified'>
+                <span class="lever"></span>
+              </label>
+            </div>
+          </td>
           <td>Member</td>
           <td>
             <div class="switch">
@@ -68,14 +79,16 @@
               </label>
             </div></td>
           <td>
-            <a class="btn blue"><i class="tiny material-icons">remove_red_eye</i></a>
-            <a class="btn blue accent-2" [routerLink]="[user._id, 'edit']"><i class="tiny material-icons">edit</i></a>
-            <a class="btn red"><i class="tiny material-icons">delete</i></a>
+            <a class="" [routerLink]="[user._id]"><i class="profile material-icons">person</i></a>
+            <a class="" [routerLink]="[user._id, 'edit']"><i class="edit material-icons">edit</i></a>
+            <a class=""><i class="delete material-icons">delete</i></a>
           </td>
         </tr>
       </tbody>
     </table>
-    <a [routerLink]="['../new']" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+    <a [routerLink]="['../new']" class="btn-floating btn-large waves-effect waves-light indigo darken-1"><i class="material-icons">add</i></a>
 </div>
-<div id="test-swipe-2" class="col s12 red">Test 2</div>
-<div id="test-swipe-3" class="col s12 green">Test 3</div>  
+<div id="admin" class="col s12 red">admin</div>
+<div id="doctors" class="col s12 green">doctors</div>
+<div id="pharmacy" class="col s12 green">pharmacy</div>
+
