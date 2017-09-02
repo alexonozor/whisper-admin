@@ -5,6 +5,5 @@
 
 export const environment = {
   production: false,
-  // baseUrl: 'http://localhost:7777'
-  baseUrl: 'http://whisper-admin.herokuapp.com'
+  baseUrl: 'http://localhost:7777'
 };
