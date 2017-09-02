@@ -1,0 +1,3 @@
+.collection, .collection .collection-item {border: none;}
+.card-panel { padding: 0; }
+.collection.with-header .collection-header { border:none; }

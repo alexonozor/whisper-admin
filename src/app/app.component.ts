@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+declare var jQuery: any;
+declare var Materialize: any;
 
 @Component({
   selector: 'app-root',
