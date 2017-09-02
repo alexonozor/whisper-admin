@@ -27,7 +27,3 @@ html, body {
     text-align: center;
     width: 28%;
 }
-
-input#password,input#email {
-  color: black;
-}
