@@ -35,14 +35,24 @@ export class ContraceptiveComponent implements OnInit {
   createForm() {
     this.createContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
-      description: ['', Validators.required ]
+      description: ['', Validators.required ],
+      price: ['', Validators.required],
+      // add shipping methods
+      minimumShippingQuantity: ['', Validators.required],
+      maximumShippingQuantity: ['', Validators.required],
+      appointment: ['', Validators.required]
     });
   }
 
   updateForm() {
     this.updateContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
-      description: ['', Validators.required ]
+      description: ['', Validators.required ],
+      price: ['', Validators.required],
+      // add shipping methods
+      minimumShippingQuantity: ['', Validators.required],
+      maximumShippingQuantity: ['', Validators.required],
+      appointment: ['', Validators.required]
     });
   }
 
