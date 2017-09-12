@@ -1,25 +1,24 @@
 <div  class="">
   <div class="row">
    <div class="col m4 z-depth-3 total-height">
-      
-        <ul class="tabs z-depth-1" materialize="tabs">
-          <li class="tab col s6"><a class="active" href="#test1">Contraceptives</a></li>
-          <li class="tab col s6" (click)="getAssessmentResponses()"><a  href="#test2">Responses</a></li>
-        </ul>
+      <ul class="tabs z-depth-1" materialize="tabs">
+        <li class="tab col s6"><a class="active" href="#test1">Contraceptives</a></li>
+        <li class="tab col s6" (click)="getAssessmentResponses()"><a  href="#test2">Responses</a></li>
+      </ul>
 
       <div id="test1" class="col s12">
         <div class="progress" *ngIf="loading">
-            <div class="indeterminate"></div>
+          <div class="indeterminate"></div>
         </div>
         <table class="bordered">
         <thead>
           <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Action</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>       
+        <tbody>
           <tr *ngFor="let contraceptive of contraceptives; let i = index">
             <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
@@ -27,16 +26,15 @@
             <td><a class="modal-trigger" (click)="openEditModal(contraceptive)">edit</a></td>
           </tr>
         </tbody>
-      </table>
-      <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" (click)="openModal()"><i class="material-icons">add</i></a>
-      
+        </table>
+        <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" (click)="openModal()"><i class="material-icons">add</i></a>
       </div>
       <div id="test2" class="col s12">
-         <div class="progress" *ngIf="loading">
-            <div class="indeterminate"></div>
+        <div class="progress" *ngIf="loading">
+          <div class="indeterminate"></div>
         </div>
 
-           <ul materialize="collapsible" class="collapsible" data-collapsible="accordion">
+        <ul materialize="collapsible" class="collapsible" data-collapsible="accordion">
           <li *ngFor="let response of responses">
             <div class="collapsible-header">
                <i class="material-icons">filter_drama</i> 
@@ -64,12 +62,12 @@
         </ul>
       </div>
     </div>
-   <div class="col m4 z-depth-2 total-height">
-     <router-outlet name="details"></router-outlet>
-   </div>
+    <div class="col m4 z-depth-2 total-height">
+      <router-outlet name="details"></router-outlet>
+    </div>
     <div class="col m4 z-depth-2 total-height">
      <router-outlet name="assessment"></router-outlet>
-   </div>
+    </div>
   </div>
 </div>
 
@@ -122,6 +120,30 @@
                     <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description"  ></textarea>
                     <label for="description">Description</label>
                 </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s6">
+                <input id="name" type="number" [(ngModel)]="editParams.minimumShippingQuantity" formControlName="minimumShippingQuantity" class="validate">
+                <label for="name">Minimum Shipping Quantity</label>
+              </div>
+              <div class="input-field col s6">
+                <input id="name" type="number" [(ngModel)]="editParams.maximumShippingQuantity" formControlName="maximumShippingQuantity" class="validate">
+                <label for="name">Maximum Shipping Quantity</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="input-field col s3">
+                <input id="name" type="number" [(ngModel)]="editParams.price" formControlName="price" class="validate">
+                <label for="name">Price</label>
+              </div>
+              <div class="col s3"></div>
+              <div class="input-field col s6">
+                <select materialize="material_select"  formControlName="appointment">
+                  <option value="" disabled selected>Appointment</option>
+                  <option  [value]="true">Eligible</option>
+                  <option [value]="false">Not Eligible</option>
+                </select>
+              </div>
             </div>
             <div class="row">
                 <button type='submit'  [disabled]='!updateContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
