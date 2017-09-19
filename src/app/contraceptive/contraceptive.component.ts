@@ -16,6 +16,7 @@ import { Route, Router } from '@angular/router'
 export class ContraceptiveComponent implements OnInit {
   loading: boolean = false;
   submit: boolean = false;
+  start_convo: boolean = false;
   contraceptives: Array<any>;
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
@@ -44,6 +45,11 @@ export class ContraceptiveComponent implements OnInit {
     });
   }
 
+  startConvo() {
+    console.log('convo just started');
+    this.start_convo = true;
+  }
+
   updateForm() {
     this.updateContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
@@ -63,7 +69,7 @@ export class ContraceptiveComponent implements OnInit {
   openModal() {
     this.modalActions.emit({ action:"modal", params:['open'] });
   }
-  
+
   closeModal() {
     this.modalActions.emit({ action:"modal", params:['close'] });
   }
@@ -72,7 +78,7 @@ export class ContraceptiveComponent implements OnInit {
     this.editParams = data;
     this.modalActions.emit({ action:"modal", params:['open'] });
   }
-  
+
   closeEditModal() {
     this.modalActions.emit({ action:"modal", params:['close'] });
   }
@@ -85,7 +91,7 @@ export class ContraceptiveComponent implements OnInit {
         this.loading = false;
         this.contraceptives = res.contraceptives
       } else {
-        
+
       }
     }, err => {
       // caught error
@@ -107,7 +113,7 @@ export class ContraceptiveComponent implements OnInit {
     })
   }
 
-  updateContraceptive(id) {    
+  updateContraceptive(id) {
     this.submit = true;
     this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
     .subscribe((res) => {
@@ -130,7 +136,7 @@ export class ContraceptiveComponent implements OnInit {
         this.loading = false;
         this.responses = res.responses
       } else {
-        
+
       }
     }, err => {
       // caught error

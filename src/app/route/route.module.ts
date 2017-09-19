@@ -9,6 +9,7 @@ import { MenuComponent } from '../dashboard/menu.component';
 import { ContraceptiveComponent } from '../contraceptive/contraceptive.component';
 import { ContraceptiveDetailsComponent } from '../contraceptive/contraceptive-details.component'
 import { AssessmentComponent } from '../contraceptive/assessment/assessment.component';
+import { AssessmentResponseComponent } from '../contraceptive/assessment-response/assessment-response.component';
 import { UserComponent } from '../user/user.component';
 import { UserDetailsComponent } from '../user/user-details/user-details.component';
 import { UsersComponent } from '../user/users/users.component';
