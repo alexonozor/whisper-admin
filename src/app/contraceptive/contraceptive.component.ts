@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import { ContraceptiveService } from '../contraceptive.service';
 import { MaterializeAction } from 'angular2-materialize';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
 import { Route, Router } from '@angular/router'
@@ -23,6 +23,7 @@ export class ContraceptiveComponent implements OnInit {
   createContraceptiveForm: FormGroup;
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
+  shipping_meths:  Array<any>;
 
 
   constructor(
@@ -33,6 +34,10 @@ export class ContraceptiveComponent implements OnInit {
     this.updateForm();
    }
 
+  ngOnInit() {
+    this.getContraceptives()
+  }
+
   createForm() {
     this.createContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
@@ -41,8 +46,17 @@ export class ContraceptiveComponent implements OnInit {
       // add shipping methods
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],
-      appointment: ['', Validators.required]
+      appointment: ['', Validators.required],
+      shippingMethods:  new FormArray([
+        new FormControl(''),
+      ])
     });
+  }
+
+  get shippingMethod(): FormArray { return this.createContraceptiveForm.get('shippingMethods') as FormArray; }
+
+  addShippingMethod() {
+    this.shippingMethod.push(new FormControl());
   }
 
   startConvo() {
@@ -55,15 +69,11 @@ export class ContraceptiveComponent implements OnInit {
       name: ['', Validators.required ],
       description: ['', Validators.required ],
       price: ['', Validators.required],
-      // add shipping methods
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],
-      appointment: ['', Validators.required]
+      appointment: ['', Validators.required],
+      shippingMethods:  new FormArray([])
     });
-  }
-
-  ngOnInit() {
-    this.getContraceptives()
   }
 
   openModal() {
@@ -75,7 +85,10 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   openEditModal(data) {
+    data.shippingMethods = ['delivery','pickup'];
     this.editParams = data;
+    this.shipping_meths = data.shippingMethods;
+    console.log('data ', this.shipping_meths);
     this.modalActions.emit({ action:"modal", params:['open'] });
   }
 
@@ -99,6 +112,8 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   createContraceptive() {
+    console.log(this.shippingMethod.value);
+    console.log(this.createContraceptiveForm.value);
     this.submit = true;
     this._contraceptiveService.save(this.createContraceptiveForm.value)
     .subscribe((res) => {
