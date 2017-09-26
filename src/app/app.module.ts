@@ -26,6 +26,7 @@ import { UsersComponent } from './user/users/users.component';
 import { UserNewComponent } from './user/user-new/user-new.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { PharmacyComponent } from './pharmacy/pharmacy.component';
+import { ShippingComponent } from './shipping/shipping.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { PharmacyComponent } from './pharmacy/pharmacy.component';
     UserNewComponent,
     UserEditComponent,
     PharmacyComponent,
-    AssessmentResponseComponent
+    AssessmentResponseComponent,
+    ShippingComponent
   ],
   imports: [
     BrowserModule,
