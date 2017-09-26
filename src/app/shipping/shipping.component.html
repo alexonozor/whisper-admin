@@ -1,11 +1,75 @@
 <div  class="">
   <div class="row">
-    <div class="col m6 z-depth-2 total-height">
-      <h2>Shipping method</h2>
+    <div class="col m2 total-height">
     </div>
-    <div class="col m6 z-depth-2 total-height">
-      <h2>Shipping details</h2>
+    <div class="col m8 z-depth-2 total-height">
+      <div class="row">
+        <div class="col s6"><h4>Shipping method</h4></div>
+        <div class="col s6"><a class="waves-effect waves-light  new light-blue darken-3 btn" href="#modal1">Add new </a></div>
+      </div>
+      <div class="col s12 z-depth-1">
+        <div class="progress" *ngIf="loading">
+          <div class="indeterminate"></div>
+        </div>
+        <table class="bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let shipping of shippingMethods; let i = index">
+            <td>{{shipping?.name}}</td>
+            <td>{{shipping?.price}}</td>
+            <td><a class="">delete</a></td>
+            <td><a class="modal-trigger" >edit</a></td>
+          </tr>
+
+          <tr *ngFor="let contraceptive of contraceptives; let i = index">
+            <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
+            <td>{{contraceptive?.description}}</td>
+            <td><a (click)="deleteContracpetive(contraceptive._id, i)" class="">delete</a></td>
+            <td><a class="modal-trigger" (click)="openEditModal(contraceptive)">edit</a></td>
+          </tr>
+        </tbody>
+        </table>
+        <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" href="#modal1"><i class="material-icons">add</i></a>
+      </div>
     </div>
+    <div class="col m2 total-height">
+    </div>
+  </div>
+</div>
+
+<!-- Create Modal Structure -->
+<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <h4>Add Contraceptive</h4>
+    <div class="progress" *ngIf="submited">
+            <div class="indeterminate"></div>
+        </div>
+        <form [formGroup]="createShippingForm" class="col s12" (ngSubmit)="createShippingMethod()">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="name" type="text" formControlName="name" class="validate">
+              <label for="name">Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s3">
+              <input id="price" type="number" formControlName="price" class="validate">
+              <label for="price">Price</label>
+            </div>
+          </div>
+          <div class="row">
+            <button type='submit'  [disabled]='!createShippingForm.valid && !submited' name='submit' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
+          </div>
+        </form>
+  </div>
+  <div class="modal-footer">
+    <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
   </div>
 </div>
 

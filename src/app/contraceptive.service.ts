@@ -99,4 +99,11 @@ export class ContraceptiveService {
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
+
+  createShippingMethod(shippingInfo:any) : Observable<any> {
+    console.log('shipping method info ', shippingInfo);
+    return this.authHttp.post(`${this.host}/shipping-methods`, shippingInfo)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
 }

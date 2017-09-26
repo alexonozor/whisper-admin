@@ -36,7 +36,6 @@ export class ContraceptiveComponent implements OnInit {
 
   ngOnInit() {
     this.getContraceptives();
-    this.getShippingMethods();
   }
 
   createForm() {
@@ -104,22 +103,6 @@ export class ContraceptiveComponent implements OnInit {
       if (res.success) {
         this.loading = false;
         this.contraceptives = res.contraceptives
-      } else {
-
-      }
-    }, err => {
-      // caught error
-    })
-  }
-
-  getShippingMethods() {
-    this.loading = true;
-    this._contraceptiveService.getShippingMethods()
-    .subscribe((res) => {
-      console.log('get shipping methods response ', res);
-      if (res.success) {
-        this.loading = false;
-        // this.contraceptives = res.contraceptives
       } else {
 
       }
