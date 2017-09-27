@@ -91,18 +91,29 @@ export class ContraceptiveService {
   getShippingMethods() : Observable<any> {
     return this.authHttp.get(`${this.host}/shipping-methods`)
       .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+      .catch((error:any) => Observable.throw(error.json() || 'server error'));
   }
 
   getShippingMethod(id:string) : Observable<any> {
     return this.authHttp.get(`${this.host}/shipping-method/${id}`)
       .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+      .catch((error:any) => Observable.throw(error.json() || 'server error'));
   }
 
   createShippingMethod(shippingInfo:any) : Observable<any> {
-    console.log('shipping method info ', shippingInfo);
     return this.authHttp.post(`${this.host}/shipping-methods`, shippingInfo)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  deleteShippingMethod(id) : Observable<any> {
+    return this.authHttp.delete(`${this.host}/shipping-method/${id}`)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  updateShippingMethod(id, shippingInfo:any) : Observable<any> {
+    return this.authHttp.put(`${this.host}/shipping-method/${id}`, shippingInfo)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }

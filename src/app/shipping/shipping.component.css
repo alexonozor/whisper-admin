@@ -5,3 +5,8 @@
 a.new {
   margin-top: 10px;
 }
+
+i.del_icon { color: red; }
+i.edit_icon { color: blue; }
+
+.delete_btn, .delete_btn:hover { box-shadow: none !important; }

@@ -14,14 +14,17 @@ import { Route, Router } from '@angular/router'
 export class ShippingComponent implements OnInit {
   modalActions = new EventEmitter<string|MaterializeAction>();
   createShippingForm: FormGroup;
-  submit: boolean = false;
+  updateShippingForm: FormGroup;
+  submitted: boolean = false;
   loading: boolean = false;
   shippingMethods: Array<any>;
+  editParams: Object = {};
 
   constructor(
     public _contraceptiveService: ContraceptiveService,
     public fb: FormBuilder) {
-    this.shippingForm();
+    this.createShipping();
+    this.updateShipping();
   }
 
   ngOnInit() {
@@ -36,20 +39,32 @@ export class ShippingComponent implements OnInit {
     this.modalActions.emit({ action:"modal", params:['close'] });
   }
 
-  shippingForm() {
+  openEditModal(data) {
+    this.editParams = data;
+  }
+
+ createShipping() {
     this.createShippingForm = this.fb.group({
       name: ['', Validators.required ],
-      price: ['', Validators.required]
+      shippingFee: ['', Validators.required],
+      shppingCode: ['', Validators.required]
+    });
+  }
+
+  updateShipping() {
+    this.updateShippingForm = this.fb.group({
+      name: ['', Validators.required ],
+      shippingFee: ['', Validators.required],
+      shppingCode: ['', Validators.required]
     });
   }
 
   createShippingMethod() {
-    console.log(this.createShippingForm.value);
-    this.submit = true;
+    this.submitted = true;
     this._contraceptiveService.createShippingMethod(this.createShippingForm.value)
     .subscribe((res) => {
       if (res.success) {
-        this.submit = false;
+        this.submitted = false;
         this.getShippingMethods();
         this.createShippingForm.reset();
         this.closeModal();
@@ -59,20 +74,52 @@ export class ShippingComponent implements OnInit {
     })
   }
 
+  updateShippingMethods(id) {
+    this.submitted = true;
+    this._contraceptiveService.updateShippingMethod(id, this.updateShippingForm.value)
+    .subscribe((res) => {
+      if (res.success) {
+        this.submitted = false;
+        this.getShippingMethods();
+        this.updateShippingForm.reset();
+        this.closeModal();
+      } else {
+
+      }
+    }, (err) => {
+      console.log('error ', err);
+    })
+  }
+
   getShippingMethods() {
     this.loading = true;
     this._contraceptiveService.getShippingMethods()
     .subscribe((res) => {
-      console.log('get shipping methods response ', res);
       if (res.success) {
         this.loading = false;
         this.shippingMethods = res.shippingMethod;
       } else {
         this.loading = false;
-        console.log('An error occured while getting shipping methods');
       }
-    }, err => {
-      // caught error
+    }, (err) => {
+      console.log('error while getting shipping methods ', err);
     })
+  }
+
+  deleteShippingMethod(id, index) {
+    let deleteContraceptive = confirm("Are you sure?");
+    if (deleteContraceptive) {
+      this.shippingMethods.splice(index, 1)
+      this._contraceptiveService.deleteShippingMethod(id)
+      .subscribe((res) => {
+        if (res.success) {
+          this.getShippingMethods();
+        } else {
+          // caught errors
+        }
+      }, err => {
+        // caught errors
+      })
+    }
   }
 }
