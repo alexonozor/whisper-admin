@@ -27,7 +27,7 @@
           </tr>
         </tbody>
         </table>
-        <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" (click)="openModal()"><i class="material-icons">add</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" href="#modal1"><i class="material-icons">add</i></a>
       </div>
       <div id="test2" class="col s12">
         <div class="progress" *ngIf="loading">
@@ -85,21 +85,58 @@
             <div class="indeterminate"></div>
         </div>
         <form [formGroup]="createContraceptiveForm" class="col s12" (ngSubmit)="createContraceptive()">
+          <div class="row">
+            <div class="input-field col s12">
+              <input id="name" type="text" formControlName="name" class="validate">
+              <label for="name">Name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea name="description" id="description" formControlName="description"  ></textarea>
+              <label for="description">Description</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="name" type="number" formControlName="minimumShippingQuantity" class="validate">
+              <label for="name">Minimum Shipping Quantity</label>
+            </div>
+            <div class="input-field col s6">
+              <input id="name" type="number" formControlName="maximumShippingQuantity" class="validate">
+              <label for="name">Maximum Shipping Quantity</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s3">
+              <input id="name" type="number" formControlName="price" class="validate">
+              <label for="name">Price</label>
+            </div>
+            <div class="col s3"></div>
+            <div class="input-field col s6">
+              <select materialize="material_select"  formControlName="appointment">
+                <option value="" disabled selected>Appointment</option>
+                <option  [value]="true">Eligible</option>
+                <option [value]="false">Not Eligible</option>
+              </select>
+            </div>
+          </div>
+          <div formArrayName="shippingMethods">
             <div class="row">
-                <div class="input-field col s12">
-                    <input id="name" type="text" formControlName="name" class="validate">
-                    <label for="name">Name</label>
+              <div *ngFor="let method of createContraceptiveForm.controls.shippingMethods.controls; let i=index" >
+                <div class="input-field col s6">
+                  <input type="text" [formControlName]="i">
+                  <label for="shippingMethods">Shipping Methods</label>
                 </div>
+              </div>
+              <button (click)="addShippingMethod()" class='col s3 btn waves-effect indigo'>
+                Add shipping method +
+              </button>
             </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <textarea name="description" id="description" formControlName="description"  ></textarea>
-                    <label for="description">Description</label>
-                </div>
-            </div>
-            <div class="row">
-                <button type='submit'  [disabled]='!createContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
-            </div>
+          </div>
+          <div class="row">
+            <button type='submit'  [disabled]='!createContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
+          </div>
         </form>
   </div>
   <div class="modal-footer">
@@ -107,8 +144,8 @@
   </div>
 </div>
 
-<!-- Edite Modal Structure -->
-<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+<!-- Edit Modal Structure -->
+<div id="modal2" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
   <div class="modal-content">
     <h4>Edit Contraceptive</h4>
     <div class="progress" *ngIf="submited">
@@ -149,6 +186,15 @@
                   <option  [value]="true">Eligible</option>
                   <option [value]="false">Not Eligible</option>
                 </select>
+              </div>
+            </div>
+            <div class="row">
+              <div *ngFor="let shipping of editParams.shippingMethods; let i=index" >
+                {{shipping}}
+                <div class="input-field col s6">
+                  <input id="shippingMethods" type="text" formControlName="shippingMethods">
+                  <label for="shippingMethods">Shipping Methods</label>
+                </div>
               </div>
             </div>
             <div class="row">
