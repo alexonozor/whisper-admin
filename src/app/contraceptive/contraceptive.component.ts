@@ -6,7 +6,6 @@ import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
 import { Route, Router } from '@angular/router'
 
-
 @Component({
   selector: 'app-contraceptive',
   templateUrl: './contraceptive.component.html',
@@ -23,8 +22,8 @@ export class ContraceptiveComponent implements OnInit {
   createContraceptiveForm: FormGroup;
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
-  shipping_meths:  Array<any>;
-
+  shippingMethods:  Array<any>;
+  shipping_meths : Array<any>;
 
   constructor(
     public _contraceptiveService: ContraceptiveService,
@@ -36,6 +35,7 @@ export class ContraceptiveComponent implements OnInit {
 
   ngOnInit() {
     this.getContraceptives();
+    this.getShippingMethods();
   }
 
   createForm() {
@@ -47,9 +47,7 @@ export class ContraceptiveComponent implements OnInit {
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],
       appointment: ['', Validators.required],
-      shippingMethods:  new FormArray([
-        new FormControl(''),
-      ])
+      shippingMethods:  ['', Validators.required]
     });
   }
 
@@ -60,7 +58,6 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   startConvo() {
-    console.log('convo just started');
     this.start_convo = true;
   }
 
@@ -72,7 +69,7 @@ export class ContraceptiveComponent implements OnInit {
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],
       appointment: ['', Validators.required],
-      shippingMethods:  new FormArray([])
+      shippingMethods:  []
     });
   }
 
@@ -88,7 +85,6 @@ export class ContraceptiveComponent implements OnInit {
     data.shippingMethods = ['delivery','pickup'];
     this.editParams = data;
     this.shipping_meths = data.shippingMethods;
-    console.log('data ', this.shipping_meths);
     this.modalActions.emit({ action:"modal", params:['open'] });
   }
 
@@ -112,8 +108,6 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   createContraceptive() {
-    console.log(this.shippingMethod.value);
-    console.log(this.createContraceptiveForm.value);
     this.submit = true;
     this._contraceptiveService.save(this.createContraceptiveForm.value)
     .subscribe((res) => {
@@ -173,6 +167,29 @@ export class ContraceptiveComponent implements OnInit {
         // caught errors
       })
     }
+  }
+
+  getShippingMethods() {
+    this.loading = true;
+    this._contraceptiveService.getShippingMethods()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.shippingMethods = res.shippingMethod;
+      } else {
+        this.loading = false;
+      }
+    }, (err) => {
+      console.log('error while getting shipping methods ', err);
+    })
+  }
+
+  updateParams(parameter: any, contraceptive) {
+    contraceptive.published = parameter.target.checked;
+  }
+
+  onChange(event) {
+    console.log('select event ', event);
   }
 
 }

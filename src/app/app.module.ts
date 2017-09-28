@@ -10,7 +10,6 @@ import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
 
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';

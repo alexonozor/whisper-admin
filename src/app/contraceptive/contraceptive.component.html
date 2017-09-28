@@ -16,6 +16,8 @@
             <th>Name</th>
             <th>Description</th>
             <th>Action</th>
+            <th></th>
+            <th>Published</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +26,13 @@
             <td>{{contraceptive?.description}}</td>
             <td><a (click)="deleteContracpetive(contraceptive._id, i)" class="">delete</a></td>
             <td><a class="modal-trigger" (click)="openEditModal(contraceptive)">edit</a></td>
+            <td>
+              <div class="switch">
+                <label>
+                  <input #status (change)="updateParams($event, contraceptive)" [checked]='contraceptive?.published' type="checkbox"><span class="lever"></span>
+                </label>
+              </div>
+            </td>
           </tr>
         </tbody>
         </table>
@@ -114,24 +123,19 @@
             </div>
             <div class="col s3"></div>
             <div class="input-field col s6">
-              <select materialize="material_select"  formControlName="appointment">
+              <select materialize="material_select" formControlName="appointment">
                 <option value="" disabled selected>Appointment</option>
                 <option  [value]="true">Eligible</option>
                 <option [value]="false">Not Eligible</option>
               </select>
             </div>
           </div>
-          <div formArrayName="shippingMethods">
-            <div class="row">
-              <div *ngFor="let method of createContraceptiveForm.controls.shippingMethods.controls; let i=index" >
-                <div class="input-field col s6">
-                  <input type="text" [formControlName]="i">
-                  <label for="shippingMethods">Shipping Methods</label>
-                </div>
-              </div>
-              <button (click)="addShippingMethod()" class='col s3 btn waves-effect indigo'>
-                Add shipping method +
-              </button>
+          <div class="row">
+            <div class="input-field col s6">
+              <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods">
+                <option *ngFor="let shipping of shippingMethods" [value]="shipping._id">{{shipping.name}}</option>
+              </select>
+              <label for="shippingMethods">Shipping Methods</label>
             </div>
           </div>
           <div class="row">
@@ -189,12 +193,11 @@
               </div>
             </div>
             <div class="row">
-              <div *ngFor="let shipping of editParams.shippingMethods; let i=index" >
-                {{shipping}}
-                <div class="input-field col s6">
-                  <input id="shippingMethods" type="text" formControlName="shippingMethods">
-                  <label for="shippingMethods">Shipping Methods</label>
-                </div>
+              <div class="input-field col s6">
+                <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods" (change)="onChange($event)">
+                  <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="">{{shipping.name}}</option>
+                </select>
+                <label for="shippingMethods">Shipping Methods</label>
               </div>
             </div>
             <div class="row">
