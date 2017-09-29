@@ -2,7 +2,7 @@
   height: 100vh;
 }
 
-div#test1, div#test2 {
+div#test1, div#test2, div.details {
   max-height: 90vh;
   overflow-y: scroll;
 }
