@@ -31,14 +31,14 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     public route: ActivatedRoute,
     public router: Router
   ) {
-    
     this.createForm();
    }
 
   createForm() {
     this.createAssessmentForm = this.fb.group({
       question: ['', Validators.required ],
-      contraceptive: ['']
+      contraceptive: [''],
+      published:['']
     });
   }
 
@@ -47,6 +47,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.sub = this.route.params.subscribe(params => {
        this.showForm = false;
        this.id = params['id'];
+       console.log('id ', this.id);
        this.getContraceptive(this.id);
        this.createAssessmentForm.patchValue({contraceptive: this.id});
     });
@@ -84,6 +85,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
 
   createAssessment() {
     this.submit = true;
+    this.createAssessmentForm.value['published'] = true;
     this._contraceptiveService.saveAssessment(this.createAssessmentForm.value)
     .subscribe((res) => {
       if (res.success) {
