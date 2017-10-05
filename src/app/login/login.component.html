@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <button type='submit'  [disabled]='!loginForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
+                <button type='submit'  [disabled]='(!loginForm.valid && !submited) || isLogin' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
             </div>
         </form>
     </div>

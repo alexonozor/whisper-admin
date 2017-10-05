@@ -28,8 +28,14 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  get() : Observable<any> {
-		return this.authHttp.get(`${this.host}/contraceptives`)
+  updateContraceptivePublished(id:string, params) : Observable<any> {
+    return this.authHttp.put(`${this.host}/contraceptive/${id}`, params)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  getContraceptives() : Observable<any> {
+		return this.authHttp.get(`${this.host}/admin-contraceptives`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
@@ -65,15 +71,22 @@ export class ContraceptiveService {
   }
 
   createAnswer(assessmentInfo: string, id: string) : Observable<any> {
+    console.log('assessmentInfo', assessmentInfo);
 		return this.authHttp.post(`${this.host}/assessment/${id}/answers`, assessmentInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
   getAssementAnswer(id: string) : Observable<any> {
-		return this.authHttp.get(`${this.host}/assessment/${id}/answers`)
+		return this.authHttp.get(`${this.host}/admin-assessment/${id}/answers`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  updateAnswer(id:string, params) : Observable<any> {
+    return this.authHttp.put(`${this.host}/answer/${id}`, params)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
   deleteAnswer(id:string) : Observable<any> {
