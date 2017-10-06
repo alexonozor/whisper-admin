@@ -15,6 +15,7 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
+            <th></th>
             <th>Action</th>
             <th></th>
             <th>Published</th>
@@ -24,12 +25,13 @@
           <tr *ngFor="let contraceptive of contraceptives; let i = index">
             <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
-            <td><a (click)="deleteContracpetive(contraceptive._id, i)" class="">delete</a></td>
-            <td><a class="modal-trigger" (click)="openEditModal(contraceptive)">edit</a></td>
+            <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)" class=""><i class="material-icons">delete</i></a></td>
+            <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)"><i class="material-icons">edit</i></a></td>
+            <td></td>
             <td>
               <div class="switch">
                 <label>
-                  <input #status (change)="updateParams($event, contraceptive)" [checked]='contraceptive?.published' type="checkbox"><span class="lever"></span>
+                  <input #status (change)="updatePublished($event, contraceptive)" [checked]='contraceptive?.published' type="checkbox"><span class="lever"></span>
                 </label>
               </div>
             </td>

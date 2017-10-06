@@ -94,7 +94,7 @@ export class ContraceptiveComponent implements OnInit {
 
   getContraceptives() {
     this.loading = true;
-    this._contraceptiveService.get()
+    this._contraceptiveService.getContraceptives()
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
@@ -187,6 +187,29 @@ export class ContraceptiveComponent implements OnInit {
   updateParams(parameter: any, contraceptive) {
     contraceptive.published = parameter.target.checked;
   }
+
+  updatePublished(event, contraceptive) {
+    let checked = event.target.checked;
+    console.log('is checked ', checked)
+    console.log('event ', event);
+    console.log('contraceptive ', contraceptive);
+    let params = {
+      published: checked
+    }
+    this.updateContraceptivePublished(contraceptive._id, params);
+  }
+
+  updateContraceptivePublished(id, params) {
+    this._contraceptiveService.updateContraceptivePublished(id, params)
+    .subscribe((res) => {
+      if (res.success) {
+        console.log('contraceptive has been updated');
+      }
+    }, err => {
+      // caught error
+    })
+  }
+
 
   onChange(event) {
     console.log('select event ', event);

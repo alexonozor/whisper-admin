@@ -47,8 +47,6 @@ export class AssessmentComponent implements OnInit {
     });
   }
 
-  
-
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['assessmentId'];
@@ -57,6 +55,29 @@ export class AssessmentComponent implements OnInit {
       this.getAssessmentAnswers(this.id);
     });
   }
+
+  updatePublished(event, answer) {
+    let checked = event.target.checked;
+    console.log('is checked ', checked)
+    console.log('event ', event);
+    console.log('answer ', answer);
+    let params = {
+      published: checked
+    }
+    this.updateAnswer(answer._id, params);
+  }
+
+  updateAnswer(id, params) {
+    this._contraceptiveService.updateAnswer(id, params)
+    .subscribe((res) => {
+      if (res.success) {
+        console.log('answer has been updated');
+      }
+    }, err => {
+      // caught error
+    })
+  }
+
 
   toggleBUtton(event) {
     let content = this.showForm = !this.showForm;
@@ -72,7 +93,7 @@ export class AssessmentComponent implements OnInit {
         this.loading = false;
         this.assessments = res.assesments;
       } else {
-        
+
       }
     }, err => {
       // caught error
@@ -87,7 +108,7 @@ export class AssessmentComponent implements OnInit {
         this.loading = false;
         this.assessmentAnswers = res.assesments._answers;
       } else {
-        
+
       }
     }, err => {
       // caught error
@@ -101,7 +122,7 @@ export class AssessmentComponent implements OnInit {
       this._contraceptiveService.deleteAnswer(id)
       .subscribe((res) => {
         if (res.success) {
-          
+
         }
       }, err => {
         // caught error

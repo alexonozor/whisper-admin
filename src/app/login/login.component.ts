@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   submited: boolean = false;
+  isLogin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -21,7 +22,7 @@ export class LoginComponent implements OnInit {
     public _authService: AuthenticationService
   ) {
        this.createForm();
-       
+
     }
 
   ngOnInit() {
@@ -38,6 +39,8 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     this.submited = true;
+    this.isLogin = true;
+
     this._authService.login(this.loginForm.value)
     .subscribe((res) => {
       if (res.success) {
@@ -45,7 +48,7 @@ export class LoginComponent implements OnInit {
         this._authService.saveToken('token', res.token)
         this.router.navigate(['dashboard']);
       } else {
-        
+
       }
     }, err => {
       // caught error
