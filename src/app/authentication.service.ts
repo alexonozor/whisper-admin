@@ -38,11 +38,11 @@ export class AuthenticationService {
 
   tokenSubscription() {
     this.authHttp.tokenStream.subscribe(
-        data => console.log(data),
-        err => console.log(err),
-        () => console.log('Complete')
-      );
-}
+      data => console.log(data),
+      err => console.log(err),
+      () => console.log('Complete')
+    );
+  }
 
   loggedIn() {
     return !tokenNotExpired(this.getToken('token'));
@@ -54,5 +54,14 @@ export class AuthenticationService {
 
   getToken(token: string) {
     return (localStorage.getItem(token));
+  }
+
+  saveUser(userParams){
+    let user = JSON.stringify(userParams);
+    localStorage.setItem('user', user);
+  }
+
+  currentUser() {
+    return JSON.parse(localStorage.getItem('user'))
   }
 }

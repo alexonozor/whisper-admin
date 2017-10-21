@@ -1,3 +1,13 @@
 .pointer {
     cursor: pointer;
 }
+
+#sidenav-overlay {
+  display: none !important;
+}
+
+@media only screen and (min-width: 993px){
+  nav a.button-collapse {
+    display: block !important;
+  }
+}

@@ -9,6 +9,8 @@ import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
 
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
+import { AssessmentService } from './assessment.service';
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -59,7 +61,8 @@ import { ShippingComponent } from './shipping/shipping.component';
   ],
   providers: [
     UserService,
-    AuthenticationService
+    AuthenticationService,
+    AssessmentService
   ],
   bootstrap: [AppComponent]
 })
