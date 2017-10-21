@@ -20,6 +20,7 @@ import { ShippingComponent } from '../shipping/shipping.component';
 const appRoutes: Routes = [
    { path: '',  component: LoginComponent },
    { path: 'signup', component: SignupComponent },
+   { path: 'conversation', component: AssessmentResponseComponent},
    { path: 'dashboard', component: DashboardComponent,
     children: [
       { path: '', component: MenuComponent },
@@ -35,7 +36,6 @@ const appRoutes: Routes = [
         children: [
           { path: ':id', component: ContraceptiveDetailsComponent, outlet: 'details' },
           { path: ':assessmentId',  component: AssessmentComponent, outlet: 'assessment' },
-          
         ]
       },
       { path: 'shipping', component: ShippingComponent }

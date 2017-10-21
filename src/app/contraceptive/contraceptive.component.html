@@ -47,7 +47,7 @@
 
         <ul materialize="collapsible" class="collapsible" data-collapsible="accordion">
           <li *ngFor="let response of responses">
-            <a (click)="startConvo()" class="waves-effect waves-light  light-blue darken-3 btn start-convo">Start Conversation</a>
+            <a (click)="checkConversation(response)" class="waves-effect waves-light  light-blue darken-3 btn start-convo">{{ response?.convo }}</a>
 
             <div class="collapsible-header">
               <div class="row">

@@ -21,8 +21,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     public _authService: AuthenticationService
   ) {
-       this.createForm();
-
+      this.createForm();
     }
 
   ngOnInit() {
@@ -45,7 +44,8 @@ export class LoginComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.submited = false;
-        this._authService.saveToken('token', res.token)
+        this._authService.saveToken('token', res.token);
+        this._authService.saveUser(res.user);
         this.router.navigate(['dashboard']);
       } else {
 

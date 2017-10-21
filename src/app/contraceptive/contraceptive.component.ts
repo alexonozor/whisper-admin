@@ -1,10 +1,11 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
+import { AssessmentService } from '../assessment.service';
 import { ContraceptiveService } from '../contraceptive.service';
 import { MaterializeAction } from 'angular2-materialize';
 import { FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
-import { Route, Router } from '@angular/router'
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contraceptive',
@@ -24,10 +25,13 @@ export class ContraceptiveComponent implements OnInit {
   editParams: Object = {};
   shippingMethods:  Array<any>;
   shipping_meths : Array<any>;
+  startConversationOrOpen: String;
 
   constructor(
+    public _assessmentService: AssessmentService,
     public _contraceptiveService: ContraceptiveService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private router: Router,
   ) {
     this.createForm();
     this.updateForm();
@@ -59,6 +63,7 @@ export class ContraceptiveComponent implements OnInit {
 
   startConvo() {
     this.start_convo = true;
+    this.router.navigate(['conversation']);
   }
 
   updateForm() {
@@ -144,11 +149,63 @@ export class ContraceptiveComponent implements OnInit {
       if (res.success) {
         this.loading = false;
         this.responses = res.responses
+        this.checkIfConvoExist(this.responses);
       } else {
 
       }
     }, err => {
       // caught error
+    })
+  }
+
+  checkIfConvoExist(response) {
+    response.forEach((el, i) => {
+      this.startConversationOrOpen = (el['hasConversation'])? "Open Conversation" : "Start Conversation";
+      el["convo"] = this.startConversationOrOpen;
+    })
+  }
+
+  checkConversation(response) {
+    // we need a loader
+    if(response.hasConversation) {
+      this.openConversation(response.conversation);
+    }
+    else {
+      this.startConversation(response);
+    }
+  }
+
+  startConversation(response) {
+    let params = { 
+      'startedBy': response.user, 
+       'assessmentResponse': response._id,  
+       'users': [ response.user ], 
+       'messages': [],
+       'createdAt': Date.now() 
+    };
+
+    this._assessmentService.startAssessmentConversation(params)
+    .subscribe((resp) => {
+      if (resp.success) {
+        this.updateAssesmentResponse(response._id, { hasConversation: true, conversation: resp.responseId })
+      }
+    }, err => {
+      //toaster is fyn for err don't for get to dismiss loader
+    })
+  }
+
+  openConversation(conversationId) {
+    this.router.navigate(['conversation', { conversationId: conversationId }]);
+  }
+
+  updateAssesmentResponse(id, params) {
+    this._assessmentService.updateResponse(id, params)
+    .subscribe((resp) => {
+      if (resp.success) {
+        this.router.navigate(['conversation', { conversationId: params.conversation }]);
+      }
+    }, err => {
+      // caught errors
     })
   }
 
@@ -214,5 +271,7 @@ export class ContraceptiveComponent implements OnInit {
   onChange(event) {
     console.log('select event ', event);
   }
+
+  ngOnDestroy() {}
 
 }

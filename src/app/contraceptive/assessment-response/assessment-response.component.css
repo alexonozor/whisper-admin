@@ -1,0 +1,101 @@
+body,html { height: 100%; }
+html {
+  background: #e0e0e0;
+}
+
+span.timeline {
+  font-size: 10px;
+  display: block;
+  float: right;
+  margin-top: 10px;
+  margin-left: 6px;
+}
+
+textarea {
+  background-color: white;
+  border-radius: 5px;
+}
+
+.body {
+  background-image: url(../../../assets/images/chat-bg.png) !important;;
+  background-color: #E91E63 !important;
+  height: 85vh;
+}
+
+button.submit_button {
+  position: relative;
+  top: 16px;
+  left: -15px;
+}
+
+footer.input_footer {
+  background: #E0E0E0;
+  height: 15vh;
+  position: relative;
+}
+
+.submit_button i {
+  font-size: 2rem;
+  line-height: inherit;
+  color: #E91E63;
+  font-weight: bold;
+}
+
+.submit_button, .submit_button:hover {
+  background: none;
+  box-shadow: none;
+}
+
+.card-panel {
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+.message-in {
+  float: left;
+}
+
+.message-out {
+  float: right;
+}
+
+.message-in .message-text {
+  background-color: #fff;
+}
+
+.message-out .message-text {
+  background-color: #dcf8c6;
+}
+
+.message .message-text {
+  cursor: text;
+  white-space: pre-wrap;
+  overflow: hidden;
+}
+
+.message-text {
+  font-size: 13.6px;
+  line-height: inherit;
+  word-wrap: break-word;
+  color: #262626;
+  height: 40px;
+  padding: 10px;
+}
+
+.chat-bubble {
+  padding: 6px 0 8px 0;
+  padding-left: 9px;
+  padding-right: 7px;
+  min-width: 110px;
+  box-sizing: border-box;
+}
+
+.msg-block {
+  margin-bottom: -50%;
+}
+
+@media only screen and (min-width: 993px){
+  nav a.button-collapse {
+    display: block !important;
+  }
+}
