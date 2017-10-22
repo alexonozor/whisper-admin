@@ -1,0 +1,53 @@
+<nav>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+  <ul id="slide-out" class="side-nav">
+    <li><a class="subheader">Menu</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard">Dashboard</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/contraceptives">Contraceptives</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
+
+  </ul>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Whisper</a>
+  </div>
+</nav>
+
+<div class="body">
+  <div class="row" *ngFor="let conversation of messageResponse">
+    <div class="col s5 m5" [ngClass]="conversation.isSender? 'message-out' : 'message-in'" class="chat-bubble">
+      <div class="msg-block">
+        <div class="card-panel  message message-text">
+          <span class="chat-text">
+            {{ conversation?.content }}
+          </span>
+          <span class="timeline">
+            {{ conversation?.createdAt | date:'shortTime'}}
+          </span>
+        </div>
+      </div>
+    </div><br/>
+  </div>
+</div>
+
+<footer class="input_footer">
+  <div class="row">
+    <div class="block compose">
+      <form [formGroup]="chatForm" class="col s12 m12" (ngSubmit)="sendMessage()">
+        <div class="row">
+          <div class="input-field col s11 text-container">
+            <textarea (keyup)="onKeyUp($event)" formControlName="content" type="text" placeholder="Write a message" id="textarea1" class="validate browser-default">
+            </textarea>
+          </div>
+          <div class="col s1">
+            <button *ngIf="userIsTyping" [disabled]='!chatForm.valid && submitting && isSender' class="submit_button btn waves-effect waves-light" type="submit" name="action">
+              <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</footer>
+
+

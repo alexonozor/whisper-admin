@@ -9,6 +9,7 @@ import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
 
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
+import { AssessmentService } from './assessment.service';
 
 
 import { AppComponent } from './app.component';
@@ -19,12 +20,14 @@ import { MenuComponent } from './dashboard/menu.component';
 import { ContraceptiveComponent } from './contraceptive/contraceptive.component';
 import { ContraceptiveDetailsComponent } from './contraceptive/contraceptive-details.component';
 import { AssessmentComponent } from './contraceptive/assessment/assessment.component';
+import { AssessmentResponseComponent } from './contraceptive/assessment-response/assessment-response.component';
 import { UserComponent } from './user/user.component';
 import { UserDetailsComponent } from './user/user-details/user-details.component';
 import { UsersComponent } from './user/users/users.component';
 import { UserNewComponent } from './user/user-new/user-new.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { PharmacyComponent } from './pharmacy/pharmacy.component';
+import { ShippingComponent } from './shipping/shipping.component';
 
 
 @NgModule({
@@ -42,7 +45,9 @@ import { PharmacyComponent } from './pharmacy/pharmacy.component';
     UsersComponent,
     UserNewComponent,
     UserEditComponent,
-    PharmacyComponent
+    PharmacyComponent,
+    AssessmentResponseComponent,
+    ShippingComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,8 @@ import { PharmacyComponent } from './pharmacy/pharmacy.component';
   ],
   providers: [
     UserService,
-    AuthenticationService
+    AuthenticationService,
+    AssessmentService
   ],
   bootstrap: [AppComponent]
 })

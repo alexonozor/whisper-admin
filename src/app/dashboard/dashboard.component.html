@@ -1,11 +1,17 @@
- <nav>
-    <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Whisper</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <!-- <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li> -->
-      </ul>
-    </div>
-  </nav>
+<nav>
+  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+  <ul id="slide-out" class="side-nav">
+    <li><a class="subheader">Menu</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard">Dashboard</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/contraceptives">Contraceptives</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
+    <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
+
+  </ul>
+  <div class="nav-wrapper">
+    <a href="#" class="brand-logo">Whisper</a>
+  </div>
+</nav>
 <router-outlet></router-outlet>
+
+

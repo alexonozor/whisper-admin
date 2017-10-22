@@ -14,14 +14,14 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   submited: boolean = false;
+  isLogin: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     public _authService: AuthenticationService
   ) {
-       this.createForm();
-       
+      this.createForm();
     }
 
   ngOnInit() {
@@ -38,14 +38,17 @@ export class LoginComponent implements OnInit {
 
   loginUser() {
     this.submited = true;
+    this.isLogin = true;
+
     this._authService.login(this.loginForm.value)
     .subscribe((res) => {
       if (res.success) {
         this.submited = false;
-        this._authService.saveToken('token', res.token)
+        this._authService.saveToken('token', res.token);
+        this._authService.saveUser(res.user);
         this.router.navigate(['dashboard']);
       } else {
-        
+
       }
     }, err => {
       // caught error
