@@ -139,7 +139,7 @@
           <div class="row">
             <div class="input-field col s6">
               <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods">
-                <option *ngFor="let shipping of shippingMethods" [value]="shipping._id">{{shipping.name}}</option>
+                <option *ngFor="let shipping of shippingMethods" [value]="shipping._id">{{shipping?.name}}</option>
               </select>
               <label for="shippingMethods">Shipping Methods</label>
             </div>

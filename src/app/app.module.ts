@@ -30,6 +30,9 @@ import { PharmacyComponent } from './pharmacy/pharmacy.component';
 import { ShippingComponent } from './shipping/shipping.component';
 
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +60,7 @@ import { ShippingComponent } from './shipping/shipping.component';
     MaterializeModule,
     ReactiveFormsModule,
     AuthModule,
-    GooglePlaceModule
+    GooglePlaceModule,
   ],
   providers: [
     UserService,

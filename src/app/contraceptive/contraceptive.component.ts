@@ -48,9 +48,10 @@ export class ContraceptiveComponent implements OnInit {
       description: ['', Validators.required ],
       price: [''],
       // add shipping methods
-      minimumShippingQuantity: [''],
-      maximumShippingQuantity: [''],
-      appointment: ['', Validators.required]
+      minimumShippingQuantity: ['', Validators.required],
+      maximumShippingQuantity: ['', Validators.required],
+      appointment: ['', Validators.required],
+      shippingMethods:  ['', Validators.required]
     });
   }
 
@@ -69,11 +70,11 @@ export class ContraceptiveComponent implements OnInit {
     this.updateContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
       description: ['', Validators.required ],
-      price: [''],
-      // add shipping methods
-      minimumShippingQuantity: [''],
-      maximumShippingQuantity: [''],
-      appointment: ['', Validators.required]
+      price: ['', Validators.required],
+      minimumShippingQuantity: ['', Validators.required],
+      maximumShippingQuantity: ['', Validators.required],
+      appointment: ['', Validators.required],
+      shippingMethods:  []
     });
   }
 
