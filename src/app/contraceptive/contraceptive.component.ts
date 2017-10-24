@@ -46,7 +46,7 @@ export class ContraceptiveComponent implements OnInit {
     this.createContraceptiveForm = this.fb.group({
       name: ['', Validators.required ],
       description: ['', Validators.required ],
-      price: ['', Validators.required],
+      price: [''],
       // add shipping methods
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],

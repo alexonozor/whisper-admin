@@ -8,7 +8,7 @@ describe('UserService', () => {
     });
   });
 
-  it('should ...', inject([UserService], (service: UserService) => {
+  it('should get all users', inject([UserService], (service: UserService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -19,7 +19,7 @@ textarea {
 .body {
   background-image: url(../../../assets/images/chat-bg.png) !important;;
   background-color: #E91E63 !important;
-  height: 85vh;
+  max-height: 85vh;
 }
 
 button.submit_button {
@@ -30,8 +30,10 @@ button.submit_button {
 
 footer.input_footer {
   background: #E0E0E0;
-  height: 15vh;
-  position: relative;
+  height: 4vh;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 
 .submit_button i {

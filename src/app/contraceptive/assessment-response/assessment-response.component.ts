@@ -6,6 +6,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 declare var Materialize: any;
 declare var jQuery: any;
 
+
 @Component({
   selector: 'app-assessment-response',
   templateUrl: './assessment-response.component.html',
@@ -48,10 +49,12 @@ export class AssessmentResponseComponent implements OnInit {
   ngOnInit() {
     this.getUser();
     this.startChat();
+  
     this.sub = this.route.params.subscribe(params => {
       this.conversationId = params['conversationId']; // (+) converts string 'id' to a number
       // In a real app: dispatch action to load the details here.
-      console.log('convo id ', this.conversationId);
+      this._assessmentService.connectToroom(this.conversationId)
+      this.getMessages();
     });
 
     this._assessmentService.getAssementResponsesMessage(this.conversationId)
@@ -64,6 +67,16 @@ export class AssessmentResponseComponent implements OnInit {
     })
     this.jqueryInit();
   }
+
+   getMessages() {
+    this._assessmentService.getMessages().subscribe(message => {
+      message['isSender'] = ( message.user == this.userId )
+    })
+  }
+   
+
+
+ 
 
   jqueryInit() {
     jQuery(".button-collapse").sideNav();
@@ -99,7 +112,6 @@ export class AssessmentResponseComponent implements OnInit {
 
   getUser() {
     this.user = this._authService.currentUser();
-    console.log('user ', this.user);
   }
 
   sendMessage() {
