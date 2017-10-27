@@ -26,6 +26,8 @@ export class ContraceptiveComponent implements OnInit {
   shippingMethods:  Array<any>;
   shipping_meths : Array<any>;
   startConversationOrOpen: String;
+  assessmentOwner: String;
+  assessmentType: String;
 
   constructor(
     public _assessmentService: AssessmentService,
@@ -168,7 +170,7 @@ export class ContraceptiveComponent implements OnInit {
   checkConversation(response) {
     // we need a loader
     if(response.hasConversation) {
-      this.openConversation(response.conversation);
+      this.openConversation(response);
     }
     else {
       this.startConversation(response);
@@ -194,8 +196,12 @@ export class ContraceptiveComponent implements OnInit {
     })
   }
 
-  openConversation(conversationId) {
-    this.router.navigate(['conversation', { conversationId: conversationId }]);
+  openConversation(response) {
+    console.log('converstation ', response);
+    this.assessmentOwner = response.user.firstName + ' ' + response.user.lastName;
+    this.assessmentType = response.contraceptive.name;
+    this.router.navigate(['conversation', { conversationId: response.conversation, user: this.assessmentOwner,
+      type: this.assessmentType }]);
   }
 
   updateAssesmentResponse(id, params) {

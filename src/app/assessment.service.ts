@@ -24,22 +24,29 @@ export class AssessmentService {
   public token = '';
 
   submitAssesment(assesmentParams: any) : Observable<any> {
-    return this.http.post(`${this.host}/assessment-responses`, assesmentParams)
+    return this.authHttp.post(`${this.host}/assessment-responses`, assesmentParams)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
   updatAssessmenteResponse(id: number, pharmacyId: number) : Observable<any> {
-    return this.http.put(`${this.host}/update-assessment-responses/${id}`, { selectedPharmacy: pharmacyId})
+    return this.authHttp.put(`${this.host}/update-assessment-responses/${id}`, { selectedPharmacy: pharmacyId})
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
   updateResponse(id: string, params, updatingShippingForm = false) : Observable<any> {
-    return this.http.put(`${this.host}/update-assessment-responses/${id}?updatingShippingForm=${updatingShippingForm}`, params)
+    return this.authHttp.put(`${this.host}/update-assessment-responses/${id}?updatingShippingForm=${updatingShippingForm}`, params)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
+
+  addUser(userId: string, convoId: string) : Observable<any> {
+    return this.authHttp.put(`${this.host}/conversation/${convoId}/user/${userId}`, {})
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
 
   getAssementResponses(id: string) : Observable<any> {
     return this.authHttp.get(`${this.host}/user-assessment-responses/${id}`)

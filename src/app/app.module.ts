@@ -28,6 +28,7 @@ import { UserNewComponent } from './user/user-new/user-new.component';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { PharmacyComponent } from './pharmacy/pharmacy.component';
 import { ShippingComponent } from './shipping/shipping.component';
+import { SearchFilterPipe } from './search-filter.pipe';
 
 
 
@@ -50,7 +51,8 @@ import { ShippingComponent } from './shipping/shipping.component';
     UserEditComponent,
     PharmacyComponent,
     AssessmentResponseComponent,
-    ShippingComponent
+    ShippingComponent,
+    SearchFilterPipe
   ],
   imports: [
     BrowserModule,

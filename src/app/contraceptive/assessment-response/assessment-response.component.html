@@ -8,6 +8,35 @@
     <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
 
   </ul>
+  <!-- Invite user  -->
+  <a (click)="addParticipant()" class='btn modal-trigger addParticipant' href="#modal1"><i class="material-icons">add_circle</i></a>
+
+  <!-- Invite user modal  -->
+  <div id="modal1" class="modal">
+    <div class="modal-header addUserHeader">
+      <h4>Add participant</h4>
+      <a class="modal-action modal-close addUserModalClose "><i class="material-icons">clear</i></a>
+    </div>
+    <div class="modal-content">
+      <input #fname placeholder="search text goes here" class=" col s9 m9 validate contact browser-default">
+      <i class="material-icons search">search</i>
+      <div class="collection users">
+        <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of users | searchFilter: 'firstName' : fname.value.toLowerCase()">{{user.firstName}} {{user.lastName}}</a>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+  <!-- chat info -->
+  <a class='dropdown-button btn info' data-activates='dropdown1'><i class="material-icons">info</i></a>
+
+  <!-- Dropdown -->
+  <ul id='dropdown1' class='dropdown-content'>
+    <li><h4 class="chatInfo"> user: {{this.chatOwner}}</h4></li>
+    <li><h4 class="chatInfo"> assesment: {{this.assessmentType}}</h4></li>
+  </ul>
+
   <div class="nav-wrapper">
     <a href="#" class="brand-logo">Whisper</a>
   </div>
@@ -27,6 +56,17 @@
         </div>
       </div>
     </div><br/>
+  </div>
+  <div *ngIf="loading" align="center" class="preloader-wrapper big active" style="margin-right: auto !important;margin-left: auto !important;display: block !important;">
+    <div class="spinner-layer spinner-green-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
   </div>
 </div>
 
