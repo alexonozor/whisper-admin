@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
 import { AssessmentService } from '../../assessment.service';
-import { FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../user.service';
+import { SearchFilterPipe } from '../../search-filter.pipe';
+import { FormsModule, FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 declare var Materialize: any;
 declare var jQuery: any;
@@ -15,6 +17,8 @@ declare var jQuery: any;
 
 export class AssessmentResponseComponent implements OnInit {
   user: any = [];
+  users: any = [];
+  allUsers: any = [];
   userAssessments: Array<any>;
   loaded: boolean = false;
   showButton: boolean =  false;
@@ -28,13 +32,80 @@ export class AssessmentResponseComponent implements OnInit {
   convo_id: string;
   submitting: boolean = false;
   userIsTyping: boolean = false;
+  chatOwner: string;
+  assessmentType: string;
 
 
   constructor(
     public _authService: AuthenticationService,
     public _assessmentService: AssessmentService,
+    public _userService: UserService,
     public fb: FormBuilder,
     public route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.getUser();
+    this.startChat();
+    this.sub = this.route.params.subscribe(params => {
+      this.conversationId = params['conversationId'];
+      this.chatOwner = params['user'];
+      this.assessmentType = params['type']
+      // In a real app: dispatch action to load the details here.
+      this._assessmentService.connectToroom(this.conversationId)
+      this.getMessages();
+    });
+
+    this._assessmentService.getAssementResponsesMessage(this.conversationId)
+    .subscribe((resp) => {
+      if (resp.success) {
+        this.conversation = resp.conversation;
+        this.checkSender(resp.conversation.messages);
+      }
+    })
+    this.jqueryInit();
+    this.getAllUsers();
+  }
+
+  jqueryInit() {
+    jQuery(".button-collapse").sideNav();
+    jQuery(".dropdown-button").dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrainWidth: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: 0, // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
+      alignment: 'left', // Displays dropdown with edge aligned to the left of button
+      stopPropagation: false // Stops event propagation
+    });
+    jQuery('.modal').modal();
+  }
+
+  getAllUsers() {
+    this._userService.getUsers()
+    .subscribe((resp) => {
+      if (resp.success) {
+        this.users = resp.users;
+      }
+    })
+  }
+
+  getUserInfo(user) {
+    this._assessmentService.addUser(user._id, this.conversationId).subscribe((response) => {
+      if (response.success) {
+        jQuery('#modal1').modal('close');
+        Materialize.toast(`${user.firstName} has been added to chat`, 2000);
+      } else {
+        Materialize.toast(`${user.firstName} cannot been added to chat`, 2000);
+      }
+    }, err => {
+      Materialize.toast(`${user.firstName} cannot been added to chat `, 2000);
+    });
+  }
+
+  addParticipant() {
+    this.allUsers = this.users;
+  }
 
   startChat() {
     this.chatForm = this.fb.group({
@@ -46,49 +117,15 @@ export class AssessmentResponseComponent implements OnInit {
   }
 
 
-  ngOnInit() {
-    this.getUser();
-    this.startChat();
-  
-    this.sub = this.route.params.subscribe(params => {
-      this.conversationId = params['conversationId']; // (+) converts string 'id' to a number
-      // In a real app: dispatch action to load the details here.
-      this._assessmentService.connectToroom(this.conversationId)
-      this.getMessages();
-    });
-
-    this._assessmentService.getAssementResponsesMessage(this.conversationId)
-    .subscribe((resp) => {
-      if (resp.success) {
-        this.conversation = resp.conversation;
-        console.log('conversation ', this.conversation);
-        this.checkSender(resp.conversation.messages);
-      }
-    })
-    this.jqueryInit();
-  }
-
-   getMessages() {
+  getMessages() {
     this._assessmentService.getMessages().subscribe(message => {
       message['isSender'] = ( message.user == this.userId )
     })
-  }
-   
-
-
- 
-
-  jqueryInit() {
-    jQuery(".button-collapse").sideNav();
   }
 
   onKeyUp(event) {
     let message = event.target.value;
     if( event.key == "Enter" && event.target.value.length != 0) {
-      console.log("button pressed ", event.key);
-      console.log('value ', event.target.value);
-      console.log('value ', event.target.value.length);
-      console.log('chat form value ', this.chatForm.value);
     }
     if(event.target.value.length >= 1) {
       this.userIsTyping = true
@@ -102,7 +139,6 @@ export class AssessmentResponseComponent implements OnInit {
     this.userId = this._authService.currentUser()._id;
     messageResponse.forEach((el, i) => {
       el['isSender'] = ( el.user == this.userId )
-      console.log('sender ', el['isSender']);
       if(el['isSender']) {
         this.isSender = true;
       }

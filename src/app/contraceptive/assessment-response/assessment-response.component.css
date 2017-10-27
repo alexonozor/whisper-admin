@@ -3,6 +3,73 @@ html {
   background: #e0e0e0;
 }
 
+input.contact {
+  width: 100%;
+  padding: 0 29px 0 15px;
+  position: relative;
+  height: 50px;
+  top: -36px;
+  color: black;
+}
+
+.users {
+  position: relative;
+  top: -97px;
+  width: 100%;
+}
+
+i.search {
+  color: black;
+  position: relative;
+  top: -96px;
+  float: right;
+  cursor: pointer;
+}
+
+.info {
+  left: 82%;
+}
+
+.addParticipant {
+  left: 85%;
+}
+
+.addUserHeader {
+  padding: 6px;
+  background: #E91E63;
+  height: 50px;
+  overflow-x: visible;
+}
+
+.addUserHeader h4{ font-size: 1.3rem; }
+
+.addUserModalClose {
+  position: relative;
+  float: right;
+  top: -40px;
+}
+
+.info, .addParticipant {
+  box-shadow: none;
+  background: none;
+  position: relative;
+  top: -10px;
+}
+
+.chatInfo { font-size: 1rem; }
+
+.dropdown-content li { padding: 6px; }
+
+nav .brand-logo {
+  color: #fff;
+  display: inline-block;
+  font-size: 2.1rem;
+  padding: 0;
+  position: relative;
+  top: -64px;
+  left: 45%;
+}
+
 span.timeline {
   font-size: 10px;
   display: block;
