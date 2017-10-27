@@ -32,6 +32,7 @@ export class AssessmentResponseComponent implements OnInit {
   convo_id: string;
   submitting: boolean = false;
   userIsTyping: boolean = false;
+  loading: boolean = false;
   chatOwner: string;
   assessmentType: string;
 
@@ -57,7 +58,9 @@ export class AssessmentResponseComponent implements OnInit {
 
     this._assessmentService.getAssementResponsesMessage(this.conversationId)
     .subscribe((resp) => {
+      this.loading = true;
       if (resp.success) {
+        this.loading = false;
         this.conversation = resp.conversation;
         this.checkSender(resp.conversation.messages);
       }
@@ -135,7 +138,6 @@ export class AssessmentResponseComponent implements OnInit {
   }
 
   checkSender(messageResponse) {
-    console.log('check sender ', messageResponse);
     this.userId = this._authService.currentUser()._id;
     messageResponse.forEach((el, i) => {
       el['isSender'] = ( el.user == this.userId )

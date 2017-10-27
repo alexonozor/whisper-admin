@@ -1,6 +1,13 @@
 body,html { height: 100%; }
 html {
   background: #e0e0e0;
+  font-size: 15px;
+  padding-bottom: 50px;
+  min-height: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
 input.contact {
@@ -60,16 +67,6 @@ i.search {
 
 .dropdown-content li { padding: 6px; }
 
-nav .brand-logo {
-  color: #fff;
-  display: inline-block;
-  font-size: 2.1rem;
-  padding: 0;
-  position: relative;
-  top: -64px;
-  left: 45%;
-}
-
 span.timeline {
   font-size: 10px;
   display: block;
@@ -86,7 +83,8 @@ textarea {
 .body {
   background-image: url(../../../assets/images/chat-bg.png) !important;;
   background-color: #E91E63 !important;
-  max-height: 85vh;
+  padding: 15px;
+  overflow-y: scroll;
 }
 
 button.submit_button {
@@ -97,10 +95,14 @@ button.submit_button {
 
 footer.input_footer {
   background: #E0E0E0;
-  height: 4vh;
-  position: absolute;
+  height: 75px;
+  position: relative;
   width: 100%;
   bottom: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
 }
 
 .submit_button i {
