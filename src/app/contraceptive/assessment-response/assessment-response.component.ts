@@ -35,6 +35,7 @@ export class AssessmentResponseComponent implements OnInit {
   loading: boolean = false;
   chatOwner: string;
   assessmentType: string;
+  participant: Array<any>;
 
 
   constructor(
@@ -62,6 +63,7 @@ export class AssessmentResponseComponent implements OnInit {
       if (resp.success) {
         this.loading = false;
         this.conversation = resp.conversation;
+        this.getParticipant(resp.conversation.users);
         this.checkSender(resp.conversation.messages);
       }
     })
@@ -110,6 +112,10 @@ export class AssessmentResponseComponent implements OnInit {
     this.allUsers = this.users;
   }
 
+  getParticipant(users) {
+    this.participant = users
+  }
+
   startChat() {
     this.chatForm = this.fb.group({
       content: ['', Validators.required],
@@ -122,7 +128,8 @@ export class AssessmentResponseComponent implements OnInit {
 
   getMessages() {
     this._assessmentService.getMessages().subscribe(message => {
-      message['isSender'] = ( message.user == this.userId )
+      message['isSender'] = ( message.user == this.userId );
+      this.messageResponse.push(message);
     })
   }
 
@@ -165,7 +172,6 @@ export class AssessmentResponseComponent implements OnInit {
 
     })
     this.chatForm.value['isSender'] = true;
-    this.messageResponse.push(this.chatForm.value);
     this.chatForm.reset(
       {
         content: '',

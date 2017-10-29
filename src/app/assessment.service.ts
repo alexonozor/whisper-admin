@@ -88,7 +88,6 @@ export class AssessmentService {
   getMessages() {
     let observable = new Observable<any>(observer => {
       this.socket.on('message', (data) => {
-     
         observer.next(data);    
       });
       return () => {

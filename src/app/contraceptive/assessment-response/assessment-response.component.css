@@ -21,8 +21,11 @@ input.contact {
 
 .users {
   position: relative;
-  top: -97px;
   width: 100%;
+}
+
+.remove-padding {
+  padding: 0px !important;
 }
 
 i.search {
@@ -82,9 +85,10 @@ textarea {
 
 .body {
   background-image: url(../../../assets/images/chat-bg.png) !important;;
-  background-color: #E91E63 !important;
-  padding: 15px;
-  overflow-y: scroll;
+  background-attachment: fixed;
+  background-size: contain;
+  height: 85vh;
+  overflow: scroll;
 }
 
 button.submit_button {
@@ -96,13 +100,14 @@ button.submit_button {
 footer.input_footer {
   background: #E0E0E0;
   height: 75px;
-  position: relative;
-  width: 100%;
+  position: absolute;
+  /* width: 100%; */
+  /* bottom: 0; */
   bottom: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  /* left: 0; */
+  /* right: 0; */
   overflow: hidden;
+  width: 75%;
 }
 
 .submit_button i {
@@ -169,4 +174,26 @@ footer.input_footer {
   nav a.button-collapse {
     display: block !important;
   }
+}
+
+.side-bar-left {
+  margin-top: 20px;
+}
+
+#search {
+  display: block;
+  font-size: 16px;
+  font-weight: 300;
+  width: 100%;
+  height: 45px;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 45px 0 15px;
+  border: 0;
+}
+
+
+.search-wrapper {
+  margin: 0 12px;
 }
