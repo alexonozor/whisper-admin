@@ -50,7 +50,6 @@ export class AssessmentComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = params['assessmentId'];
-      this.createAnswerForm.reset();
       this.getAssessments();
       this.getAssessmentAnswers(this.id);
     });

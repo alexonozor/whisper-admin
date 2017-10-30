@@ -23,7 +23,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let contraceptive of contraceptives; let i = index">
-            <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]">{{contraceptive?.name}}</a></td>
+            <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]" (click)="saveContraceptiveId(contraceptive?._id)"> {{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
             <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)" class=""><i class="material-icons">delete</i></a></td>
             <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)"><i class="material-icons">edit</i></a></td>
