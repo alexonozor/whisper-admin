@@ -70,8 +70,15 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  saveContraceptiveIdToLocalStorage(tokenName: string, token: string) {
+    localStorage.setItem(tokenName, token);
+  }
+
+  getContraceptiveIdFromLocalStorage(token: string) {
+    return (localStorage.getItem(token));
+  }
+
   createAnswer(assessmentInfo: string, id: string) : Observable<any> {
-    console.log('assessmentInfo', assessmentInfo);
 		return this.authHttp.post(`${this.host}/assessment/${id}/answers`, assessmentInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));

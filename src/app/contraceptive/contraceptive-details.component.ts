@@ -70,6 +70,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
         this.loading = false;
         this.contraceptive = res.contraceptive;
         this.assessments = res.assesments;
+        console.log('assessments ', res.assesments);
       } else {
         
       }
@@ -84,12 +85,21 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   }
 
   createAssessment() {
+    let id;
+    if(this.id == null ){
+      id = localStorage.getItem('contraceptive_id');
+    }else{
+      id = this.id;
+    }
     this.submit = true;
     this.createAssessmentForm.value['published'] = true;
+    if( this.createAssessmentForm.value['contraceptive'] == null ){
+      this.createAssessmentForm.value['contraceptive'] = id;
+    }
     this._contraceptiveService.saveAssessment(this.createAssessmentForm.value)
     .subscribe((res) => {
       if (res.success) {
-        this.getContraceptive(this.id);
+        this.getContraceptive(id);
         this.submit = false;
         this.createAssessmentForm.reset();
       } else {

@@ -59,6 +59,10 @@ export class ContraceptiveComponent implements OnInit {
 
   get shippingMethod(): FormArray { return this.createContraceptiveForm.get('shippingMethods') as FormArray; }
 
+  saveContraceptiveId(id) {
+    this._contraceptiveService.saveContraceptiveIdToLocalStorage('contraceptive_id',id);
+  }
+
   addShippingMethod() {
     this.shippingMethod.push(new FormControl());
   }
