@@ -70,6 +70,12 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
+  updateAssessment(id: string, assessmentInfo: any) : Observable<any> {
+    return this.authHttp.put(`${this.host}/assessment/${id}`, assessmentInfo)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
   saveContraceptiveIdToLocalStorage(tokenName: string, token: string) {
     localStorage.setItem(tokenName, token);
   }
