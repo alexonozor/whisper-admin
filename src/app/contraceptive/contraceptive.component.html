@@ -15,19 +15,15 @@
           <tr>
             <th>Name</th>
             <th>Description</th>
-            <th></th>
-            <th>Action</th>
-            <th></th>
             <th>Published</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let contraceptive of contraceptives; let i = index">
             <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]" (click)="saveContraceptiveId(contraceptive?._id)"> {{contraceptive?.name}}</a></td>
             <td>{{contraceptive?.description}}</td>
-            <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)" class=""><i class="material-icons">delete</i></a></td>
-            <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)"><i class="material-icons">edit</i></a></td>
-            <td></td>
             <td>
               <div class="switch">
                 <label>
@@ -35,6 +31,8 @@
                 </label>
               </div>
             </td>
+            <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)"><i class="material-icons">delete</i></a></td>
+            <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)" href="#modal2"><i class="material-icons">edit</i></a></td>
           </tr>
         </tbody>
         </table>
@@ -159,57 +157,57 @@
   <div class="modal-content">
     <h4>Edit Contraceptive</h4>
     <div class="progress" *ngIf="submited">
-            <div class="indeterminate"></div>
+      <div class="indeterminate"></div>
+    </div>
+    <form [formGroup]="updateContraceptiveForm" class="col s12" (ngSubmit)="updateContraceptive(editParams._id)">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="name" type="text" [(ngModel)]="editParams.name" formControlName="name" class="validate">
+                <label for="name">Name</label>
+            </div>
         </div>
-        <form [formGroup]="updateContraceptiveForm" class="col s12" (ngSubmit)="updateContraceptive(editParams._id)">
-            <div class="row">
-                <div class="input-field col s12">
-                    <input id="name" type="text" [(ngModel)]="editParams.name" formControlName="name" class="validate">
-                    <label for="name">Name</label>
-                </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description"  ></textarea>
+                <label for="description">Description</label>
             </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description"  ></textarea>
-                    <label for="description">Description</label>
-                </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <input id="name" type="number" [(ngModel)]="editParams.minimumShippingQuantity" formControlName="minimumShippingQuantity" class="validate">
-                <label for="name">Minimum Shipping Quantity</label>
-              </div>
-              <div class="input-field col s6">
-                <input id="name" type="number" [(ngModel)]="editParams.maximumShippingQuantity" formControlName="maximumShippingQuantity" class="validate">
-                <label for="name">Maximum Shipping Quantity</label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s3">
-                <input id="name" type="number" [(ngModel)]="editParams.price" formControlName="price" class="validate">
-                <label for="name">Price</label>
-              </div>
-              <div class="col s3"></div>
-              <div class="input-field col s6">
-                <select materialize="material_select"  formControlName="appointment">
-                  <option value="" disabled selected>Appointment</option>
-                  <option  [value]="true">Yes</option>
-                  <option [value]="false">No</option>
-                </select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="input-field col s6">
-                <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods" (change)="onChange($event)">
-                  <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="">{{shipping.name}}</option>
-                </select>
-                <label for="shippingMethods">Shipping Methods</label>
-              </div>
-            </div>
-            <div class="row">
-                <button type='submit'  [disabled]='!updateContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
-            </div>
-        </form>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="name" type="number" [(ngModel)]="editParams.minimumShippingQuantity" formControlName="minimumShippingQuantity" class="validate">
+            <label for="name">Minimum Shipping Quantity</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="name" type="number" [(ngModel)]="editParams.maximumShippingQuantity" formControlName="maximumShippingQuantity" class="validate">
+            <label for="name">Maximum Shipping Quantity</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s3">
+            <input id="name" type="number" [(ngModel)]="editParams.price" formControlName="price" class="validate">
+            <label for="name">Price</label>
+          </div>
+          <div class="col s3"></div>
+          <div class="input-field col s6">
+            <select materialize="material_select"  formControlName="appointment">
+              <option value="" disabled selected>Appointment</option>
+              <option  [value]="true">Yes</option>
+              <option [value]="false">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods" (change)="onChange($event)">
+              <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="">{{shipping.name}}</option>
+            </select>
+            <label for="shippingMethods">Shipping Methods</label>
+          </div>
+        </div>
+        <div class="row">
+            <button type='submit'  [disabled]='!updateContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
+        </div>
+    </form>
   </div>
   <div class="modal-footer">
     <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>

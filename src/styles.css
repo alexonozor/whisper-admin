@@ -34,3 +34,11 @@ nav .brand-logo {
 ::-webkit-scrollbar-thumb:window-inactive {
   background: #fff;
 }
+
+input#email, input#password { color: black; }
+
+label.modal_label { margin-top: -30px; }
+
+label.modal_label.active {
+    margin-top: 0;
+}

@@ -17,9 +17,12 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   loading: boolean = false;
   submit: boolean = false;
   contraceptive: Object = {};
+  editParams: Object = {};
   assessments: Array<any> = [];
+  assessmentId : string;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createAssessmentForm: FormGroup;
+  updateAssessmentForm: FormGroup;
   id: string;
   private sub: any;
   showForm: boolean = false;
@@ -32,10 +35,19 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     public router: Router
   ) {
     this.createForm();
+    this.updateForm();
    }
 
   createForm() {
     this.createAssessmentForm = this.fb.group({
+      question: ['', Validators.required ],
+      contraceptive: [''],
+      published:['']
+    });
+  }
+
+  updateForm() {
+    this.updateAssessmentForm = this.fb.group({
       question: ['', Validators.required ],
       contraceptive: [''],
       published:['']
@@ -47,7 +59,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.sub = this.route.params.subscribe(params => {
        this.showForm = false;
        this.id = params['id'];
-       console.log('id ', this.id);
        this.getContraceptive(this.id);
        this.createAssessmentForm.patchValue({contraceptive: this.id});
     });
@@ -70,7 +81,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
         this.loading = false;
         this.contraceptive = res.contraceptive;
         this.assessments = res.assesments;
-        console.log('assessments ', res.assesments);
       } else {
         
       }
@@ -82,6 +92,18 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   toggleBUtton(event) {
     let content = this.showForm = !this.showForm;
     event.textContent = content?  "remove" : "add"
+  }
+
+  openEditModal(data) {
+    this.editParams = data;
+    this.modalActions.emit({ action:"modal", params:['open'] });
+    this.updateAssessmentForm.value['published'] = data.published;
+    this.updateAssessmentForm.value['question'] = data.question;
+    this.assessmentId = data._id;
+  }
+
+  closeEditModal() {
+    this.modalActions.emit({ action:"modal", params:['close'] });
   }
 
   createAssessment() {
@@ -102,6 +124,31 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
         this.getContraceptive(id);
         this.submit = false;
         this.createAssessmentForm.reset();
+      } else {
+
+      }
+    }, err => {
+      // caught error
+    })
+  }
+
+  updateAssessment() {
+    let id;
+    if(this.id == null ){
+      id = localStorage.getItem('contraceptive_id');
+    }else{
+      id = this.id;
+    }
+    this.submit = true;
+    this.updateAssessmentForm.value['published'] = true;
+    this.updateAssessmentForm.value['contraceptive'] = id;
+    this._contraceptiveService.updateAssessment(this.assessmentId, this.updateAssessmentForm.value)
+    .subscribe((res) => {
+      if (res.success) {
+        this.getContraceptive(id);
+        this.submit = false;
+        this.closeEditModal();
+        this.updateAssessmentForm.reset();
       } else {
 
       }

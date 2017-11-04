@@ -95,8 +95,10 @@ export class ContraceptiveComponent implements OnInit {
   openEditModal(data) {
     data.shippingMethods = ['delivery','pickup'];
     this.editParams = data;
+    console.log('edit data ', this.editParams);
     this.shipping_meths = data.shippingMethods;
     this.modalActions.emit({ action:"modal", params:['open'] });
+    console.log('update form validity',  this.updateContraceptiveForm.valid);
   }
 
   closeEditModal() {
@@ -135,6 +137,7 @@ export class ContraceptiveComponent implements OnInit {
 
   updateContraceptive(id) {
     this.submit = true;
+    console.log('contraceptive update form ', this.updateContraceptiveForm.value);
     this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
     .subscribe((res) => {
       if (res.success) {

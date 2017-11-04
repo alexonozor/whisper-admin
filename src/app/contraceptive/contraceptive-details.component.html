@@ -8,9 +8,29 @@
     <h5>{{contraceptive?.name}}</h5>
     <p>{{contraceptive?.description}}</p>
 
-    <ul class="collection with-header">
-        <a *ngFor="let assessment of assessments; let i = index" (click)="openAssessment(assessment._id)"  class="collection-item">{{assessment.question}}<a (click)="deleteAssessment(assessment._id, i)" class="secondary-content"><i class="material-icons">delete</i></a></a>
-    </ul>
+    <table class="bordered">
+        <thead>
+          <tr>
+            <th>Question</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let assessment of assessments; let i = index">
+                <td>
+                    <a (click)="openAssessment(assessment._id)"  class="collection-item">{{assessment.question}}</a>
+                </td>
+            
+                <td> 
+                    <a (click)="deleteAssessment(assessment._id, i)" class="secondary-content"><i class="material-icons">delete</i></a>
+                </td>
+                <td>
+                    <a href="#modal" class="button_icon modal-trigger" (click)="openEditModal(assessment)"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>      
+        </tbody>
+    </table>
 
     <a class="btn-floating btn-large waves-effect waves-light teal" (click)="toggleBUtton($event.target)"><i class="material-icons">add</i></a>
 
@@ -29,4 +49,27 @@
     </div>
 </div>
 
+<div id="modal" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <h4>Edit Contraceptive</h4>
+    <div class="progress" *ngIf="submited">
+        <div class="indeterminate"></div>
+    </div>
+
+    <form [formGroup]="updateAssessmentForm"  class="col s12" (ngSubmit)="updateAssessment()">
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="question" type="text" formControlName="question" [(ngModel)]="editParams.question" class="validate">
+                <label for="name" class="modal_label">Question</label>
+            </div>
+        </div>
+        <div class="row">
+            <button type='submit'  [disabled]='!updateAssessmentForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
+        </div>
+    </form>
+    <div class="modal-footer">
+        <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+    </div>
+  </div>
+</div>
 
