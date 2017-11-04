@@ -1,10 +1,10 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { ContraceptiveService } from '../../contraceptive.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../user.service';
 import { AuthenticationService } from '../../authentication.service';
-import { Route, Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router'
-
+import { Route, Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { MaterializeAction } from 'angular2-materialize';
 
 @Component({
   selector: 'app-contraceptive-assessment',
@@ -19,19 +19,32 @@ export class AssessmentComponent implements OnInit {
   assessmentAnswers:  Array<any> = [];
   contraceptive: Object = {};
   createAnswerForm: FormGroup;
-  id: string;
+  updateAnswerForm: FormGroup;
+  answerParams: Object = {};
+  assessmentId: string;
   private sub: any;
   showForm: boolean = false;
-
+  modalActions = new EventEmitter<string|MaterializeAction>();
+  answerId: string;
 
   constructor(
     public _contraceptiveService: ContraceptiveService,
     public fb: FormBuilder,
     public route: ActivatedRoute,
     public router: Router
-  ) {
+    ) {
     this.createForm();
-   }
+    this.updateForm();
+  }
+
+
+  openModal() {
+    this.modalActions.emit({ action:"modal", params:['open'] });
+  }
+
+  closeModal() {
+    this.modalActions.emit({ action:"modal", params:['close'] });
+  }
 
   createForm() {
     this.createAnswerForm = this.fb.group({
@@ -47,36 +60,27 @@ export class AssessmentComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.sub = this.route.params.subscribe(params => {
-      this.id = params['assessmentId'];
-      this.getAssessments();
-      this.getAssessmentAnswers(this.id);
+  updateForm() {
+    this.updateAnswerForm = this.fb.group({
+      name: ['', Validators.required ],
+      eligible: ['', Validators.required ],
+      nextQuestionNumber: ['' ],
+      hasRelativeQuestion: ['', Validators.required ],
+      hasWarning: ['', Validators.required ],
+      warningMessage: ['' ],
+      isEditedAnswer: ['', Validators.required ],
+      editedAnswer: ['' ],
+      editedAnswerLabel: ['' ]
     });
   }
 
-  updatePublished(event, answer) {
-    let checked = event.target.checked;
-    console.log('is checked ', checked)
-    console.log('event ', event);
-    console.log('answer ', answer);
-    let params = {
-      published: checked
-    }
-    this.updateAnswer(answer._id, params);
+  ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.assessmentId = params['assessmentId'];
+      this.getAssessments();
+      this.getAssessmentAnswers(this.assessmentId);
+    });
   }
-
-  updateAnswer(id, params) {
-    this._contraceptiveService.updateAnswer(id, params)
-    .subscribe((res) => {
-      if (res.success) {
-        console.log('answer has been updated');
-      }
-    }, err => {
-      // caught error
-    })
-  }
-
 
   toggleBUtton(event) {
     let content = this.showForm = !this.showForm;
@@ -121,7 +125,8 @@ export class AssessmentComponent implements OnInit {
       this._contraceptiveService.deleteAnswer(id)
       .subscribe((res) => {
         if (res.success) {
-
+          // Present toast
+          this.getAssessmentAnswers(this.assessmentId);
         }
       }, err => {
         // caught error
@@ -131,16 +136,54 @@ export class AssessmentComponent implements OnInit {
 
   createAnswer() {
     this.submit = true;
-    this._contraceptiveService.createAnswer(this.createAnswerForm.value, this.id)
+    this._contraceptiveService.createAnswer(this.createAnswerForm.value, this.assessmentId)
     .subscribe((res) => {
       if (res.success) {
         this.submit = false;
-        this.getAssessmentAnswers(this.id);
+        this.getAssessmentAnswers(this.assessmentId);
         this.createAnswerForm.reset();
       } else {
 
       }
     })
+  }
+
+  updatePublished(event, answer) {
+    let checked = event.target.checked;
+    let params = {
+      published: checked
+    }
+    // update published
+    this._contraceptiveService.updateAnswer(answer._id, params)
+    .subscribe((res) => {
+      if (res.success) {
+        this.submit = false;
+        this.getAssessmentAnswers(this.assessmentId);
+        this.updateAnswerForm.reset();
+      }
+    }, err => {
+      // caught error
+    })
+  }
+
+  updateModal(data) {
+    this.answerParams = data;
+    this.answerId = data._id;
+  }
+
+  updateAnswer() {
+    this._contraceptiveService.updateAnswer(this.answerId, this.updateAnswerForm.value)
+    .subscribe((res) => {
+      if (res.success) {
+        this.submit = false;
+        this.getAssessmentAnswers(this.assessmentId);
+        this.updateAnswerForm.reset();
+        this.closeModal();
+      }
+    }, err => {
+      // caught error
+    })
+
   }
 
 }

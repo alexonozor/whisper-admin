@@ -19,6 +19,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   contraceptive: Object = {};
   editParams: Object = {};
   assessments: Array<any> = [];
+  assessmentId : string;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createAssessmentForm: FormGroup;
   updateAssessmentForm: FormGroup;
@@ -49,8 +50,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.updateAssessmentForm = this.fb.group({
       question: ['', Validators.required ],
       contraceptive: [''],
-      published:[''],
-      id: ['']
+      published:['']
     });
   }
 
@@ -59,8 +59,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.sub = this.route.params.subscribe(params => {
        this.showForm = false;
        this.id = params['id'];
-       console.log('id ', this.id);
-       console.log('id ', this.id);
        this.getContraceptive(this.id);
        this.createAssessmentForm.patchValue({contraceptive: this.id});
     });
@@ -83,7 +81,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
         this.loading = false;
         this.contraceptive = res.contraceptive;
         this.assessments = res.assesments;
-        console.log('assessments ', res.assesments);
       } else {
         
       }
@@ -98,12 +95,11 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   }
 
   openEditModal(data) {
-    console.log('data ', data);
     this.editParams = data;
     this.modalActions.emit({ action:"modal", params:['open'] });
     this.updateAssessmentForm.value['published'] = data.published;
     this.updateAssessmentForm.value['question'] = data.question;
-    this.createAssessmentForm.value['id']=data._id;
+    this.assessmentId = data._id;
   }
 
   closeEditModal() {
@@ -138,7 +134,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
 
   updateAssessment() {
     let id;
-    let assessment_id = this.createAssessmentForm.value['id'];
     if(this.id == null ){
       id = localStorage.getItem('contraceptive_id');
     }else{
@@ -147,9 +142,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     this.submit = true;
     this.updateAssessmentForm.value['published'] = true;
     this.updateAssessmentForm.value['contraceptive'] = id;
-    console.log('id ', id);
-    console.log('update form value ', this.updateAssessmentForm.value);
-    this._contraceptiveService.updateAssessment(assessment_id, this.updateAssessmentForm.value)
+    this._contraceptiveService.updateAssessment(this.assessmentId, this.updateAssessmentForm.value)
     .subscribe((res) => {
       if (res.success) {
         this.getContraceptive(id);

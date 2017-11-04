@@ -8,18 +8,11 @@
     <h5>{{contraceptive?.name}}</h5>
     <p>{{contraceptive?.description}}</p>
 
-<!--     <ul class="collection with-header">
-        <a *ngFor="let assessment of assessments; let i = index" (click)="openAssessment(assessment._id)"  class="collection-item">{{assessment.question}}
-            <a (click)="deleteAssessment(assessment._id, i)" class="secondary-content"><i class="material-icons">delete</i></a>
-            <a class="button_icon modal-trigger" (click)="openEditModal(assessment)"><i class="material-icons">edit</i></a>
-        </a>
-    </ul> -->
-
     <table class="bordered">
         <thead>
           <tr>
             <th>Question</th>
-            <th>Action</th>
+            <th></th>
             <th></th>
           </tr>
         </thead>
@@ -33,7 +26,7 @@
                     <a (click)="deleteAssessment(assessment._id, i)" class="secondary-content"><i class="material-icons">delete</i></a>
                 </td>
                 <td>
-                    <a class="button_icon modal-trigger" (click)="openEditModal(assessment)"><i class="material-icons">edit</i></a>
+                    <a href="#modal" class="button_icon modal-trigger" (click)="openEditModal(assessment)"><i class="material-icons">edit</i></a>
                 </td>
             </tr>      
         </tbody>
