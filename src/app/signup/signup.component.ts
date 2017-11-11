@@ -29,22 +29,12 @@ export class SignupComponent implements OnInit {
   }
 
   createForm() {
-    this.signupForm = this.fb.group({
-      firstName: ['', Validators.required ],
-      lastName: ['', Validators.required ],
-      userName: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      contact: this.fb.group({
-        email: ['', Validators.required],
-        tel: ''
-      }),
-      location: this.fb.group({
-        city: ['', Validators.required],
-        address: ['', Validators.required],
-        lng: ['', Validators.required],
-        lag: ['', Validators.required]
-      })
+    this.signupForm  = this.fb.group({
+      'accountType': ['Member', Validators.required],
+      'firstName': ['', Validators.required],
+      'lastName': ['', Validators.required],
+      'password': ['', Validators.required],
+      'email': ['', Validators.required],
     });
   }
 
