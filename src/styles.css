@@ -6,15 +6,21 @@
   display: none !important;
 }
 
+h4.remark {
+    font-size: 1.2rem;
+    color: black;
+}
+
 nav .brand-logo {
   color: #fff;
   display: inline-block;
   font-size: 2.1rem;
   padding: 0;
   position: relative;
-  top: -64px;
   left: 45%;
 }
+
+button.logout { margin: 10px; }
 
 /* Let's get this party started */
 ::-webkit-scrollbar {

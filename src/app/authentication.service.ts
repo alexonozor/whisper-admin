@@ -15,17 +15,14 @@ import { tokenNotExpired, JwtHelper, AuthHttp } from 'angular2-jwt';
 */
 @Injectable()
 export class AuthenticationService {
-  
-   constructor(
+  private host = environment.baseUrl;
+  constructor(
      public http: Http, 
      public authHttp: AuthHttp,
      ) {
   }
 
-  private host = environment.baseUrl;
-
-
-  login(accountInfo: any) : Observable<any> {
+  login(accountInfo: any): Observable<any> {
 		return this.http.post(`${this.host}/login`, accountInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
@@ -33,7 +30,7 @@ export class AuthenticationService {
 
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   }
 
   tokenSubscription() {
@@ -62,6 +59,6 @@ export class AuthenticationService {
   }
 
   currentUser() {
-    return JSON.parse(localStorage.getItem('user'))
+    return JSON.parse(localStorage.getItem('user'));
   }
 }

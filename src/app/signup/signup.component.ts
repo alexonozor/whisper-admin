@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
-import { Route, Router } from '@angular/router'
-
+import { Route, Router } from '@angular/router';
+declare var Materialize: any;
 
 @Component({
   selector: 'app-signup',
@@ -14,6 +14,7 @@ export class SignupComponent implements OnInit {
 
   signupForm: FormGroup;
   submited: boolean = false;
+  isRegistering: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -29,41 +30,38 @@ export class SignupComponent implements OnInit {
   }
 
   createForm() {
-    this.signupForm = this.fb.group({
-      firstName: ['', Validators.required ],
-      lastName: ['', Validators.required ],
-      userName: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      contact: this.fb.group({
-        email: ['', Validators.required],
-        tel: ''
-      }),
-      location: this.fb.group({
-        city: ['', Validators.required],
-        address: ['', Validators.required],
-        lng: ['', Validators.required],
-        lag: ['', Validators.required]
-      })
+    this.signupForm  = this.fb.group({
+      'accountType': ['Member', Validators.required],
+      'firstName': ['', Validators.required],
+      'lastName': ['', Validators.required],
+      'password': ['', Validators.required],
+      'email': ['', Validators.required],
     });
   }
 
   createUser() {
     this.submited = true;
+    this.isRegistering = true;
     this._userService.save(this.signupForm.value)
     .subscribe((res) => {
       if (res.success) {
         this.submited = false;
+        this.isRegistering = false;
         this._authService.saveToken('token', res.token)
         this.router.navigate(['dashboard']);
+        Materialize.toast(res.message, 2000);
       } else {
-        
+        this.isRegistering = false;
+        this.submited = false;
+        Materialize.toast(res.message, 2000);
       }
     }, err => {
       // caught error
-    })
+      this.submited = false;
+    });
   }
 
-  
-
+  gotoSignin() {
+    this.router.navigate(['']);
+  }
 }
