@@ -24,9 +24,7 @@ export class DashboardComponent implements OnInit {
 
   isLoggedIn() {
     if ( JSON.parse(localStorage.getItem('user')) != null || undefined ) {
-      console.log('user ', JSON.stringify(this._authService.currentUser));
       this.loggedIn = true;
-      console.log('is user logged in? ', this.loggedIn);
     } else {
       this.loggedIn = false;
       this.router.navigate(['']);
