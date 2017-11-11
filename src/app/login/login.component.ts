@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Route, Router } from '@angular/router'
 import { AuthenticationService } from '../authentication.service';
 import { MaterializeAction } from 'angular2-materialize';
-
+declare var Materialize: any;
 
 @Component({
   selector: 'app-login',
@@ -47,12 +47,19 @@ export class LoginComponent implements OnInit {
         this._authService.saveToken('token', res.token);
         this._authService.saveUser(res.user);
         this.router.navigate(['dashboard']);
+        Materialize.toast(res.message, 2000);
       } else {
-
+        Materialize.toast(res.message, 2000);
+        this.isLogin = false;
+        this.submited = false;
       }
     }, err => {
       // caught error
-    })
+    });
+  }
+
+  gotoSignup() {
+    this.router.navigate(['signup']);
   }
 
 }

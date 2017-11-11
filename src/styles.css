@@ -6,6 +6,11 @@
   display: none !important;
 }
 
+h4.remark {
+    font-size: 1.2rem;
+    color: black;
+}
+
 nav .brand-logo {
   color: #fff;
   display: inline-block;

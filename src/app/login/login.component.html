@@ -20,6 +20,12 @@
             <div class="row">
                 <button type='submit'  [disabled]='(!loginForm.valid && !submited) || isLogin' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Login</button>
             </div>
+            <div class="row">
+                <h4 class="remark">Don't have an account?</h4>
+            </div>
+            <div class="row">
+                <button (click)="gotoSignup()" [disabled]=" isLogin " class='col s12 btn btn-large waves-effect pink accent-3'>Create Account</button>
+            </div>
         </form>
     </div>
 </div>
