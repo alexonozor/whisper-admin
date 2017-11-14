@@ -54,7 +54,7 @@ export class ContraceptiveComponent implements OnInit {
       maximumShippingQuantity: ['', Validators.required],
       appointment: ['', Validators.required],
       shippingMethods:  ['', Validators.required],
-      relatedContraceptives:  ['', Validators.required]
+      releatedContraceptives:  ['', Validators.required]
     });
   }
 
@@ -67,7 +67,7 @@ export class ContraceptiveComponent implements OnInit {
       maximumShippingQuantity: ['', Validators.required],
       appointment: ['', Validators.required],
       shippingMethods:  [],
-      relatedContraceptives: []
+      releatedContraceptives: []
     });
   }
 

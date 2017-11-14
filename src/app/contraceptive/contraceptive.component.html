@@ -142,7 +142,7 @@
               <label for="shippingMethods">Shipping Methods</label>
             </div>
             <div class="input-field col s6">
-              <select materialize="material_select" multiple formControlName="relatedContraceptives" [materializeSelectOptions]="contraceptives">
+              <select materialize="material_select" multiple formControlName="releatedContraceptives" [materializeSelectOptions]="contraceptives">
                 <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id">{{contraceptive?.name}}</option>
               </select>
               <label for="relatedContraceptives">Related Contraceptives</label>
@@ -210,7 +210,7 @@
             <label for="shippingMethods">Shipping Methods</label>
           </div>
           <div class="input-field col s6">
-            <select materialize="material_select" multiple formControlName="relatedContraceptives" [materializeSelectOptions]="contraceptives">
+            <select materialize="material_select" multiple formControlName="releatedContraceptives" [materializeSelectOptions]="contraceptives">
               <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id" [attr.selected]="contraceptive._id == contraceptive._id ? true : null">{{contraceptive?.name}}</option>
             </select>
             <label for="relatedContraceptives">Related Contraceptives</label>
