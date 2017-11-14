@@ -23,7 +23,7 @@
         <tbody>
           <tr *ngFor="let contraceptive of contraceptives; let i = index">
             <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]" (click)="saveContraceptiveId(contraceptive?._id)"> {{contraceptive?.name}}</a></td>
-            <td>{{contraceptive?.description}}</td>
+            <td class="truncate">{{contraceptive?.description}}</td>
             <td>
               <div class="switch">
                 <label>
@@ -106,7 +106,7 @@
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <textarea name="description" id="description" formControlName="description"  ></textarea>
+              <textarea name="description" id="description" formControlName="description" class="desc_textarea"></textarea>
               <label for="description">Description</label>
             </div>
           </div>
@@ -141,6 +141,12 @@
               </select>
               <label for="shippingMethods">Shipping Methods</label>
             </div>
+            <div class="input-field col s6">
+              <select materialize="material_select" multiple formControlName="releatedContraceptives" [materializeSelectOptions]="contraceptives">
+                <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id">{{contraceptive?.name}}</option>
+              </select>
+              <label for="relatedContraceptives">Related Contraceptives</label>
+            </div>
           </div>
           <div class="row">
             <button type='submit'  [disabled]='!createContraceptiveForm.valid && !submited' name='btn_login' class='col s12 btn btn-large waves-effect indigo'>Submit</button>
@@ -168,7 +174,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description"  ></textarea>
+                <textarea name="description" [(ngModel)]="editParams.description" id="description" formControlName="description" class="desc_textarea"></textarea>
                 <label for="description">Description</label>
             </div>
         </div>
@@ -191,7 +197,7 @@
           <div class="input-field col s6">
             <select materialize="material_select"  formControlName="appointment">
               <option value="" disabled selected>Appointment</option>
-              <option  [value]="true">Yes</option>
+              <option [value]="true">Yes</option>
               <option [value]="false">No</option>
             </select>
           </div>
@@ -199,9 +205,15 @@
         <div class="row">
           <div class="input-field col s6">
             <select materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods" (change)="onChange($event)">
-              <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="">{{shipping.name}}</option>
+              <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="shipping._id == shipping._id ? true : null">{{shipping.name}}</option>
             </select>
             <label for="shippingMethods">Shipping Methods</label>
+          </div>
+          <div class="input-field col s6">
+            <select materialize="material_select" multiple formControlName="releatedContraceptives" [materializeSelectOptions]="contraceptives">
+              <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id" [attr.selected]="contraceptive._id == contraceptive._id ? true : null">{{contraceptive?.name}}</option>
+            </select>
+            <label for="relatedContraceptives">Related Contraceptives</label>
           </div>
         </div>
         <div class="row">

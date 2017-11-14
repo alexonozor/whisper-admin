@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit {
       if (res.success) {
         this.submited = false;
         this.isRegistering = false;
-        this._authService.saveToken('token', res.token)
+        this._authService.saveToken('token', res.token);
         this.router.navigate(['dashboard']);
         Materialize.toast(res.message, 2000);
       } else {
