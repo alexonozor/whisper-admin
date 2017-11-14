@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { AssessmentService } from '../assessment.service';
 import { ContraceptiveService } from '../contraceptive.service';
 import { MaterializeAction } from 'angular2-materialize';
-import { FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormArrayName, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
 import { Route, Router } from '@angular/router';
@@ -113,6 +113,7 @@ export class ContraceptiveComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
+        console.log('get contraceptive response ', res);
         this.contraceptives = res.contraceptives;
         console.log('contraceptives ', this.contraceptives);
       } else {
@@ -140,7 +141,6 @@ export class ContraceptiveComponent implements OnInit {
 
   updateContraceptive(id) {
     this.submit = true;
-    console.log('contraceptive update form ', this.updateContraceptiveForm.value);
     this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
     .subscribe((res) => {
       if (res.success) {
@@ -151,7 +151,7 @@ export class ContraceptiveComponent implements OnInit {
       } else {
 
       }
-    })
+    });
   }
 
   getAssessmentResponses() {
