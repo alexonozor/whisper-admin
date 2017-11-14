@@ -22,49 +22,49 @@ export class ContraceptiveService {
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  update(contraceptiveInfo: any, id) : Observable<any> {
+  update(contraceptiveInfo: any, id): Observable<any> {
 		return this.authHttp.put(`${this.host}/contraceptive/${id}`, contraceptiveInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  updateContraceptivePublished(id:string, params) : Observable<any> {
+  updateContraceptivePublished(id:string, params): Observable<any> {
     return this.authHttp.put(`${this.host}/contraceptive/${id}`, params)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  getContraceptives() : Observable<any> {
+  getContraceptives(): Observable<any> {
 		return this.authHttp.get(`${this.host}/admin-contraceptives`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  deleteContraceptive(id) : Observable<any> {
+  deleteContraceptive(id): Observable<any> {
 		return this.authHttp.delete(`${this.host}/contraceptive/${id}`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  getDetails(id: string) : Observable<any> {
+  getDetails(id: string): Observable<any> {
 		return this.authHttp.get(`${this.host}/contraceptive/${id}/assessments`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  getAssessments() : Observable<any> {
+  getAssessments(): Observable<any> {
 		return this.authHttp.get(`${this.host}/assessments`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  deleteAssessment(id) : Observable<any> {
+  deleteAssessment(id): Observable<any> {
 		return this.authHttp.delete(`${this.host}/assessment/${id}`)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  saveAssessment(assessmentInfo: any) : Observable<any> {
+  saveAssessment(assessmentInfo: any): Observable<any> {
 		return this.authHttp.post(`${this.host}/assessments`, assessmentInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));
