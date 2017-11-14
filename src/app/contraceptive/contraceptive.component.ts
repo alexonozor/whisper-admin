@@ -24,7 +24,7 @@ export class ContraceptiveComponent implements OnInit {
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
   shippingMethods:  Array<any>;
-  shipping_meths : Array<any>;
+  shipping_meths: Array<any>;
   startConversationOrOpen: String;
   assessmentOwner: String;
   assessmentType: String;
@@ -53,14 +53,28 @@ export class ContraceptiveComponent implements OnInit {
       minimumShippingQuantity: ['', Validators.required],
       maximumShippingQuantity: ['', Validators.required],
       appointment: ['', Validators.required],
-      shippingMethods:  ['', Validators.required]
+      shippingMethods:  ['', Validators.required],
+      relatedContraceptives:  ['', Validators.required]
+    });
+  }
+
+  updateForm() {
+    this.updateContraceptiveForm = this.fb.group({
+      name: ['', Validators.required ],
+      description: ['', Validators.required ],
+      price: ['', Validators.required],
+      minimumShippingQuantity: ['', Validators.required],
+      maximumShippingQuantity: ['', Validators.required],
+      appointment: ['', Validators.required],
+      shippingMethods:  [],
+      relatedContraceptives: []
     });
   }
 
   get shippingMethod(): FormArray { return this.createContraceptiveForm.get('shippingMethods') as FormArray; }
 
   saveContraceptiveId(id) {
-    this._contraceptiveService.saveContraceptiveIdToLocalStorage('contraceptive_id',id);
+    this._contraceptiveService.saveContraceptiveIdToLocalStorage('contraceptive_id', id);
   }
 
   addShippingMethod() {
@@ -72,37 +86,25 @@ export class ContraceptiveComponent implements OnInit {
     this.router.navigate(['conversation']);
   }
 
-  updateForm() {
-    this.updateContraceptiveForm = this.fb.group({
-      name: ['', Validators.required ],
-      description: ['', Validators.required ],
-      price: ['', Validators.required],
-      minimumShippingQuantity: ['', Validators.required],
-      maximumShippingQuantity: ['', Validators.required],
-      appointment: ['', Validators.required],
-      shippingMethods:  []
-    });
-  }
-
   openModal() {
-    this.modalActions.emit({ action:"modal", params:['open'] });
+    this.modalActions.emit({ action: 'modal', params: ['open'] });
   }
 
   closeModal() {
-    this.modalActions.emit({ action:"modal", params:['close'] });
+    this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
   openEditModal(data) {
-    data.shippingMethods = ['delivery','pickup'];
+    data.shippingMethods = ['delivery', 'pickup'];
     this.editParams = data;
     console.log('edit data ', this.editParams);
     this.shipping_meths = data.shippingMethods;
-    this.modalActions.emit({ action:"modal", params:['open'] });
+    this.modalActions.emit({ action: 'modal', params: ['open'] });
     console.log('update form validity',  this.updateContraceptiveForm.valid);
   }
 
   closeEditModal() {
-    this.modalActions.emit({ action:"modal", params:['close'] });
+    this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
   getContraceptives() {
@@ -111,13 +113,14 @@ export class ContraceptiveComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.contraceptives = res.contraceptives
+        this.contraceptives = res.contraceptives;
+        console.log('contraceptives ', this.contraceptives);
       } else {
 
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
   createContraceptive() {
