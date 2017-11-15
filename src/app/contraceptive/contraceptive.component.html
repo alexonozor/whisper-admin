@@ -211,7 +211,7 @@
           </div>
           <div class="input-field col s6">
             <select multiple materialize="material_select" formControlName="releatedContraceptives" [materializeSelectOptions]="matched_contraceptives" (change)="onChange($event.target)">
-              <option *ngFor="let contraceptive of matched_contraceptives" [value]="contraceptive._id" (selected)="contraceptive.is_related ? true : null">{{contraceptive.name}}</option>
+              <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id" [attr.selected]="contraceptive.is_related == true ? true : null">{{contraceptive.name}}</option>
             </select>
             <label for="relatedContraceptives">Related Contraceptives</label>
           </div>

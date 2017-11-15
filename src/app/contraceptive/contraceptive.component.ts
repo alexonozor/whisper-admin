@@ -115,28 +115,24 @@ export class ContraceptiveComponent implements OnInit {
   openEditModal(data) {
     this.editParams = data;
     this.editedRelatedContraceptives = data.releatedContraceptives;
-    console.log('edit params ', this.editedRelatedContraceptives);
     this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
     this.shipping_meths = data.shippingMethods;
     this.modalActions.emit({ action: 'modal', params: ['open'] });
   }
 
+  // matches related contraceptives
   matchRelatedContraceptives(related_contraceptive, contraceptive) {
     related_contraceptive.forEach(function(related, index) {
-      // console.log('related ', related);
       contraceptive.forEach(function(allContraceptives, count) {
         if (related._id === allContraceptives._id) {
           allContraceptives['is_related'] = true;
-          console.log('match ', allContraceptives);
         } else {
           if (!allContraceptives['is_related']) {
             allContraceptives['is_related'] = false;
-            console.log('mismatch', allContraceptives);
           }
         }
       });
     });
-    console.log('after matching, here we are ', contraceptive);
     this.matched_contraceptives = contraceptive;
   }
 
