@@ -18,11 +18,14 @@ export class ContraceptiveComponent implements OnInit {
   submit: boolean = false;
   start_convo: boolean = false;
   contraceptives: Array<any>;
+  matched_contraceptives: Array<any>;
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
+  relatedContraceptives: Object = {};
+  editedRelatedContraceptives: Array<any>;
   shippingMethods:  Array<any>;
   shipping_meths: Array<any>;
   startConversationOrOpen: String;
@@ -71,6 +74,21 @@ export class ContraceptiveComponent implements OnInit {
     });
   }
 
+  getContraceptives() {
+    this.loading = true;
+    this._contraceptiveService.getContraceptives()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.contraceptives = res.contraceptives;
+      } else {
+
+      }
+    }, err => {
+      // caught error
+    });
+  }
+
   get shippingMethod(): FormArray { return this.createContraceptiveForm.get('shippingMethods') as FormArray; }
 
   saveContraceptiveId(id) {
@@ -95,32 +113,41 @@ export class ContraceptiveComponent implements OnInit {
   }
 
   openEditModal(data) {
-    data.shippingMethods = ['delivery', 'pickup'];
     this.editParams = data;
-    console.log('edit data ', this.editParams);
+    this.editedRelatedContraceptives = data.releatedContraceptives;
+    console.log('edit params ', this.editedRelatedContraceptives);
+    this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
     this.shipping_meths = data.shippingMethods;
     this.modalActions.emit({ action: 'modal', params: ['open'] });
-    console.log('update form validity',  this.updateContraceptiveForm.valid);
+  }
+
+  matchRelatedContraceptives(related_contraceptive, contraceptive) {
+    related_contraceptive.forEach(function(related, index) {
+      // console.log('related ', related);
+      contraceptive.forEach(function(allContraceptives, count) {
+        if (related._id === allContraceptives._id) {
+          allContraceptives['is_related'] = true;
+          console.log('match ', allContraceptives);
+        } else {
+          if (!allContraceptives['is_related']) {
+            allContraceptives['is_related'] = false;
+            console.log('mismatch', allContraceptives);
+          }
+        }
+      });
+    });
+    console.log('after matching, here we are ', contraceptive);
+    this.matched_contraceptives = contraceptive;
   }
 
   closeEditModal() {
     this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
-  getContraceptives() {
-    this.loading = true;
-    this._contraceptiveService.getContraceptives()
-    .subscribe((res) => {
-      if (res.success) {
-        this.loading = false;
-        console.log('get contraceptive response ', res);
-        this.contraceptives = res.contraceptives;
-        console.log('contraceptives ', this.contraceptives);
-      } else {
-
-      }
-    }, err => {
-      // caught error
+  getRelatedContraceptives(contraceptives) {
+    contraceptives.forEach(function(val, index) {
+      // console.log('value ', val.releatedContraceptives);
+      this.relatedContraceptives =  val.releatedContraceptives;
     });
   }
 
@@ -136,7 +163,7 @@ export class ContraceptiveComponent implements OnInit {
       } else {
 
       }
-    })
+    });
   }
 
   updateContraceptive(id) {
@@ -160,14 +187,14 @@ export class ContraceptiveComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.responses = res.responses
+        this.responses = res.responses;
         this.checkIfConvoExist(this.responses);
       } else {
 
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
   checkIfConvoExist(response) {
@@ -189,11 +216,11 @@ export class ContraceptiveComponent implements OnInit {
 
   startConversation(response) {
     let params = { 
-      'startedBy': response.user, 
-       'assessmentResponse': response._id,  
-       'users': [ response.user ], 
+      'startedBy': response.user,
+       'assessmentResponse': response._id,
+       'users': [ response.user ],
        'messages': [],
-       'createdAt': Date.now() 
+       'createdAt': Date.now()
     };
 
     this._assessmentService.startAssessmentConversation(params)
@@ -203,11 +230,10 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       //toaster is fyn for err don't for get to dismiss loader
-    })
+    });
   }
 
   openConversation(response) {
-    console.log('converstation ', response);
     this.assessmentOwner = response.user.firstName + ' ' + response.user.lastName;
     this.assessmentType = response.contraceptive.name;
     this.router.navigate(['conversation', { conversationId: response.conversation, user: this.assessmentOwner,
@@ -222,7 +248,7 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       // caught errors
-    })
+    });
   }
 
   deleteContracpetive(id, index) {
@@ -238,7 +264,7 @@ export class ContraceptiveComponent implements OnInit {
         }
       }, err => {
         // caught errors
-      })
+      });
     }
   }
 
@@ -254,7 +280,7 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, (err) => {
       console.log('error while getting shipping methods ', err);
-    })
+    });
   }
 
   updateParams(parameter: any, contraceptive) {
@@ -263,9 +289,6 @@ export class ContraceptiveComponent implements OnInit {
 
   updatePublished(event, contraceptive) {
     let checked = event.target.checked;
-    console.log('is checked ', checked)
-    console.log('event ', event);
-    console.log('contraceptive ', contraceptive);
     let params = {
       published: checked
     }
@@ -280,7 +303,7 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
 
