@@ -115,25 +115,30 @@ export class ContraceptiveComponent implements OnInit {
   openEditModal(data) {
     this.editParams = data;
     this.editedRelatedContraceptives = data.releatedContraceptives;
-    this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
+    console.log('related Contraceptive ', this.editedRelatedContraceptives);
+    const parsedContraceptive = this.contraceptives;
+    this.matchRelatedContraceptives(data.releatedContraceptives, parsedContraceptive);
+    console.log('contraceptives after matching algorithm ', this.contraceptives);
     this.shipping_meths = data.shippingMethods;
     this.modalActions.emit({ action: 'modal', params: ['open'] });
   }
 
   // matches related contraceptives
   matchRelatedContraceptives(related_contraceptive, contraceptive) {
-    related_contraceptive.forEach(function(related, index) {
-      contraceptive.forEach(function(allContraceptives, count) {
+    contraceptive.forEach(function(allContraceptives, count) {
+      allContraceptives['is_related'] = false;
+      related_contraceptive.forEach(function(related, index) {
         if (related._id === allContraceptives._id) {
           allContraceptives['is_related'] = true;
-        } else {
-          if (!allContraceptives['is_related']) {
-            allContraceptives['is_related'] = false;
-          }
         }
       });
     });
-    this.matched_contraceptives = contraceptive;
+    // save to localStorage for persistence
+    this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
+
+    // get related_contraceptive for binding
+    const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
+    this.matched_contraceptives = local;
   }
 
   closeEditModal() {

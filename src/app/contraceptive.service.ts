@@ -84,6 +84,15 @@ export class ContraceptiveService {
     return (localStorage.getItem(token));
   }
 
+  saveRelatedContraceptiveToLocalStorage( tokenName: string, related_contraceptive) {
+    let related = JSON.stringify(related_contraceptive);
+    localStorage.setItem(tokenName, related);
+  }
+
+  getRelatedContraceptiveToLocalStorage( tokenName: string) {
+    return JSON.parse(localStorage.getItem(tokenName) );
+  }
+
   createAnswer(assessmentInfo: string, id: string) : Observable<any> {
 		return this.authHttp.post(`${this.host}/assessment/${id}/answers`, assessmentInfo)
 			.map((res:Response) => res.json())
