@@ -19,13 +19,13 @@ export class ContraceptiveComponent implements OnInit {
   start_convo: boolean = false;
   contraceptives: Array<any>;
   matched_contraceptives: Array<any>;
+  all_contraceptive: Array<any>;
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
   relatedContraceptives: Object = {};
-  editedRelatedContraceptives: Array<any>;
   shippingMethods:  Array<any>;
   shipping_meths: Array<any>;
   startConversationOrOpen: String;
@@ -114,35 +114,75 @@ export class ContraceptiveComponent implements OnInit {
 
   openEditModal(data) {
     this.editParams = data;
-    this.editedRelatedContraceptives = data.releatedContraceptives;
-    console.log('related Contraceptive ', this.editedRelatedContraceptives);
-    const parsedContraceptive = this.contraceptives;
-    this.matchRelatedContraceptives(data.releatedContraceptives, parsedContraceptive);
-    console.log('contraceptives after matching algorithm ', this.contraceptives);
-    this.shipping_meths = data.shippingMethods;
+    console.log('edit params ', this.editParams);
+    this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
+    this.matchShippingMethods(data.shippingMethods, this.contraceptives);
     this.modalActions.emit({ action: 'modal', params: ['open'] });
   }
 
   // matches related contraceptives
   matchRelatedContraceptives(related_contraceptive, contraceptive) {
-    contraceptive.forEach(function(allContraceptives, count) {
-      allContraceptives['is_related'] = false;
-      related_contraceptive.forEach(function(related, index) {
-        if (related._id === allContraceptives._id) {
-          allContraceptives['is_related'] = true;
-        }
+    console.log('contraceptive ', contraceptive);
+    console.log('related contraceptive ', related_contraceptive);
+    this.all_contraceptive = contraceptive;
+    if ( related_contraceptive != null) {
+      contraceptive.forEach(function(allContraceptives, count) {
+        allContraceptives['is_related'] = false;
+        related_contraceptive.forEach(function(related, index) {
+          if (related._id === allContraceptives._id) {
+            allContraceptives['is_related'] = true;
+          }
+        });
       });
-    });
-    // save to localStorage for persistence
-    this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
+      // save to localStorage for persistence
+      this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
 
-    // get related_contraceptive for binding
-    const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
-    this.matched_contraceptives = local;
+      // get related_contraceptive for binding
+      const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
+      this.matched_contraceptives = local;
+    } else {
+      this.matched_contraceptives = [];
+    }
   }
 
   closeEditModal() {
     this.modalActions.emit({ action: 'modal', params: ['close'] });
+  }
+
+  getShippingMethods() {
+    this.loading = true;
+    this._contraceptiveService.getShippingMethods()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.shippingMethods = res.shippingMethod;
+
+      } else {
+        this.loading = false;
+      }
+    }, (err) => {
+      console.log('error while getting shipping methods ', err);
+    });
+  }
+
+  // matches related contraceptives
+  matchShippingMethods(shipping_method, contraceptives) {
+    console.log('edit params shipping method ', shipping_method);
+    console.log('all shipping methods ', contraceptives);
+    // contraceptive.forEach(function(allContraceptives, count) {
+    //   allContraceptives['is_related'] = false;
+    //   related_contraceptive.forEach(function(related, index) {
+    //     if (related._id === allContraceptives._id) {
+    //       allContraceptives['is_related'] = true;
+    //     }
+    //   });
+    // });
+    // // save to localStorage for persistence
+    // this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
+
+    // // get related_contraceptive for binding
+    // const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
+    // this.matched_contraceptives = local;
   }
 
   getRelatedContraceptives(contraceptives) {
@@ -169,6 +209,7 @@ export class ContraceptiveComponent implements OnInit {
 
   updateContraceptive(id) {
     this.submit = true;
+    console.log('form value ', this.updateContraceptiveForm);
     this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
     .subscribe((res) => {
       if (res.success) {
@@ -268,22 +309,7 @@ export class ContraceptiveComponent implements OnInit {
       });
     }
   }
-
-  getShippingMethods() {
-    this.loading = true;
-    this._contraceptiveService.getShippingMethods()
-    .subscribe((res) => {
-      if (res.success) {
-        this.loading = false;
-        this.shippingMethods = res.shippingMethod;
-      } else {
-        this.loading = false;
-      }
-    }, (err) => {
-      console.log('error while getting shipping methods ', err);
-    });
-  }
-
+  
   updateParams(parameter: any, contraceptive) {
     contraceptive.published = parameter.target.checked;
   }

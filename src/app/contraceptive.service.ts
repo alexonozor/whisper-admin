@@ -23,6 +23,7 @@ export class ContraceptiveService {
   }
 
   update(contraceptiveInfo: any, id): Observable<any> {
+    console.log('payload ', contraceptiveInfo);
 		return this.authHttp.put(`${this.host}/contraceptive/${id}`, contraceptiveInfo)
 			.map((res:Response) => res.json())
 			.catch((error:any) => Observable.throw(error.json().error || 'server error'));

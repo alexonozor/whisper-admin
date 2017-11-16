@@ -204,14 +204,14 @@
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <select multiple materialize="material_select" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods" (change)="onChange($event.target)">
-              <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [attr.selected]="shipping._id == shipping._id ? true : null">{{shipping.name}}</option>
+            <select multiple materialize="material_select" [(ngModel)]="editParams.shippingMethods" multiple formControlName="shippingMethods" [materializeSelectOptions]="shippingMethods">
+              <option *ngFor="let shipping of shippingMethods" [value]="shipping._id" [selected]="shipping._id == shipping._id ? true : '' ">{{shipping.name}}</option>
             </select>
             <label for="shippingMethods">Shipping Methods</label>
           </div>
           <div class="input-field col s6">
-            <select multiple materialize="material_select" formControlName="releatedContraceptives" [materializeSelectOptions]="matched_contraceptives" (change)="onChange($event.target)">
-              <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id" [attr.selected]="contraceptive.is_related == true ? true : null">{{contraceptive.name}}</option>
+            <select multiple materialize="material_select" [(ngModel)]="editParams.releatedContraceptives" formControlName="releatedContraceptives" [materializeSelectOptions]="matched_contraceptives">
+              <option *ngFor="let contraceptive of contraceptives" [value]="contraceptive._id" [selected]="contraceptive.is_related == true ? true : '' ">{{contraceptive.name}}</option>
             </select>
             <label for="relatedContraceptives">Related Contraceptives</label>
           </div>
