@@ -18,12 +18,16 @@ export class ContraceptiveComponent implements OnInit {
   submit: boolean = false;
   start_convo: boolean = false;
   contraceptives: Array<any>;
+  matched_contraceptives: Array<any>;
+  matched_shipping: Array<any>;
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
   updateContraceptiveForm: FormGroup;
   editParams: Object = {};
+  relatedContraceptives: Object = {};
   shippingMethods:  Array<any>;
+  matched_methods: Array<any>;
   shipping_meths: Array<any>;
   startConversationOrOpen: String;
   assessmentOwner: String;
@@ -71,6 +75,21 @@ export class ContraceptiveComponent implements OnInit {
     });
   }
 
+  getContraceptives() {
+    this.loading = true;
+    this._contraceptiveService.getContraceptives()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.contraceptives = res.contraceptives;
+      } else {
+
+      }
+    }, err => {
+      // caught error
+    });
+  }
+
   get shippingMethod(): FormArray { return this.createContraceptiveForm.get('shippingMethods') as FormArray; }
 
   saveContraceptiveId(id) {
@@ -94,33 +113,88 @@ export class ContraceptiveComponent implements OnInit {
     this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
-  openEditModal(data) {
-    data.shippingMethods = ['delivery', 'pickup'];
-    this.editParams = data;
-    console.log('edit data ', this.editParams);
-    this.shipping_meths = data.shippingMethods;
-    this.modalActions.emit({ action: 'modal', params: ['open'] });
-    console.log('update form validity',  this.updateContraceptiveForm.valid);
+  getShippingMethods() {
+    this.loading = true;
+    this._contraceptiveService.getShippingMethods()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.shippingMethods = res.shippingMethod;
+      } else {
+        this.loading = false;
+      }
+    }, (err) => {
+      console.log('error while getting shipping methods ', err);
+    });
   }
+
+  openEditModal(data) {
+    this.editParams = data;
+    this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
+    this.matchShippingMethods(data.shippingMethods, this.contraceptives);
+    this.modalActions.emit({ action: 'modal', params: ['open'] });
+  }
+
+  // matches related contraceptives
+  matchRelatedContraceptives(related_contraceptive, contraceptive) {
+    if ( related_contraceptive != null) {
+      contraceptive.forEach(function(allContraceptives, count) {
+        allContraceptives['is_related'] = false;
+        related_contraceptive.forEach(function(related, index) {
+          if (related._id === allContraceptives._id) {
+            allContraceptives['is_related'] = true;
+          }
+        });
+      });
+      // save to localStorage for persistence
+      this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
+
+      // get related_contraceptive for binding
+      const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
+      this.matched_contraceptives = local;
+    } else {
+      this.matched_contraceptives = [];
+    }
+  }
+
+  // matches related contraceptives
+  matchShippingMethods(shipping_method, contraceptives) {
+    // console.log('edit params shipping method ', shipping_method);
+    const getShippingMethods = this.shippingMethods;
+    // console.log('all shipping methods available ', getShippingMethods);
+
+    if (shipping_method != null) {
+      this.shippingMethods.forEach(function(allShipping, index){
+        allShipping['has_shipping'] = false;
+        shipping_method.forEach(function(shipping, count) {
+          // this initializes has_shipping field in all the shipping method objects
+            if (allShipping._id === shipping._id) {
+              shipping['has_shipping'] = true;
+              allShipping['has_shipping'] = true;
+            }
+        });
+      });
+      // save to localStorage for persistence
+      this._contraceptiveService.saveRelatedShippingMethods('related_shipping', this.shippingMethods);
+
+      // get related_contraceptive for binding
+      const local = this._contraceptiveService.getRelatedShippingMethods('related_shipping');
+      this.matched_shipping = local;
+      this.matched_methods = this.matched_shipping;
+    } else {
+      this.matched_shipping = [];
+    }
+  }
+
 
   closeEditModal() {
     this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
-  getContraceptives() {
-    this.loading = true;
-    this._contraceptiveService.getContraceptives()
-    .subscribe((res) => {
-      if (res.success) {
-        this.loading = false;
-        console.log('get contraceptive response ', res);
-        this.contraceptives = res.contraceptives;
-        console.log('contraceptives ', this.contraceptives);
-      } else {
-
-      }
-    }, err => {
-      // caught error
+  getRelatedContraceptives(contraceptives) {
+    contraceptives.forEach(function(val, index) {
+      // console.log('value ', val.releatedContraceptives);
+      this.relatedContraceptives =  val.releatedContraceptives;
     });
   }
 
@@ -136,7 +210,7 @@ export class ContraceptiveComponent implements OnInit {
       } else {
 
       }
-    })
+    });
   }
 
   updateContraceptive(id) {
@@ -160,14 +234,14 @@ export class ContraceptiveComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.responses = res.responses
+        this.responses = res.responses;
         this.checkIfConvoExist(this.responses);
       } else {
 
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
   checkIfConvoExist(response) {
@@ -189,11 +263,11 @@ export class ContraceptiveComponent implements OnInit {
 
   startConversation(response) {
     let params = { 
-      'startedBy': response.user, 
-       'assessmentResponse': response._id,  
-       'users': [ response.user ], 
+      'startedBy': response.user,
+       'assessmentResponse': response._id,
+       'users': [ response.user ],
        'messages': [],
-       'createdAt': Date.now() 
+       'createdAt': Date.now()
     };
 
     this._assessmentService.startAssessmentConversation(params)
@@ -203,11 +277,10 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       //toaster is fyn for err don't for get to dismiss loader
-    })
+    });
   }
 
   openConversation(response) {
-    console.log('converstation ', response);
     this.assessmentOwner = response.user.firstName + ' ' + response.user.lastName;
     this.assessmentType = response.contraceptive.name;
     this.router.navigate(['conversation', { conversationId: response.conversation, user: this.assessmentOwner,
@@ -222,7 +295,7 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       // caught errors
-    })
+    });
   }
 
   deleteContracpetive(id, index) {
@@ -238,34 +311,16 @@ export class ContraceptiveComponent implements OnInit {
         }
       }, err => {
         // caught errors
-      })
+      });
     }
   }
-
-  getShippingMethods() {
-    this.loading = true;
-    this._contraceptiveService.getShippingMethods()
-    .subscribe((res) => {
-      if (res.success) {
-        this.loading = false;
-        this.shippingMethods = res.shippingMethod;
-      } else {
-        this.loading = false;
-      }
-    }, (err) => {
-      console.log('error while getting shipping methods ', err);
-    })
-  }
-
+  
   updateParams(parameter: any, contraceptive) {
     contraceptive.published = parameter.target.checked;
   }
 
   updatePublished(event, contraceptive) {
     let checked = event.target.checked;
-    console.log('is checked ', checked)
-    console.log('event ', event);
-    console.log('contraceptive ', contraceptive);
     let params = {
       published: checked
     }
@@ -280,7 +335,7 @@ export class ContraceptiveComponent implements OnInit {
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
 

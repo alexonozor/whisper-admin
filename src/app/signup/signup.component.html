@@ -32,12 +32,6 @@
             <div class="row">
                 <button type='submit' [disabled]='(!signupForm.valid && !submited) || isRegistering'  class='col s12 btn btn-large waves-effect indigo'>Register</button>
             </div>
-            <div class="row">
-                <h4 class="remark">Have an account?</h4>
-            </div>
-            <div class="row">
-                <button (click)="gotoSignin()" [disabled]="submited" class='col s12 btn btn-large waves-effect pink accent-3'>Sign in</button>
-            </div>
         </form>
     </div>
 </div>
