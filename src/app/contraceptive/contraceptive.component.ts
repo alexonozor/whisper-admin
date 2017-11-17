@@ -19,7 +19,7 @@ export class ContraceptiveComponent implements OnInit {
   start_convo: boolean = false;
   contraceptives: Array<any>;
   matched_contraceptives: Array<any>;
-  all_contraceptive: Array<any>;
+  matched_shipping: Array<any>;
   responses: Array<any>;
   modalActions = new EventEmitter<string|MaterializeAction>();
   createContraceptiveForm: FormGroup;
@@ -27,6 +27,7 @@ export class ContraceptiveComponent implements OnInit {
   editParams: Object = {};
   relatedContraceptives: Object = {};
   shippingMethods:  Array<any>;
+  matched_methods: Array<any>;
   shipping_meths: Array<any>;
   startConversationOrOpen: String;
   assessmentOwner: String;
@@ -112,9 +113,23 @@ export class ContraceptiveComponent implements OnInit {
     this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
+  getShippingMethods() {
+    this.loading = true;
+    this._contraceptiveService.getShippingMethods()
+    .subscribe((res) => {
+      if (res.success) {
+        this.loading = false;
+        this.shippingMethods = res.shippingMethod;
+      } else {
+        this.loading = false;
+      }
+    }, (err) => {
+      console.log('error while getting shipping methods ', err);
+    });
+  }
+
   openEditModal(data) {
     this.editParams = data;
-    console.log('edit params ', this.editParams);
     this.matchRelatedContraceptives(data.releatedContraceptives, this.contraceptives);
     this.matchShippingMethods(data.shippingMethods, this.contraceptives);
     this.modalActions.emit({ action: 'modal', params: ['open'] });
@@ -122,9 +137,6 @@ export class ContraceptiveComponent implements OnInit {
 
   // matches related contraceptives
   matchRelatedContraceptives(related_contraceptive, contraceptive) {
-    console.log('contraceptive ', contraceptive);
-    console.log('related contraceptive ', related_contraceptive);
-    this.all_contraceptive = contraceptive;
     if ( related_contraceptive != null) {
       contraceptive.forEach(function(allContraceptives, count) {
         allContraceptives['is_related'] = false;
@@ -145,44 +157,38 @@ export class ContraceptiveComponent implements OnInit {
     }
   }
 
-  closeEditModal() {
-    this.modalActions.emit({ action: 'modal', params: ['close'] });
-  }
-
-  getShippingMethods() {
-    this.loading = true;
-    this._contraceptiveService.getShippingMethods()
-    .subscribe((res) => {
-      if (res.success) {
-        this.loading = false;
-        this.shippingMethods = res.shippingMethod;
-
-      } else {
-        this.loading = false;
-      }
-    }, (err) => {
-      console.log('error while getting shipping methods ', err);
-    });
-  }
-
   // matches related contraceptives
   matchShippingMethods(shipping_method, contraceptives) {
-    console.log('edit params shipping method ', shipping_method);
-    console.log('all shipping methods ', contraceptives);
-    // contraceptive.forEach(function(allContraceptives, count) {
-    //   allContraceptives['is_related'] = false;
-    //   related_contraceptive.forEach(function(related, index) {
-    //     if (related._id === allContraceptives._id) {
-    //       allContraceptives['is_related'] = true;
-    //     }
-    //   });
-    // });
-    // // save to localStorage for persistence
-    // this._contraceptiveService.saveRelatedContraceptiveToLocalStorage('related_contraceptive', contraceptive);
+    // console.log('edit params shipping method ', shipping_method);
+    const getShippingMethods = this.shippingMethods;
+    // console.log('all shipping methods available ', getShippingMethods);
 
-    // // get related_contraceptive for binding
-    // const local = this._contraceptiveService.getRelatedContraceptiveToLocalStorage('related_contraceptive');
-    // this.matched_contraceptives = local;
+    if (shipping_method != null) {
+      this.shippingMethods.forEach(function(allShipping, index){
+        allShipping['has_shipping'] = false;
+        shipping_method.forEach(function(shipping, count) {
+          // this initializes has_shipping field in all the shipping method objects
+            if (allShipping._id === shipping._id) {
+              shipping['has_shipping'] = true;
+              allShipping['has_shipping'] = true;
+            }
+        });
+      });
+      // save to localStorage for persistence
+      this._contraceptiveService.saveRelatedShippingMethods('related_shipping', this.shippingMethods);
+
+      // get related_contraceptive for binding
+      const local = this._contraceptiveService.getRelatedShippingMethods('related_shipping');
+      this.matched_shipping = local;
+      this.matched_methods = this.matched_shipping;
+    } else {
+      this.matched_shipping = [];
+    }
+  }
+
+
+  closeEditModal() {
+    this.modalActions.emit({ action: 'modal', params: ['close'] });
   }
 
   getRelatedContraceptives(contraceptives) {
@@ -209,7 +215,6 @@ export class ContraceptiveComponent implements OnInit {
 
   updateContraceptive(id) {
     this.submit = true;
-    console.log('form value ', this.updateContraceptiveForm);
     this._contraceptiveService.update(this.updateContraceptiveForm.value, id)
     .subscribe((res) => {
       if (res.success) {

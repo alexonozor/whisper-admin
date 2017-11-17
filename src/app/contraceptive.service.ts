@@ -86,12 +86,21 @@ export class ContraceptiveService {
   }
 
   saveRelatedContraceptiveToLocalStorage( tokenName: string, related_contraceptive) {
-    let related = JSON.stringify(related_contraceptive);
+    const related = JSON.stringify(related_contraceptive);
     localStorage.setItem(tokenName, related);
   }
 
   getRelatedContraceptiveToLocalStorage( tokenName: string) {
     return JSON.parse(localStorage.getItem(tokenName) );
+  }
+
+  saveRelatedShippingMethods( tokenName: string, related_shipping) {
+    const related = JSON.stringify(related_shipping);
+    localStorage.setItem(tokenName, related);
+  }
+
+  getRelatedShippingMethods( tokenName: string) {
+    return JSON.parse(localStorage.getItem(tokenName));
   }
 
   createAnswer(assessmentInfo: string, id: string) : Observable<any> {
