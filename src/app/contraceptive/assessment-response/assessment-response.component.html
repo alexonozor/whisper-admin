@@ -1,39 +1,30 @@
 <nav>
-  <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-  <ul id="slide-out" class="side-nav">
-    <li><a class="subheader">Menu</a></li>
-    <li><a class="waves-effect" routerLink="/dashboard">Dashboard</a></li>
-    <li><a class="waves-effect" routerLink="/dashboard/contraceptives">Contraceptives</a></li>
-    <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
-    <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
-
-  </ul>
-
-
-  <!-- chat info -->
-  <a class='dropdown-button btn info' data-activates='dropdown1'><i class="material-icons">info</i></a>
-
-  <!-- Dropdown -->
-  <ul id='dropdown1' class='dropdown-content'>
-    <li><h4 class="chatInfo"> user: {{this.chatOwner}}</h4></li>
-    <li><h4 class="chatInfo"> assesment: {{this.assessmentType}}</h4></li>
-  </ul>
-
   <div class="nav-wrapper">
     <a href="#" class="brand-logo">Whisper</a>
+    <!-- menu -->
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    <ul id="slide-out" class="side-nav">
+      <li><a class="subheader">Menu</a></li>
+      <li><a class="waves-effect" routerLink="/dashboard">Dashboard</a></li>
+      <li><a class="waves-effect" routerLink="/dashboard/contraceptives">Contraceptives</a></li>
+      <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
+      <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
+    </ul>
+    <!-- chat info -->
+    <a class='dropdown-button btn info' data-activates='dropdown1'><i class="material-icons">info</i></a>
+    <!-- Dropdown -->
+    <ul id='dropdown1' class='dropdown-content'>
+      <li><h4 class="chatInfo"> user: {{this.chatOwner}}</h4></li>
+      <li><h4 class="chatInfo"> assesment: {{this.assessmentType}}</h4></li>
+    </ul>
   </div>
 </nav>
 
-
-  <!-- Page Layout here -->
-  <div class="row">
-    
-   
-
+<!-- Page Layout here -->
+<div class="row">
   <div class="col s9 remove-padding">
-      
     <div class="body">
-      <div class="row" *ngFor="let conversation of messageResponse">
+      <div class="row" *ngFor="let conversation of messages">
         <div class="col s5 m5" [ngClass]="conversation.isSender? 'message-out' : 'message-in'" class="chat-bubble">
           <div class="msg-block">
             <div class="card-panel  message message-text">
@@ -59,37 +50,34 @@
         </div>
       </div>
       <footer class="input_footer">
-          
-                  <div class="block compose">
-                    <form [formGroup]="chatForm" class="col s12 m12" (ngSubmit)="sendMessage()">
-                      <div class="row">
-                        <div class="input-field col s11 text-container">
-                          <textarea (keyup)="onKeyUp($event)" formControlName="content" type="text" placeholder="Write a message" id="textarea1" class="validate browser-default">
-                          </textarea>
-                        </div>
-                        <div class="col s1">
-                          <button *ngIf="userIsTyping" [disabled]='!chatForm.valid && submitting && isSender' class="submit_button btn waves-effect waves-light" type="submit" name="action">
-                            <i class="material-icons right">send</i>
-                          </button>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
-              </footer>
-    </div>
-    </div>
-
-    <div class="col s3 remove-padding" id="side-bar-left">
-    
-
-      <div class="search-wrapper card">
-          <input #fname placeholder="search text goes here" id="search">
-      </div>
-      <div class="collection users">
-          <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of participant | searchFilter: 'userName' : fname.value.toLowerCase()">{{user.userName}}<i class="material-icons secondary-content" (click)="removeRecipant()">delete</i></a>
+        <div class="block compose">
+          <form [formGroup]="chatForm" class="col s12 m12" (ngSubmit)="sendMessage()" novalidate>
+            <div class="row">
+              <div class="input-field col s11 text-container">
+                <textarea formControlName="content" type="text" placeholder="Write a message" id="textarea1" class="browser-default">
+                </textarea>
+              </div>
+              <div class="col s1">
+                <button [hidden]='!chatForm.valid' class="submit_button btn waves-effect waves-light" type="submit" name="action">
+                  <i class="material-icons right">send</i>
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
+      </footer>
     </div>
-
   </div>
+
+  <div class="col s3 remove-padding" id="side-bar-left">
+    <div class="search-wrapper card">
+      <input #fname placeholder="search text goes here" id="search">
+    </div>
+    <div class="collection users">
+      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of users | searchFilter: 
+      'firstName' : fname.value.toLowerCase()">{{user.firstName}}<i class="material-icons secondary-content" (click)="removeRecipant()">delete</i></a>
+    </div>
+  </div>
+</div>
 
 
