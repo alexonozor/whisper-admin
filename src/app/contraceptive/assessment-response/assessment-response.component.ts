@@ -16,6 +16,7 @@ declare var jQuery: any;
 })
 
 export class AssessmentResponseComponent implements OnInit {
+  searchTerm: String = '';
   user: any = [];
   users: any = [];
   allUsers: any = [];
@@ -36,7 +37,9 @@ export class AssessmentResponseComponent implements OnInit {
   chatOwner: string;
   assessmentType: string;
   participant: any = [];
-  userParticpants: any = [];
+  chatParticipants: any = [];
+  searchResult: any = [];
+  typing: boolean = false;
 
 
   constructor(
@@ -65,7 +68,6 @@ export class AssessmentResponseComponent implements OnInit {
         this.loading = false;
         this.conversation = resp.conversation;
         this.getParticipant(resp.conversation.users);
-        console.log('response convo messages ', resp.conversation.messages);
         this.checkSender(resp.conversation.messages);
       }
     });
@@ -103,7 +105,7 @@ export class AssessmentResponseComponent implements OnInit {
   }
 
   getUserInfo(user) {
-    console.log('user ', user);
+    // make unique
     this._assessmentService.addUser(user._id, this.conversationId).subscribe((response) => {
       if (response.success) {
         jQuery('#modal1').modal('close');
@@ -122,22 +124,31 @@ export class AssessmentResponseComponent implements OnInit {
 
   getParticipant(users) {
     // get user
-    // users.forEach( user => {
-    //   this._userService.getUser(user._id).subscribe((res) => {
-    //     if (res.success) {
-    //       user['user'] = res.user;
-    //       delete user['_id'];
-    //     }
-    //   }, err => {});
-    // });
+    this.users.forEach( allUsers => {
+      users.forEach( user => {
+        if ( user._id === allUsers._id) {
+          this.chatParticipants.push(allUsers);
+        }
+      });
+    });
+  }
 
-    // users.some(function (user, i) {
-    //   // timeout for a bit
-    //   setTimeout(function(){
-    //     console.log('user oga ', user['user']);
-    //   }, 1200);
-    // });
-    console.log('users ', users);
+  setFilteredItems(event: any) {
+    let searchTerm = event.target.value;
+    if ( searchTerm !== '') {
+      this.searchResult = this.userChatFilter(searchTerm, 'firstName', 'lastName');
+      this.typing = true;
+    } else {
+      this.searchResult = [];
+      this.typing = false;
+    }
+  }
+
+   // moved filter here for better performance
+   userChatFilter(searchTerm, firstName, lastName) {
+    return this.chatParticipants.filter(it => 
+      ( it[firstName].toLowerCase().indexOf(searchTerm) !== -1 ) ||
+      ( it[lastName].toLowerCase().indexOf(searchTerm) !== -1 ) );
   }
 
   startChat() {
@@ -166,7 +177,6 @@ export class AssessmentResponseComponent implements OnInit {
       }
     });
     this.messages = messageResponse;
-    console.log('messages ', this.messages);
   }
 
   getUser() {

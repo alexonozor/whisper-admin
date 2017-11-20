@@ -15,7 +15,6 @@ export class ContraceptiveService {
 
   private host = environment.baseUrl;
 
-
   save(contraceptiveInfo: any) : Observable<any> {
 		return this.authHttp.post(`${this.host}/contraceptives`, contraceptiveInfo)
 			.map((res:Response) => res.json())

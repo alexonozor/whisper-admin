@@ -71,12 +71,22 @@
 
   <div class="col s3 remove-padding" id="side-bar-left">
     <div class="search-wrapper card">
-      <input #fname placeholder="search text goes here" id="search">
+      <input [(ngModel)]="searchTerm" (keyup)="setFilteredItems($event)" placeholder="search text goes here" 
+      id="search">
     </div>
-    <div class="collection users">
-      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of users | searchFilter: 
-      'firstName' : fname.value.toLowerCase()">{{user.firstName}}<i class="material-icons secondary-content" (click)="removeRecipant()">delete</i></a>
+    <!-- show while typing -->
+    <div class="collection users" [hidden]="!typing">
+      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of searchResult">{{user.firstName}} {{user.lastName}}<i class="material-icons secondary-content" 
+      (click)="removeRecipient()">delete</i></a>
     </div>
+
+    <div class="collection users" [hidden]="typing">
+      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of chatParticipants">{{user.firstName}} {{user.lastName}}<i class="material-icons secondary-content" 
+        (click)="removeRecipient()">delete</i></a>
+    </div>
+    
+
+    <!-- hide on searching then show searchresult -->
   </div>
 </div>
 
