@@ -3,7 +3,7 @@ import { AuthenticationService } from '../../authentication.service';
 import { AssessmentService } from '../../assessment.service';
 import { UserService } from '../../user.service';
 import { SearchFilterPipe } from '../../search-filter.pipe';
-import { FormsModule, FormArray,FormArrayName, FormControl,FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, FormArray, FormArrayName, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 declare var Materialize: any;
 declare var jQuery: any;
@@ -16,13 +16,14 @@ declare var jQuery: any;
 })
 
 export class AssessmentResponseComponent implements OnInit {
+  searchTerm: String = '';
   user: any = [];
   users: any = [];
   allUsers: any = [];
   userAssessments: Array<any>;
   loaded: boolean = false;
   showButton: boolean =  false;
-  messageResponse: Array<any> = [];
+  messages: Array<any> = [];
   conversation: Object = {};
   isSender: boolean = false;
   userId: Object;
@@ -35,7 +36,10 @@ export class AssessmentResponseComponent implements OnInit {
   loading: boolean = false;
   chatOwner: string;
   assessmentType: string;
-  participant: Array<any>;
+  participant: any = [];
+  chatParticipants: any = [];
+  searchResult: any = [];
+  typing: boolean = false;
 
 
   constructor(
@@ -51,9 +55,9 @@ export class AssessmentResponseComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.conversationId = params['conversationId'];
       this.chatOwner = params['user'];
-      this.assessmentType = params['type']
+      this.assessmentType = params['type'];
       // In a real app: dispatch action to load the details here.
-      this._assessmentService.connectToroom(this.conversationId)
+      this._assessmentService.connectToroom(this.conversationId);
       this.getMessages();
     });
 
@@ -66,14 +70,19 @@ export class AssessmentResponseComponent implements OnInit {
         this.getParticipant(resp.conversation.users);
         this.checkSender(resp.conversation.messages);
       }
-    })
+    });
     this.jqueryInit();
     this.getAllUsers();
   }
 
   jqueryInit() {
-    jQuery(".button-collapse").sideNav();
-    jQuery(".dropdown-button").dropdown({
+    jQuery('.button-collapse').sideNav({
+      menuWidth: 300, // Default is 300
+      edge: 'right', // Choose the horizontal origin
+      closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+      draggable: true, // Choose whether you can drag to open on touch screens,
+    });
+    jQuery('.dropdown-button').dropdown({
       inDuration: 300,
       outDuration: 225,
       constrainWidth: false, // Does not change width of dropdown to that of the activator
@@ -92,10 +101,11 @@ export class AssessmentResponseComponent implements OnInit {
       if (resp.success) {
         this.users = resp.users;
       }
-    })
+    });
   }
 
   getUserInfo(user) {
+    // make unique
     this._assessmentService.addUser(user._id, this.conversationId).subscribe((response) => {
       if (response.success) {
         jQuery('#modal1').modal('close');
@@ -113,7 +123,32 @@ export class AssessmentResponseComponent implements OnInit {
   }
 
   getParticipant(users) {
-    this.participant = users
+    // get user
+    this.users.forEach( allUsers => {
+      users.forEach( user => {
+        if ( user._id === allUsers._id) {
+          this.chatParticipants.push(allUsers);
+        }
+      });
+    });
+  }
+
+  setFilteredItems(event: any) {
+    let searchTerm = event.target.value;
+    if ( searchTerm !== '') {
+      this.searchResult = this.userChatFilter(searchTerm, 'firstName', 'lastName');
+      this.typing = true;
+    } else {
+      this.searchResult = [];
+      this.typing = false;
+    }
+  }
+
+   // moved filter here for better performance
+   userChatFilter(searchTerm, firstName, lastName) {
+    return this.chatParticipants.filter(it => 
+      ( it[firstName].toLowerCase().indexOf(searchTerm) !== -1 ) ||
+      ( it[lastName].toLowerCase().indexOf(searchTerm) !== -1 ) );
   }
 
   startChat() {
@@ -128,31 +163,20 @@ export class AssessmentResponseComponent implements OnInit {
 
   getMessages() {
     this._assessmentService.getMessages().subscribe(message => {
-      message['isSender'] = ( message.user == this.userId );
-      this.messageResponse.push(message);
-    })
-  }
-
-  onKeyUp(event) {
-    let message = event.target.value;
-    if( event.key == "Enter" && event.target.value.length != 0) {
-    }
-    if(event.target.value.length >= 1) {
-      this.userIsTyping = true
-    } else {
-      this.userIsTyping = false;
-    }
+      message['isSender'] = ( message.user === this.userId );
+      this.messages.push(message);
+    });
   }
 
   checkSender(messageResponse) {
     this.userId = this._authService.currentUser()._id;
     messageResponse.forEach((el, i) => {
-      el['isSender'] = ( el.user == this.userId )
-      if(el['isSender']) {
+      el['isSender'] = ( el.user === this.userId );
+      if (el['isSender']) {
         this.isSender = true;
       }
-    })
-    this.messageResponse = messageResponse;
+    });
+    this.messages = messageResponse;
   }
 
   getUser() {
@@ -166,11 +190,11 @@ export class AssessmentResponseComponent implements OnInit {
     this._assessmentService.sendResponsesMessage(this.chatForm.value)
     .subscribe((resp) => {
       if (resp.success) {
-        this.submitting = false
+        this.submitting = false;
       }
     }, err => {
 
-    })
+    });
     this.chatForm.value['isSender'] = true;
     this.chatForm.reset(
       {
@@ -180,5 +204,4 @@ export class AssessmentResponseComponent implements OnInit {
       }
     );
   }
-
 }
