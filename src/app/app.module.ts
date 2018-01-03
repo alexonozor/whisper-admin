@@ -10,6 +10,7 @@ import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
 import { AssessmentService } from './assessment.service';
+import { PhamaciesService } from './phamacies.service';
 
 
 import { AppComponent } from './app.component';
@@ -67,7 +68,8 @@ import { SearchFilterPipe } from './search-filter.pipe';
   providers: [
     UserService,
     AuthenticationService,
-    AssessmentService
+    AssessmentService,
+    PhamaciesService
   ],
   bootstrap: [AppComponent]
 })
