@@ -16,6 +16,7 @@ import { UsersComponent } from '../user/users/users.component';
 import { UserNewComponent } from '../user/user-new/user-new.component';
 import { UserEditComponent } from '../user/user-edit/user-edit.component';
 import { ShippingComponent } from '../shipping/shipping.component';
+import { PharmacyComponent } from '../pharmacy/pharmacy.component';
 
 const appRoutes: Routes = [
    { path: '',  component: LoginComponent },
@@ -38,7 +39,8 @@ const appRoutes: Routes = [
           { path: ':assessmentId',  component: AssessmentComponent, outlet: 'assessment' },
         ]
       },
-      { path: 'shipping', component: ShippingComponent }
+      { path: 'shipping', component: ShippingComponent },
+      { path: 'pharmacies', component: PharmacyComponent }
     ]
   },
 ];
