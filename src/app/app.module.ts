@@ -11,7 +11,7 @@ import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
 import { AssessmentService } from './assessment.service';
 import { PhamaciesService } from './phamacies.service';
-
+import { NotificationService } from './notification.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -69,7 +69,8 @@ import { SearchFilterPipe } from './search-filter.pipe';
     UserService,
     AuthenticationService,
     AssessmentService,
-    PhamaciesService
+    PhamaciesService,
+    NotificationService
   ],
   bootstrap: [AppComponent]
 })
