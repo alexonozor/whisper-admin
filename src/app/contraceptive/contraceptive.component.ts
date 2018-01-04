@@ -6,6 +6,7 @@ import { FormArray, FormArrayName, FormControl, FormBuilder, FormGroup, Validato
 import { UserService } from '../user.service';
 import { AuthenticationService } from '../authentication.service';
 import { Route, Router } from '@angular/router';
+import { NotificationService } from  '../notification.service';
 
 @Component({
   selector: 'app-contraceptive',
@@ -38,6 +39,8 @@ export class ContraceptiveComponent implements OnInit {
     public _contraceptiveService: ContraceptiveService,
     public fb: FormBuilder,
     private router: Router,
+    private _notification: NotificationService,
+    private _authentication: AuthenticationService
   ) {
     this.createForm();
     this.updateForm();
@@ -273,12 +276,25 @@ export class ContraceptiveComponent implements OnInit {
     this._assessmentService.startAssessmentConversation(params)
     .subscribe((resp) => {
       if (resp.success) {
-        this.updateAssesmentResponse(response._id, { hasConversation: true, conversation: resp.responseId })
-      }
+        this.updateAssesmentResponse(response._id, { hasConversation: true, conversation: resp.responseId });  
+        this._notification.create(
+          { 
+            sender: this._authentication.currentUser()._id, 
+            receiver: params.startedBy._id, 
+            notification_type_id: resp.responseId,
+            notification_type: 'openConversation',
+            content: 'starts a conversation on your contraceptive assesment'
+          }).subscribe((resp) => {
+            console.log(resp)
+          }, err => {
+
+          })
+        }
     }, err => {
       //toaster is fyn for err don't for get to dismiss loader
     });
   }
+
 
   openConversation(response) {
     this.assessmentOwner = response.user.firstName + ' ' + response.user.lastName;
