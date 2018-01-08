@@ -26,6 +26,8 @@ input.contact {
 
 .remove-padding {
   padding: 0px !important;
+  overflow: scroll;
+  height: 90vh;
 }
 
 i.search {
@@ -178,6 +180,7 @@ footer.input_footer {
 
 .side-bar-left {
   margin-top: 20px;
+ 
 }
 
 #search {
@@ -196,4 +199,19 @@ footer.input_footer {
 
 .search-wrapper {
   margin: 0 12px;
+}
+
+.over-ridemodal {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: #fafafa;
+    padding: 0;
+    max-height: 70%;
+    width: 28%;
+    margin: auto;
+    overflow-y: auto;
+    border-radius: 2px;
+    will-change: top, opacity;
 }

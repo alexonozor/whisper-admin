@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
 import { AssessmentService } from '../../assessment.service';
 import { UserService } from '../../user.service';
-import { SearchFilterPipe } from '../../search-filter.pipe';
 import { FormsModule, FormArray, FormArrayName, FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 declare var Materialize: any;
 declare var jQuery: any;
-
+import { MaterializeAction } from 'angular2-materialize';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-assessment-response',
@@ -24,7 +24,7 @@ export class AssessmentResponseComponent implements OnInit {
   loaded: boolean = false;
   showButton: boolean =  false;
   messages: Array<any> = [];
-  conversation: Object = {};
+  conversation:   any;
   isSender: boolean = false;
   userId: Object;
   conversationId: string;
@@ -36,21 +36,27 @@ export class AssessmentResponseComponent implements OnInit {
   loading: boolean = false;
   chatOwner: string;
   assessmentType: string;
-  participant: any = [];
   chatParticipants: any = [];
   searchResult: any = [];
   typing: boolean = false;
-
+  assesmentResponseId: any;
+  assesmentResponse: any;
+  modalActions = new EventEmitter<string|MaterializeAction>();
+  searchTerm$ = new Subject<string>();
 
   constructor(
     public _authService: AuthenticationService,
     public _assessmentService: AssessmentService,
     public _userService: UserService,
     public fb: FormBuilder,
-    public route: ActivatedRoute) { }
+    public route: ActivatedRoute) { 
+      this._userService.searchUsers(this.searchTerm$)
+      .subscribe(results => {
+        this.searchResult = results.users;
+      });
+    }
 
   ngOnInit() {
-    this.getUser();
     this.startChat();
     this.sub = this.route.params.subscribe(params => {
       this.conversationId = params['conversationId'];
@@ -67,12 +73,23 @@ export class AssessmentResponseComponent implements OnInit {
       if (resp.success) {
         this.loading = false;
         this.conversation = resp.conversation;
-        this.getParticipant(resp.conversation.users);
+        this.chatParticipants = resp.conversation.users;
+        this.assesmentResponseId = resp.conversation.assessmentResponse._id || resp.conversation.assessmentResponse;
         this.checkSender(resp.conversation.messages);
+        this.getAssesmentResponse(this.assesmentResponseId);
       }
     });
     this.jqueryInit();
-    this.getAllUsers();
+  }
+
+
+  getAssesmentResponse(assesmentResponseId) {
+    this._assessmentService.getAssementResponse(assesmentResponseId)
+    .subscribe((resp) => {
+      this.assesmentResponse = resp.responses
+    }, err => {
+
+    })
   }
 
   jqueryInit() {
@@ -95,61 +112,46 @@ export class AssessmentResponseComponent implements OnInit {
     jQuery('.modal').modal();
   }
 
-  getAllUsers() {
-    this._userService.getUsers()
-    .subscribe((resp) => {
-      if (resp.success) {
-        this.users = resp.users;
-      }
-    });
-  }
+ 
 
-  getUserInfo(user) {
+  addRecipient(user) {
     // make unique
-    this._assessmentService.addUser(user._id, this.conversationId).subscribe((response) => {
-      if (response.success) {
-        jQuery('#modal1').modal('close');
-        Materialize.toast(`${user.firstName} has been added to chat`, 2000);
-      } else {
-        Materialize.toast(`${user.firstName} cannot been added to chat`, 2000);
-      }
-    }, err => {
-      Materialize.toast(`${user.firstName} cannot been added to chat `, 2000);
-    });
-  }
-
-  addParticipant() {
-    this.allUsers = this.users;
-  }
-
-  getParticipant(users) {
-    // get user
-    this.users.forEach( allUsers => {
-      users.forEach( user => {
-        if ( user._id === allUsers._id) {
-          this.chatParticipants.push(allUsers);
+    let confirmAddUser = confirm(`Add ${user.firstName} to this conversation?`);
+    if (confirmAddUser) {
+      this._assessmentService.addUserToConversation(user._id, this.conversationId).subscribe((response) => {
+        if (response.success) {
+          this.chatParticipants.push(user);
+          this.modalActions.emit({ action: 'modal', params: ['close'] });
+          Materialize.toast(`${user.firstName} has been added to chat`, 2000);
+        } else {
+          Materialize.toast(`${user.firstName} cannot been added to chat`, 2000);
         }
+      }, err => {
+        Materialize.toast(`${user.firstName} cannot been added to chat `, 2000);
       });
-    });
-  }
-
-  setFilteredItems(event: any) {
-    let searchTerm = event.target.value;
-    if ( searchTerm !== '') {
-      this.searchResult = this.userChatFilter(searchTerm, 'firstName', 'lastName');
-      this.typing = true;
-    } else {
-      this.searchResult = [];
-      this.typing = false;
     }
   }
 
-   // moved filter here for better performance
-   userChatFilter(searchTerm, firstName, lastName) {
-    return this.chatParticipants.filter(it => 
-      ( it[firstName].toLowerCase().indexOf(searchTerm) !== -1 ) ||
-      ( it[lastName].toLowerCase().indexOf(searchTerm) !== -1 ) );
+  removeRecipient(user, index) {
+    let confirmRemoveUser = confirm(`Are you sure you want to remove ${user.firstName} from this conversation?`);
+    if  (confirmRemoveUser) {
+      this._assessmentService.removeUserFromConversation(user._id, this.conversationId)
+      .subscribe((resp) => {
+        if (resp.success) {
+          this.chatParticipants.splice(index, 1);
+        } 
+      }, err => {
+        Materialize.toast('internal server error');
+      })
+    }
   }
+
+ 
+
+  openModal() {
+    this.modalActions.emit({ action: 'modal', params: ['open'] });
+  }
+
 
   startChat() {
     this.chatForm = this.fb.group({
@@ -179,10 +181,7 @@ export class AssessmentResponseComponent implements OnInit {
     this.messages = messageResponse;
   }
 
-  getUser() {
-    this.user = this._authService.currentUser();
-  }
-
+ 
   sendMessage() {
     this.submitting = true;
     this.chatForm.patchValue({ conversation: this.conversationId });

@@ -41,8 +41,14 @@ export class AssessmentService {
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  addUser(userId: string, convoId: string) : Observable<any> {
+  addUserToConversation(userId: string, convoId: string) : Observable<any> {
     return this.authHttp.put(`${this.host}/conversation/${convoId}/user/${userId}`, {})
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  removeUserFromConversation(userId: string, convoId: string) : Observable<any> {
+    return this.authHttp.delete(`${this.host}/conversation/${convoId}/user/${userId}`, {})
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
@@ -50,6 +56,12 @@ export class AssessmentService {
 
   getAssementResponses(id: string) : Observable<any> {
     return this.authHttp.get(`${this.host}/user-assessment-responses/${id}`)
+      .map((res:Response) => res.json())
+      .catch((error:any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  getAssementResponse(id: string) : Observable<any> {
+    return this.authHttp.get(`${this.host}/assessment-responses/${id}`)
       .map((res:Response) => res.json())
       .catch((error:any) => Observable.throw(error.json().error || 'server error'));
   }
