@@ -65,7 +65,8 @@
   <div class="col s3 remove-padding" id="side-bar-left">
     <ul class="collection with-header">
         <li class="collection-header">
-        <h4>Conversation Info</h4>
+        <h5>Conversation Info</h5>
+        <p>{{assesmentResponse?.user?.firstName}}  {{assesmentResponse?.contraceptive?.name}} assesment conversation</p>
          <p>Created at {{conversation?.createdAt | date}}, opened by {{conversation?.startedBy?.firstName}}</p>
         </li>
         <li class="collection-item active" (click)="openModal()"> <i class="material-icons">person_add</i> <span>Add Participant</span></li>        
@@ -93,7 +94,7 @@
         </table>
 
       <ul class="collection ">
-          <li class="collection-item active">{{assesmentResponse?.user?.firstName}} Responses on {{assesmentResponse?.contraceptive?.name}} assesment</li> 
+          <li class="collection-item active">{{assesmentResponse?.user?.firstName}}'s  replies on {{assesmentResponse?.contraceptive?.name}} assesment</li> 
       </ul>
       
       <table class="bordered">
@@ -128,7 +129,7 @@
             </div>
         </form>
       <ul class="collection">
-        <li class="collection-item"  *ngFor="let user of searchResult" (click)="getUserInfo(user)">{{user?.firstName | uppercase}} {{user?.lastName | uppercase}} ( {{user.accountType}} )</li>
+        <li class="collection-item"  *ngFor="let user of searchResult" (click)="addRecipient(user)">{{user?.firstName | uppercase}} {{user?.lastName | uppercase}} ( {{user.accountType}} )</li>
       </ul>
     </div>
     <div class="modal-footer">

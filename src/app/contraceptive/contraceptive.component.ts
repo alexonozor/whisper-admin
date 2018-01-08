@@ -274,18 +274,17 @@ export class ContraceptiveComponent implements OnInit {
     };
 
     this._assessmentService.startAssessmentConversation(params)
-    .subscribe((resp) => {
-      if (resp.success) {
-        this.updateAssesmentResponse(response._id, { hasConversation: true, conversation: resp.responseId });  
-        this._notification.create(
-          { 
+    .subscribe((resps) => {
+      if (resps.success) {
+        this.updateAssesmentResponse(response._id, { hasConversation: true, conversation: resps.responseId });  
+        this._notification.create({ 
             sender: this._authentication.currentUser()._id, 
             receiver: params.startedBy._id, 
-            notification_type_id: resp.responseId,
+            notification_type_id: resps.responseId,
             notification_type: 'openConversation',
             content: 'starts a conversation on your contraceptive assesment'
           }).subscribe((resp) => {
-            console.log(resp)
+           this.addToConversation(this._authentication.currentUser()._id, resps.responseId) // add the current user
           }, err => {
 
           })
@@ -295,7 +294,16 @@ export class ContraceptiveComponent implements OnInit {
     });
   }
 
+  addToConversation(currentUserId, responseId) {
+    this._assessmentService.addUserToConversation(currentUserId, responseId)
+    .subscribe((resp) => {
+      console.log(resp);
+    }, err => {
+      console.log(err);
+    })
+  }
 
+ 
   openConversation(response) {
     this.assessmentOwner = response.user.firstName + ' ' + response.user.lastName;
     this.assessmentType = response.contraceptive.name;

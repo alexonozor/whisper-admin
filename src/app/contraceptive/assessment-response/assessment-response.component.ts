@@ -8,6 +8,7 @@ declare var Materialize: any;
 declare var jQuery: any;
 import { MaterializeAction } from 'angular2-materialize';
 import { Subject } from 'rxjs/Subject';
+import { NotificationService } from '../../notification.service';
 
 @Component({
   selector: 'app-assessment-response',
@@ -49,6 +50,8 @@ export class AssessmentResponseComponent implements OnInit {
     public _assessmentService: AssessmentService,
     public _userService: UserService,
     public fb: FormBuilder,
+    public _notificationService: NotificationService,
+    public _authentication: AuthenticationService,
     public route: ActivatedRoute) { 
       this._userService.searchUsers(this.searchTerm$)
       .subscribe(results => {
@@ -123,6 +126,7 @@ export class AssessmentResponseComponent implements OnInit {
           this.chatParticipants.push(user);
           this.modalActions.emit({ action: 'modal', params: ['close'] });
           Materialize.toast(`${user.firstName} has been added to chat`, 2000);
+          this.notifiyRecipient(user);
         } else {
           Materialize.toast(`${user.firstName} cannot been added to chat`, 2000);
         }
@@ -130,6 +134,22 @@ export class AssessmentResponseComponent implements OnInit {
         Materialize.toast(`${user.firstName} cannot been added to chat `, 2000);
       });
     }
+  }
+
+  notifiyRecipient(user) {
+    this._notificationService.create({
+      sender: this._authentication.currentUser()._id, 
+      receiver: user._id, 
+      notification_type_id: this.conversationId,
+      notification_type: 'joinConversation',
+      content: `added you to ${user.firstName}'s assesment conversation`
+    }).subscribe((resp) => {
+        if (resp.success) {
+          Materialize.toast(`${user.firstName} has been notified`);
+        }
+    }, err => {
+      Materialize.toast('Internal server error');
+    })
   }
 
   removeRecipient(user, index) {
