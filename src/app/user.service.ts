@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
 import { environment } from '../environments/environment';
 import { tokenNotExpired, JwtHelper, AuthHttp } from 'angular2-jwt';
 
@@ -36,6 +39,18 @@ export class UserService {
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'server error'));
   }
+  
+  searchUsers(searchParams: Observable<string>) {
+      return searchParams.debounceTime(400)
+        .distinctUntilChanged()
+        .switchMap(searchParams => this.searchEntries(searchParams));
+  }
+
+  searchEntries(term) {
+    return this.http.get(`${this.host}/searchUsers?searchTerms=${term}`)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error || 'server error'));
+  } 
 }
 
 

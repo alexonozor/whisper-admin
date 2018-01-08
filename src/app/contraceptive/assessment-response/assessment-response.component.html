@@ -10,13 +10,6 @@
       <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
       <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
     </ul>
-    <!-- chat info -->
-    <a class='dropdown-button btn info' data-activates='dropdown1'><i class="material-icons">info</i></a>
-    <!-- Dropdown -->
-    <ul id='dropdown1' class='dropdown-content'>
-      <li><h4 class="chatInfo"> user: {{this.chatOwner}}</h4></li>
-      <li><h4 class="chatInfo"> assesment: {{this.assessmentType}}</h4></li>
-    </ul>
   </div>
 </nav>
 
@@ -70,24 +63,77 @@
   </div>
 
   <div class="col s3 remove-padding" id="side-bar-left">
-    <div class="search-wrapper card">
-      <input [(ngModel)]="searchTerm" (keyup)="setFilteredItems($event)" placeholder="search text goes here" 
-      id="search">
-    </div>
-    <!-- show while typing -->
-    <div class="collection users" [hidden]="!typing">
-      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of searchResult">{{user.firstName}} {{user.lastName}}<i class="material-icons secondary-content" 
-      (click)="removeRecipient()">delete</i></a>
-    </div>
+    <ul class="collection with-header">
+        <li class="collection-header">
+        <h5>Conversation Info</h5>
+        <p>{{assesmentResponse?.user?.firstName}}  {{assesmentResponse?.contraceptive?.name}} assesment conversation</p>
+         <p>Created at {{conversation?.createdAt | date}}, opened by {{conversation?.startedBy?.firstName}}</p>
+        </li>
+        <li class="collection-item active" (click)="openModal()"> <i class="material-icons">person_add</i> <span>Add Participant</span></li>        
+        <li  class="collection-item" *ngFor="let user of chatParticipants; let i = index">{{user.firstName}} {{user.lastName}}<i class="material-icons secondary-content" 
+          (click)="removeRecipient(user, i)">delete</i></li>
+      </ul>
 
-    <div class="collection users" [hidden]="typing">
-      <a (click)="getUserInfo(user)" class="collection-item" *ngFor="let user of chatParticipants">{{user.firstName}} {{user.lastName}}<i class="material-icons secondary-content" 
-        (click)="removeRecipient()">delete</i></a>
-    </div>
-    
 
+      <table class="bordered" *ngIf="assesmentResponse?.appointment?.isAppointment">
+        <caption>Appointment info</caption>
+          <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{assesmentResponse?.appointment?.appointmentDate | date}}</td>
+              <td>{{assesmentResponse?.appointment?.appointmentTime}}</td>
+              <td>{{assesmentResponse?.appointment?.appointmentNote}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      <ul class="collection ">
+          <li class="collection-item active">{{assesmentResponse?.user?.firstName}}'s  replies on {{assesmentResponse?.contraceptive?.name}} assesment</li> 
+      </ul>
+      
+      <table class="bordered">
+        <thead>
+          <tr>
+              <th>Question</th>
+              <th>Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let assesment of assesmentResponse?.assesments">
+            <td>{{assesment?.question?.question}}</td>
+            <td>{{assesment?.acceptedAnswer}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="card-panel z-depth-1" >{{assesmentResponse?.note}} </div>
     <!-- hide on searching then show searchresult -->
   </div>
 </div>
 
+
+
+<!-- Edit Modal Structure -->
+<div id="modal2" class="modal over-ridemodal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+    <div class="modal-content">
+      <h6>Add participant</h6>
+      <form class="col s12">
+            <div class="input-field">
+              <i class="material-icons prefix">search</i>
+              <input id="icon_prefix"  type="text" placeholder="Search users" (input)="searchTerm$.next($event.target.value)" class="validate">
+            </div>
+        </form>
+      <ul class="collection">
+        <li class="collection-item"  *ngFor="let user of searchResult" (click)="addRecipient(user)">{{user?.firstName | uppercase}} {{user?.lastName | uppercase}} ( {{user.accountType}} )</li>
+      </ul>
+    </div>
+    <div class="modal-footer">
+      <a class="modal-action modal-close waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+    </div>
+  </div>
 
