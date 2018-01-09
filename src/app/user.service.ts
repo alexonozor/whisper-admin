@@ -28,8 +28,9 @@ export class UserService {
       .catch((error: any) => Observable.throw(error.json().error || 'server error'));
   }
 
-  getUsers(): Observable<any> {
-    return this.http.get(`${this.host}/users`)
+  getUsers(userType): Observable<any> {
+    let queryParams = (userType !== '')? `?accountType=${userType}` : ''
+    return this.http.get(`${this.host}/users${queryParams}`)
       .map((res: Response) => res.json())
       .catch((error: any) => Observable.throw(error.json().error || 'server error'));
   }

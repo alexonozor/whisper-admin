@@ -8,25 +8,26 @@ import { UserService } from '../../user.service';
 })
 export class UsersComponent implements OnInit {
   loading: Boolean = false;
-  allUsers: Array<any> = [];
+  users: Array<any> = [];
 
   constructor(public _userService: UserService) { }
 
   ngOnInit() {
-    this.getUsers();
+    this.viewUsers();
   }
 
-  getUsers() {
+  viewUsers(userType = '') {
     this.loading = true;
-    this._userService.getUsers()
+    this._userService.getUsers(userType)
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.allUsers = res.users;
+        this.users = res.users;
       }
     }, err => {
         // caught error 
     })
   }
+
 
 }
