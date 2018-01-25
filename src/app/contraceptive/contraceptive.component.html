@@ -7,12 +7,14 @@
       </ul>
 
       <div id="test1" class="col s12">
+          
         <div class="progress" *ngIf="loading">
           <div class="indeterminate"></div>
         </div>
         <table class="bordered">
         <thead>
           <tr>
+            <th></th>
             <th>Name</th>
             <th>Description</th>
             <th>Published</th>
@@ -20,22 +22,24 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let contraceptive of contraceptives; let i = index">
-            <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]" (click)="saveContraceptiveId(contraceptive?._id)"> {{contraceptive?.name}}</a></td>
-            <td class="truncate">{{contraceptive?.description}}</td>
-            <td>
-              <div class="switch">
-                <label>
-                  <input #status (change)="updatePublished($event, contraceptive)" [checked]='contraceptive?.published' type="checkbox"><span class="lever"></span>
-                </label>
-              </div>
-            </td>
-            <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)"><i class="material-icons">delete</i></a></td>
-            <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)" href="#modal2"><i class="material-icons">edit</i></a></td>
-          </tr>
+        <tbody  dnd-sortable-container [sortableData]="contraceptives">
+          <tr *ngFor="let contraceptive of contraceptives; let i = index" (onDropSuccess)="updateIndex()" dnd-sortable [sortableIndex]="i">
+              <td><i class="material-icons">drag_handle</i></td>
+              <td><a [routerLink]="['/dashboard/contraceptives', {outlets:{'details':[contraceptive?._id]}}]" (click)="saveContraceptiveId(contraceptive?._id)"> {{contraceptive?.name}}</a></td>
+              <td class="truncate">{{contraceptive?.description}}</td>
+              <td>
+                <div class="switch">
+                  <label>
+                    <input #status (change)="updatePublished($event, contraceptive)" [checked]='contraceptive?.published' type="checkbox"><span class="lever"></span>
+                  </label>
+                </div>
+              </td>
+              <td><a class="button_icon" (click)="deleteContracpetive(contraceptive._id, i)"><i class="material-icons">delete</i></a></td>
+              <td><a class="button_icon modal-trigger" (click)="openEditModal(contraceptive)" href="#modal2"><i class="material-icons">edit</i></a></td>
+            </tr>
         </tbody>
         </table>
+
         <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" href="#modal1"><i class="material-icons">add</i></a>
       </div>
       <div id="test2" class="col s12">

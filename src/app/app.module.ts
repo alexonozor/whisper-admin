@@ -6,6 +6,8 @@ import { RouteModule } from './route/route.module';
 import { MaterializeModule } from 'angular2-materialize';
 import { AuthModule } from './auth/auth.module';
 import { GooglePlaceModule } from 'ng2-google-place-autocomplete';
+import { DndModule } from 'ng2-dnd';
+
 
 import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
@@ -64,6 +66,7 @@ import { SearchFilterPipe } from './search-filter.pipe';
     ReactiveFormsModule,
     AuthModule,
     GooglePlaceModule,
+    DndModule.forRoot()
   ],
   providers: [
     UserService,

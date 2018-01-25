@@ -19,7 +19,8 @@
         "prefix": "app",
         "styles": [
             "styles.css",
-            "../node_modules/materialize-css/dist/css/materialize.css"
+            "../node_modules/materialize-css/dist/css/materialize.css",
+            "../node_modules/ng2-dnd/bundles/style.css"
         ],
         "scripts": [
             "../node_modules/jquery/dist/jquery.js",
