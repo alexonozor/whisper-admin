@@ -54,7 +54,6 @@ export class PharmacyComponent implements OnInit {
   }
 
   getAddress(event) {
-    console.log(event)
     this.pharmacyForm.patchValue({ longitude: event.geometry.location.lng(),  latitude: event.geometry.location.lat() , contact: {address: event.formatted_address}})
   }
 

@@ -4,6 +4,7 @@
   </div>
 </div>
 
+ <p>{{assessmentAnswers.question}} </p>
 
  <ul class="collection with-header">
   <table class="bordered">
@@ -16,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let answer of assessmentAnswers; let i = index">
+      <tr *ngFor="let answer of assessmentAnswers?._answers; let i = index">
         <td>
             <a class="collection-item">{{answer?.name}}</a>
         </td>
@@ -49,6 +50,8 @@
         </div>
     </div>
 
+
+    
     <div class="row">
          <div class="input-field col s12">
             <select materialize="material_select"  formControlName="hasRelativeQuestion">
@@ -58,6 +61,16 @@
             </select>
         </div>
     </div>
+
+
+    <div class="row" *ngIf="createAnswerForm.value.hasRelativeQuestion == 'true'">
+      <div class="input-field col s12">
+         <select materialize="material_select" [materializeSelectOptions]="assesmentQuestions" formControlName="nextQuestionNumber">
+             <option value="" disabled selected>Please select the related question</option>
+             <option *ngFor="let option of assesmentQuestions" [value]="option._id">{{option.question}}</option>
+         </select>
+     </div>
+ </div>
 
     <div class="row">
          <div class="input-field col s12">
@@ -69,16 +82,7 @@
         </div>
     </div>
 
-     <div class="row" *ngIf="createAnswerForm.value.hasRelativeQuestion == 'true'">
-         <div class="input-field col s12">
-            <select materialize="material_select" [materializeSelectOptions]="assessments" formControlName="nextQuestionNumber">
-                <option value="" disabled selected>Please select the related question</option>
-                <option *ngFor="let option of assessments" [value]="option._id">{{option.question}}</option>
-            </select>
-        </div>
-    </div>
-
-    
+  
     <div class="row">
          <div class="input-field col s12">
             <select materialize="material_select"  formControlName="hasWarning">
@@ -141,21 +145,23 @@
         </div>
       </div>
 
+    
+
+      <div class="row" *ngIf="updateAnswerForm.value.hasRelativeQuestion == 'true'">
+        <div class="input-field col s12">
+          <select materialize="material_select" [materializeSelectOptions]="assesmentQuestions" formControlName="nextQuestionNumber">
+            <option value="" disabled selected>Please select the related question</option>
+            <option *ngFor="let option of assesmentQuestions" [value]="option._id">{{option.question}}</option>
+          </select>
+        </div>
+      </div>
+
       <div class="row">
         <div class="input-field col s12">
           <select materialize="material_select"  formControlName="eligible">
             <option value="" disabled selected>Eligibility?</option>
             <option  [value]="true">Eligible</option>
             <option [value]="false">Not Eligible</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row" *ngIf="updateAnswerForm.value.hasRelativeQuestion == 'true'">
-        <div class="input-field col s12">
-          <select materialize="material_select" [materializeSelectOptions]="assessments" formControlName="nextQuestionNumber">
-            <option value="" disabled selected>Please select the related question</option>
-            <option *ngFor="let option of assessments" [value]="option._id">{{option.question}}</option>
           </select>
         </div>
       </div>

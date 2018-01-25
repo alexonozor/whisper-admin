@@ -33,6 +33,7 @@ export class ContraceptiveComponent implements OnInit {
   startConversationOrOpen: String;
   assessmentOwner: String;
   assessmentType: String;
+  listOne: Array<string> = ['Coffee', 'Orange Juice', 'Red Wine', 'Unhealty drink!', 'Water'];
 
   constructor(
     public _assessmentService: AssessmentService,
@@ -76,6 +77,20 @@ export class ContraceptiveComponent implements OnInit {
       shippingMethods:  [],
       releatedContraceptives: []
     });
+  }
+
+  updateIndex() {
+    this.submit = true
+   this.contraceptives.forEach((el, i) => {
+     this._contraceptiveService.update({position: i}, el._id).subscribe((data) => {
+        if (data.success) {
+          this.submit = false;
+          this.getContraceptives()
+        }
+     }, err => {
+
+     })
+   })
   }
 
   getContraceptives() {

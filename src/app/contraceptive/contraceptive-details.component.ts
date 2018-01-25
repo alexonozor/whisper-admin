@@ -57,6 +57,7 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
   ngOnInit() {
     this.createAssessmentForm.reset();
     this.sub = this.route.params.subscribe(params => {
+       localStorage.setItem('detailsId',  params['id'])
        this.showForm = false;
        this.id = params['id'];
        this.getContraceptive(this.id);

@@ -26,6 +26,7 @@ export class AssessmentComponent implements OnInit {
   showForm: boolean = false;
   modalActions = new EventEmitter<string|MaterializeAction>();
   answerId: string;
+  assesmentQuestions: Array<any> = [];
 
   constructor(
     public _contraceptiveService: ContraceptiveService,
@@ -95,6 +96,7 @@ export class AssessmentComponent implements OnInit {
       if (res.success) {
         this.loading = false;
         this.assessments = res.assesments;
+        
       } else {
 
       }
@@ -109,7 +111,8 @@ export class AssessmentComponent implements OnInit {
     .subscribe((res) => {
       if (res.success) {
         this.loading = false;
-        this.assessmentAnswers = res.assesments._answers;
+        this.assessmentAnswers = res.assesments;
+        this.assesmentQuestions = res.assesmentQuestions;
       } else {
 
       }
