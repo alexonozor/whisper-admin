@@ -51,7 +51,7 @@
     </div>
 
 
-    
+
     <div class="row">
          <div class="input-field col s12">
             <select materialize="material_select"  formControlName="hasRelativeQuestion">
@@ -137,11 +137,12 @@
 
       <div class="row">
         <div class="input-field col s12">
-          <select materialize="material_select"  formControlName="hasRelativeQuestion">
+          <select materialize="material_select" [(ngModel)]="answerParams.hasRelativeQuestion" formControlName="hasRelativeQuestion">
             <option value="" disabled selected>Is this answer related to another Question?</option>
-            <option  [value]="true">Yes</option>
-            <option [value]="false">No</option>
+            <option  [value]="true" [selected]="answerParams.hasRelativeQuestion==true">Yes</option>
+            <option [value]="false" [selected]="answerParams.hasRelativeQuestion==false">No</option>
           </select>
+          <label for="hasRelativeQuestion">Is this answer related to another Question?</label>
         </div>
       </div>
 
@@ -149,31 +150,34 @@
 
       <div class="row" *ngIf="updateAnswerForm.value.hasRelativeQuestion == 'true'">
         <div class="input-field col s12">
-          <select materialize="material_select" [materializeSelectOptions]="assesmentQuestions" formControlName="nextQuestionNumber">
+          <select materialize="material_select" [(ngModel)]="answerParams.nextQuestionNumber" [materializeSelectOptions]="assesmentQuestions" formControlName="nextQuestionNumber">
             <option value="" disabled selected>Please select the related question</option>
-            <option *ngFor="let option of assesmentQuestions" [value]="option._id">{{option.question}}</option>
+            <option *ngFor="let option of assesmentQuestions" [value]="option._id" [selected]="answerParams.nextQuestionNumber==option._id">{{option.question}}</option>
           </select>
+          <label for="nextQuestionNumber">Please select the related question</label>
         </div>
       </div>
 
       <div class="row">
         <div class="input-field col s12">
-          <select materialize="material_select"  formControlName="eligible">
+          <select materialize="material_select"  [(ngModel)]="answerParams.eligible" formControlName="eligible">
             <option value="" disabled selected>Eligibility?</option>
-            <option  [value]="true">Eligible</option>
-            <option [value]="false">Not Eligible</option>
+            <option  [value]="true" [selected]="answerParams.eligible==true">Eligible</option>
+            <option [value]="false" [selected]="answerParams.eligible==false">Not Eligible</option>
           </select>
+          <label for="eligible">Eligibility</label>
         </div>
       </div>
 
       
       <div class="row">
         <div class="input-field col s12">
-          <select materialize="material_select"  formControlName="hasWarning">
+          <select materialize="material_select" [(ngModel)]="answerParams.hasWarning" formControlName="hasWarning">
             <option value="" disabled selected>Add Warning?</option>
-            <option [value]="true">Yes</option>
-            <option [value]="false">No</option>
+            <option [value]="true" [selected]="answerParams.hasWarning==true">Yes</option>
+            <option [value]="false" [selected]="answerParams.hasWarning==false">No</option>
           </select>
+          <label for="hasWarning">Add Warning?</label>
         </div>
       </div>
       
@@ -186,16 +190,17 @@
       </div>
       <div class="row">
         <div class="input-field col s12">
-          <select materialize="material_select"  formControlName="isEditedAnswer">
+          <select materialize="material_select" [(ngModel)]="answerParams.isEditedAnswer" formControlName="isEditedAnswer">
             <option value="" disabled selected>Is this an editable answer?</option>
-            <option  [value]="true">Yes</option>
-            <option [value]="false">No</option>
+            <option  [value]="true" [selected]="answerParams.isEditedAnswer==true">Yes</option>
+            <option [value]="false" [selected]="answerParams.isEditedAnswer==false">No</option>
           </select>
+          <label for="isEditedAnswer">Is this an editable answer?</label>
         </div>
       </div>
       <div class="row" *ngIf="updateAnswerForm.value.isEditedAnswer == 'true'">
         <div class="input-field col s12">
-          <input id="editedAnswerLabel" type="text" formControlName="editedAnswerLabel" class="validate" (ngModel)]="answerParams.editedAnswerLabel">
+          <input id="editedAnswerLabel" type="text" formControlName="editedAnswerLabel" class="validate" [(ngModel)]="answerParams.editedAnswerLabel">
           <label for="editedAnswerLabel">Enter answer label</label>
         </div>
       </div>
