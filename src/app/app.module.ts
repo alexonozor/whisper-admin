@@ -32,6 +32,7 @@ import { UserEditComponent } from './user/user-edit/user-edit.component';
 import { PharmacyComponent } from './pharmacy/pharmacy.component';
 import { ShippingComponent } from './shipping/shipping.component';
 import { SearchFilterPipe } from './search-filter.pipe';
+import { NotificationComponent } from './notification/notification.component';
 
 
 
@@ -55,7 +56,8 @@ import { SearchFilterPipe } from './search-filter.pipe';
     PharmacyComponent,
     AssessmentResponseComponent,
     ShippingComponent,
-    SearchFilterPipe
+    SearchFilterPipe,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
