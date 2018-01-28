@@ -9,12 +9,16 @@
       <li><a class="waves-effect" routerLink="/dashboard/contraceptives">Contraceptives</a></li>
       <li><a class="waves-effect" routerLink="/dashboard/users">Users</a></li>
       <li><a class="waves-effect" routerLink="/dashboard/shipping">Shipping</a></li>
-      <li><a class="waves-effect" routerLink="/pharmacies">Pharmacies</a></li>
+      <li><a class="waves-effect" routerLink="/dashboard/pharmacies">Pharmacies</a></li>
     </ul>
     <!-- Logout -->
     <button (click)="logout()" class="btn waves-effect waves-light blue darken-4 right logout" type="submit" name="action" right *ngIf="loggedIn">Logout</button>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a routerLink="/dashboard/notifications"><i class="material-icons">notifications</i><span *ngIf="notificationCount > 0" class="new badge blue notification-indicator">{{notificationCount}}</span></a></li>
+    </ul>  
   </div>    
 </nav>
+
 <router-outlet></router-outlet>
 
 

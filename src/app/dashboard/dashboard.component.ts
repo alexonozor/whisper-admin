@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
+import { NotificationService } from '../notification.service';
 import { Route, Router } from '@angular/router';
 
 declare var Materialize: any;
@@ -12,14 +13,19 @@ declare var jQuery: any;
 })
 export class DashboardComponent implements OnInit {
   loggedIn: boolean = false;
+  notificationCount = Number;
   constructor(
     public _authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    public _notification: NotificationService
   ) { }
 
   ngOnInit() {
     this.jqueryInit();
     this.isLoggedIn();
+    if (this.loggedIn) {
+      this.userNotificationsCount(this._authService.currentUser()._id)
+    }   
   }
 
   isLoggedIn() {
@@ -35,6 +41,17 @@ export class DashboardComponent implements OnInit {
     this._authService.logout();
     this.router.navigate(['']);
   }
+
+ userNotificationsCount(id) {
+  this._notification.getUserNotificationsCount(id)
+  .subscribe((res) => {
+    if (res.success) {
+      this.notificationCount = res.count;
+    }
+  }, err => {
+    console.log('Error getting notification');
+  })
+ }
 
   jqueryInit() {
     jQuery('.button-collapse').sideNav({
