@@ -51,7 +51,19 @@ export class UserService {
     return this.http.get(`${this.host}/searchUsers?searchTerms=${term}`)
     .map((res: Response) => res.json())
     .catch((error: any) => Observable.throw(error.json().error || 'server error'));
-  } 
+  }
+  
+  checkIfThreadIsAvailable(reciepaint, currentUser) {
+    return this.http.get(`${this.host}/thread-available/${reciepaint}/${currentUser}`)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error || 'server error'));
+  }
+
+  createMessageThread(reciepaint, currentUser) {
+    return this.http.post(`${this.host}/threads`, {startedBy: currentUser, reciepaint: reciepaint})
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error || 'server error'));
+  }
 }
 
 

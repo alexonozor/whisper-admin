@@ -1,0 +1,114 @@
+.users-sessions {
+    height: 700px;
+    border-right: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.users-sessions-inner {
+    height: inherit;
+    overflow-y: scroll;
+}
+
+.users-thread {
+    height: 700px;
+    overflow: hidden;
+    position: relative;
+}
+
+.collection {
+    margin: 0;
+    border: 0px solid #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.message-header {
+    border-bottom: 1px solid #ccc;
+    min-height: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+.remove-padding {
+    padding: 0px !important;
+}
+
+.message-box {
+    background: #FFFFFF;
+    height: 77%;
+    overflow-y: scroll;
+}
+
+.send-message-box {
+    position: absolute;
+    background: #FFFFFF;
+    height: 100px;
+    width: 100%;
+    bottom: 0;
+    border-top: 1px solid #ccc;
+}
+
+.bubble-chat {
+   display: list-item;
+   clear: both;
+}
+
+.sender {
+    float: right;
+    margin: 20px;
+    background: #ffc5c7;
+    padding: 10px;
+    max-width: 403px;
+}
+
+.sender .time {
+    display: block;
+    line-height: 0px; 
+    float: right;
+    margin: 0px;
+    font-weight: bolder;
+}
+
+.reciever {
+    float: left;
+    margin: 20px;
+    background: #FFFFFF;
+    padding: 10px;
+    display: block;
+    clear: both;
+    border: 2px solid #A9A9A9;
+    max-width: 403px;
+}
+
+.reciever .time {
+    display: block;
+    line-height: 0px;
+    float: left;
+    margin: 0px;
+    font-weight: bolder;
+}
+
+.title {
+    font-size: 18px;
+}
+
+
+.collection-item:hover {
+    background-color: #EEEEEE;
+}
+
+.collection-item {
+    background-color: #fff;
+    line-height: 1.5rem;
+    margin: 0;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer
+}
+
+.active {
+    border-left: 4px solid #ee6e73;
+    font-weight: bolder;
+    text-transform: capitalize;
+}
+

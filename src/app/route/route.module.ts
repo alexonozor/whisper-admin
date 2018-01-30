@@ -18,6 +18,7 @@ import { UserEditComponent } from '../user/user-edit/user-edit.component';
 import { ShippingComponent } from '../shipping/shipping.component';
 import { PharmacyComponent } from '../pharmacy/pharmacy.component';
 import { NotificationComponent } from '../notification/notification.component';
+import { ContactUsersComponent } from '../contact-users/contact-users.component';
 
 
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
       },
       { path: 'shipping', component: ShippingComponent },
       { path: 'pharmacies', component: PharmacyComponent },
-      { path: 'notifications', component: NotificationComponent }
+      { path: 'notifications', component: NotificationComponent },
+      { path: 'contact-user/:thread', component: ContactUsersComponent }
     ]
   },
 ];
