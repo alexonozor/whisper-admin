@@ -44,6 +44,7 @@ export class AssessmentResponseComponent implements OnInit {
   assesmentResponse: any;
   modalActions = new EventEmitter<string|MaterializeAction>();
   searchTerm$ = new Subject<string>();
+  
 
   constructor(
     public _authService: AuthenticationService,

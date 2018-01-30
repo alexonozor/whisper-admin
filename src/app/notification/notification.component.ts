@@ -44,6 +44,8 @@ export class NotificationComponent implements OnInit {
     }
     if (notification.notification_type == "openConversation") {
       this.router.navigate(['conversation', { conversationId: notification.notification_type_id}]);
+    } else if (notification.notification_type == "message") {
+      this.router.navigate(['dashboard/contact-user', notification.notification_type_id]);
     }
   }
 

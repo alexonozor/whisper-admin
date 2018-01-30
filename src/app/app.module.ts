@@ -14,6 +14,8 @@ import { AuthenticationService } from './authentication.service';
 import { AssessmentService } from './assessment.service';
 import { PhamaciesService } from './phamacies.service';
 import { NotificationService } from './notification.service';
+import { ThreadService } from './thread.service';
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -33,6 +35,7 @@ import { PharmacyComponent } from './pharmacy/pharmacy.component';
 import { ShippingComponent } from './shipping/shipping.component';
 import { SearchFilterPipe } from './search-filter.pipe';
 import { NotificationComponent } from './notification/notification.component';
+import { ContactUsersComponent } from './contact-users/contact-users.component';
 
 
 
@@ -57,7 +60,8 @@ import { NotificationComponent } from './notification/notification.component';
     AssessmentResponseComponent,
     ShippingComponent,
     SearchFilterPipe,
-    NotificationComponent
+    NotificationComponent,
+    ContactUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -75,7 +79,8 @@ import { NotificationComponent } from './notification/notification.component';
     AuthenticationService,
     AssessmentService,
     PhamaciesService,
-    NotificationService
+    NotificationService,
+    ThreadService
   ],
   bootstrap: [AppComponent]
 })
