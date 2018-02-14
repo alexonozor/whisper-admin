@@ -8,18 +8,20 @@
     <h5>{{contraceptive?.name}}</h5>
     
 
-    <table class="bordered">
+    <table class="bordered" dnd-sortable-container [sortableData]="assessments">
         <thead>
           <tr>
+            <td></td>
             <th>Question</th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let assessment of assessments; let i = index">
+            <tr *ngFor="let assessment of assessments; let i = index" (onDropSuccess)="updateIndex()" dnd-sortable [sortableIndex]="i">
+                <td><i class="material-icons">drag_handle</i></td>
                 <td>
-                    <a (click)="openAssessment(assessment._id)"  class="collection-item">{{assessment.question}}</a>
+                    <a (click)="openAssessment(assessment._id)"  class="collection-item">{{assessment?.question}}</a>
                 </td>
             
                 <td> 
