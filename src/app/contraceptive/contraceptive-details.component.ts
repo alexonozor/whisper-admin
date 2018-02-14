@@ -54,6 +54,20 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
     });
   }
 
+  updateIndex() {
+    this.submit = true
+   this.assessments.forEach((el, i) => {
+     this._contraceptiveService.updateAssessment(el._id, {position: i}).subscribe((data) => {
+        if (data.success) {
+          this.submit = false;
+          this.getContraceptive(this.id);
+        }
+     }, err => {
+
+     })
+   })
+  }
+
   ngOnInit() {
     this.createAssessmentForm.reset();
     this.sub = this.route.params.subscribe(params => {
