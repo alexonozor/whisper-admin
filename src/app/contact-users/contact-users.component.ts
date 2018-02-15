@@ -110,8 +110,10 @@ export class ContactUsersComponent implements OnInit {
     message['user'] = { _id: this.userId, firstName: this.currentUser.firstName, lastName: this.currentUser.lastName }
     message['isSender'] = ( message.user._id === this.userId );
     this.messages.push(message);
-    this.notifiyRecipient(this.threadId) 
-    this.createForm()
+    if (!message.isSender) {
+      this.notifiyRecipient(this.threadId);
+    }
+    this.createForm();
   }
 
   notifiyRecipient(threadId) {

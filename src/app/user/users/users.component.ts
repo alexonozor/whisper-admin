@@ -40,7 +40,6 @@ export class UsersComponent implements OnInit {
     this._userService.checkIfThreadIsAvailable(user._id, currentUser._id)
     .subscribe((res) => {
       if (res.success) {
-        console.log(res.hasThread)
         if (res.hasThread) {
           this.openThread(res._id)
         } else {
@@ -51,6 +50,57 @@ export class UsersComponent implements OnInit {
 
     })
   }
+
+  deleteUserParmanetly(user) {
+    let deleteUser = confirm('Are you sure you want to permanetly delete this user?');
+    if (deleteUser) {
+      this._userService.permanetlyDeleteUsers(user._id)
+      .subscribe((resp) => {
+        if (resp.success) {
+          this.viewUsers()
+        }
+      }, err => {
+        alert('server error');
+      });
+    }
+  }
+
+  deleteUser(event, user) {
+      this._userService.update({ deleted: event.target.checked }, user._id)
+      .subscribe((resp) => {
+        if (resp.success) {}
+      }, err => {
+        alert('server error');
+      });
+  }
+
+  banUser(event, user) {
+    this._userService.update({ ban: event.target.checked }, user._id)
+    .subscribe((resp) => {
+      if (resp.success) {}
+    }, err => {
+      alert('server error');
+    });
+  }
+
+  updateAccountType(event, user) {
+    this._userService.update({ accountType: event.target.value }, user._id)
+    .subscribe((resp) => {
+      if (resp.success) {}
+    }, err => {
+      alert('server error');
+    });
+  }
+
+  makeAdmin(event, user) {
+    this._userService.update({ admin: event.target.checked }, user._id)
+    .subscribe((resp) => {
+      if (resp.success) {}
+    }, err => {
+      alert('server error');
+    });
+  }
+  
 
   openThread(id) {
     this.route.navigate(['dashboard/contact-user', id])

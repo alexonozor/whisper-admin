@@ -42,24 +42,19 @@ export class LoginComponent implements OnInit {
 
     this._authService.login(this.loginForm.value)
     .subscribe((res) => {
-      if (res.success) {
+      if (res.success && res.user.admin) {
         this.submited = false;
         this._authService.saveToken('token', res.token);
         this._authService.saveUser(res.user);
         this.router.navigate(['dashboard']);
-        Materialize.toast(res.message, 2000);
       } else {
-        Materialize.toast(res.message, 2000);
+        Materialize.toast(`${res.message} Admin`, 2000);
         this.isLogin = false;
         this.submited = false;
       }
     }, err => {
       // caught error
+      alert('Network or server error')
     });
   }
-
-  gotoSignup() {
-    this.router.navigate(['signup']);
-  }
-
 }

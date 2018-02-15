@@ -60,7 +60,6 @@ export class ContraceptiveDetailsComponent implements OnInit , OnDestroy{
      this._contraceptiveService.updateAssessment(el._id, {position: i}).subscribe((data) => {
         if (data.success) {
           this.submit = false;
-          this.getContraceptive(this.id);
         }
      }, err => {
 
