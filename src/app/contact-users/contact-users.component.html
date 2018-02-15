@@ -25,7 +25,7 @@
 
         <div class="message-box">
           <div  *ngFor="let message of messages" class="bubble-chat">
-            <div [ngClass]="isSender? 'sender' : 'reciever'">
+            <div [ngClass]="message?.isSender? 'sender' : 'reciever'">
                 <div class="user-initials"> <small>{{message.user.firstName}} {{message.user.lastName}}</small> </div>
               <div class="message"><p>{{message.content}}</p> <p class="time">{{message.createdAt | date}}</p></div>
             </div>

@@ -32,6 +32,7 @@
                 <th>User Group</th>
                 <th>Deleted</th>
                 <th>ban</th>
+                <th>Admin</th>
                 <th>Actions</th>
             </tr>
           </thead>
@@ -42,11 +43,15 @@
               <td>{{user?.firstName}}</td>
               <td>{{user?.lastName}}</td>
               <td>{{user?.email || user?.contact?.email }}</td>
-              <td>{{user?.accountType}}</td>
+              <td>
+                <select materialize="material_select" style="margin: 0 0 0px 0;" (change)="updateAccountType($event, user)" class="select-dropdown" [materializeSelectOptions]="['Member', 'Pharmacist', 'Doctor', 'Admin']">
+                    <option *ngFor="let option of ['Member', 'Pharmacist', 'Doctor', 'Admin']" [value]="option" [selected]="user.accountType == option">{{option}}</option>
+                </select>
+              </td>
               <td>
                 <div class="switch">
                   <label>
-                    <input type="checkbox">
+                    <input type="checkbox" (change)="deleteUser($event, user)" [checked]="user?.deleted">
                     <span class="lever"></span>
                   </label>
                 </div>
@@ -54,11 +59,19 @@
               <td>
                 <div class="switch">
                   <label>
-                    <input type="checkbox">
+                    <input type="checkbox" (change)="banUser($event, user)" [checked]="user?.ban">
                     <span class="lever"></span>
                   </label>
                 </div>
               </td>
+              <td>
+                  <div class="switch">
+                    <label>
+                      <input type="checkbox" (change)="makeAdmin($event, user)" [checked]="user?.admin">
+                      <span class="lever"></span>
+                    </label>
+                  </div>
+                </td>
               <td>
                 <a class="btn blue"><i class="tiny material-icons">remove_red_eye</i></a>
                 <a class="btn blue accent-2" [routerLink]="[user._id, 'edit']"><i class="tiny material-icons">edit</i></a>

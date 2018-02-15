@@ -64,6 +64,12 @@ export class UserService {
     .map((res: Response) => res.json())
     .catch((error: any) => Observable.throw(error.json().error || 'server error'));
   }
+
+  permanetlyDeleteUsers(id) {
+    return this.http.delete(`${this.host}/permanetly-delete-users/${id}`)
+    .map((res: Response) => res.json())
+    .catch((error: any) => Observable.throw(error.json().error || 'server error'));
+  }
 }
 
 

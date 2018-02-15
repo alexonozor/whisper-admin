@@ -23,7 +23,7 @@
         <tbody>
           <tr *ngFor="let notification of notifications; let i = index" [ngClass]="notification?.seen? '': 'deep-orange lighten-5'" (click)="goToNotification(notification)">
             <td>{{notification?.sender?.firstName}} {{notification?.content}}</td>
-            <td>{{notification?.createdAt | date:'dd/MM/yyyy hh:mm:ss' }}</td>
+            <td>{{notification?.createdAt | date:'dd/MM hh:mm:ss' }}</td>
             <!-- <td><a style="cursor:pointer;" class="delete_btn white" (click)="deleteShippingMethod(shipping._id, i)"><i class="material-icons del_icon">delete</i></a></td>
             <td><a style="cursor:pointer;" (click)="openEditModal(shipping)" class="modal-trigger" href="#modal2"><i class="material-icons edit_icon">edit</i></a></td> -->
           </tr>
