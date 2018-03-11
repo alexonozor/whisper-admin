@@ -154,7 +154,7 @@ export class AssessmentComponent implements OnInit {
     let checked = event.target.checked;
     let params = {
       published: checked
-    }
+    };
     // update published
     this._contraceptiveService.updateAnswer(answer._id, params)
     .subscribe((res) => {
