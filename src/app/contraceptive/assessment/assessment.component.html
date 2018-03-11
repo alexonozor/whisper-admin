@@ -4,7 +4,7 @@
   </div>
 </div>
 
- <p>{{assessmentAnswers.question}} </p>
+ <p>{{assessmentAnswers?.question}} </p>
 
  <ul class="collection with-header">
   <table class="bordered">
@@ -198,7 +198,7 @@
           <label for="isEditedAnswer">Is this an editable answer?</label>
         </div>
       </div>
-      <div class="row" *ngIf="updateAnswerForm.value.isEditedAnswer == 'true'">
+      <div class="row" *ngIf="updateAnswerForm.value.isEditedAnswer">
         <div class="input-field col s12">
           <input id="editedAnswerLabel" type="text" formControlName="editedAnswerLabel" class="validate" [(ngModel)]="answerParams.editedAnswerLabel">
           <label for="editedAnswerLabel">Enter answer label</label>
