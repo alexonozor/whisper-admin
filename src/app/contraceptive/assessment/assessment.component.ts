@@ -16,7 +16,7 @@ export class AssessmentComponent implements OnInit {
   loading: boolean = false;
   submit: boolean = false;
   assessments: Array<any> = [];
-  assessmentAnswers:  Array<any> = [];
+  assessmentAnswers:  any;
   contraceptive: Object = {};
   createAnswerForm: FormGroup;
   updateAnswerForm: FormGroup;
@@ -85,7 +85,7 @@ export class AssessmentComponent implements OnInit {
 
   toggleBUtton(event) {
     let content = this.showForm = !this.showForm;
-    event.textContent = content?  "remove" : "add"
+    event.textContent = content ? 'remove' : 'add';
   }
 
 
@@ -96,7 +96,6 @@ export class AssessmentComponent implements OnInit {
       if (res.success) {
         this.loading = false;
         this.assessments = res.assesments;
-        
       } else {
 
       }
@@ -118,13 +117,13 @@ export class AssessmentComponent implements OnInit {
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
   deleteAnswer(id, i) {
-    const deleted = confirm("Are you sure?");
+    const deleted = confirm('Are you sure?');
     if (deleted) {
-      this.assessmentAnswers.splice(i, 0);
+      this.assessmentAnswers._answers.splice(i, 0);
       this._contraceptiveService.deleteAnswer(id)
       .subscribe((res) => {
         if (res.success) {
@@ -148,7 +147,7 @@ export class AssessmentComponent implements OnInit {
       } else {
 
       }
-    })
+    });
   }
 
   updatePublished(event, answer) {
@@ -166,7 +165,7 @@ export class AssessmentComponent implements OnInit {
       }
     }, err => {
       // caught error
-    })
+    });
   }
 
   updateModal(data) {
