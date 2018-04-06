@@ -1,0 +1,149 @@
+<div  class="">
+  <div class="row">
+    <div class="col m2 total-height">
+    </div>
+    <div class="col m8 total-height">
+      <div class="row">
+        <div class="col s4"></div>
+        <div class="col s4"><h4>Hospitals</h4></div>
+        <div class="col s4"></div>
+      </div>
+      <div class="col s12 z-depth-1">
+        <div class="progress" *ngIf="loading">
+          <div class="indeterminate"></div>
+        </div>
+        <table class="bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Number of Employess</th>
+            <th>Address</th>
+            <th>Owner</th>
+            <th>Verified</th>            
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hospital of hospitals; let i = index">
+            <td>{{hospital?.name}}</td>
+            <td>{{hospital?.description}}</td>
+            <td>{{hospital?.employees?.length}}</td>
+            <td>{{hospital?.contact?.address}}</td>
+            <td>{{hospital?.registeredBy?.firstName}}</td>
+            <td>
+              <div class="switch ans_published">
+                <label>
+                  <input #status (change)="updatePublished($event, answer)" [checked]='hospital?.verified' type="checkbox"><span class="lever"></span>
+                </label>
+              </div>
+            </td>
+            <td><a style="cursor:pointer;" class="delete_btn white" (click)="deleteShippingMethod(shipping._id, i)"><i class="material-icons del_icon">delete</i></a></td>
+            <td><a style="cursor:pointer;" (click)="openEditModal(shipping)" class="modal-trigger" href="#modal2"><i class="material-icons edit_icon">edit</i></a></td>
+          </tr>
+        </tbody>
+        </table>
+        <a class="btn-floating btn-large waves-effect waves-light teal modal-trigger" href="#modal1"><i class="material-icons">add</i></a>
+      </div>
+    </div>
+    <div class="col m2 total-height">
+    </div>
+  </div>
+</div>
+
+<div  class="">
+  <div class="row">
+    <div class="col m2 total-height">
+    </div>
+    <div class="col m8 total-height">
+      <div class="row">
+        <div class="col s4"></div>
+        <div class="col s4"></div>
+      </div>
+      <div class="col s12 z-depth-3">
+        <div class="modal-content">
+          <h5>Add Hospital</h5>
+          <div class="progress" *ngIf="submitted">
+                  <div class="indeterminate"></div>
+              </div>
+              <form [formGroup]="hospitalForm" class="col s12" (ngSubmit)="createhospitalForm()">
+                <div class="row">
+                  <div class="input-field col s4">
+                    <input placeholder="Enter Hospital Name" id="first_name" formControlName="name" type="text" class="validate">
+                    <label for="first_name">Name</label>
+                  </div>
+                
+                  <div class="input-field col s4">
+                    <input placeholder="Description" id="first_name" formControlName="description" type="text" class="validate">
+                    <label for="first_name">Description</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input placeholder="Enter Registered By" id="last_name" formControlName="registeredBy" type="text" class="validate">
+                    <label for="last_name">Owner</label>
+                  </div>
+                </div>
+                <div class="row" formGroupName="contact">
+                  <div class="input-field col s4">
+                    <input placeholder="Enter Email" id="first_name" formControlName="email" type="text" class="validate">
+                    <label for="first_name">Email</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input placeholder="Enter Phone Number" id="first_name" formControlName="tel" type="text" class="validate">
+                    <label for="first_name">Phone Number</label>
+                  </div>
+                  <div class="input-field col s4">
+                    <input placeholder="Enter City" id="last_name" formControlName="city" type="text" class="validate">
+                    <label for="last_name">City</label>
+                  </div>
+        
+                  <div class="input-field col s4">
+                    <input placeholder="Enter Address" id="first_name" type="text"
+                    [options]='options' 
+                   (setAddress) = "getAddress($event)"
+                   (street_number) = 'street_number=$event'
+                   (street)= 'street=$event'
+                   (city)= 'city=$event'
+                   (state)='state=$event'
+                   (district)='district=$event'
+                   (country)='country=$event'
+                   (postal_code)='postal_code=$event'
+                   (lat)='lat=$event' 
+                   (lng)='lng=$event' 
+                   (adr_address)='adr_address=$event' 
+                   (name)='name=$event' 
+                   (place_id)='place_id=$event' 
+                   (types)='types=$event' 
+                   (url)='url=$event'  
+                   (utc_offset)='utc_offset=$event' 
+                   (vicinity)='vicinity=$event' 
+                   (photos)='photos=$event' 
+                   (airport)='airport=$event' 
+                   (CountryCodes)='CountryCodes=$event'
+                     id="autocomplete"
+                   ng2-google-place-autocomplete
+                 class="validate" formControlName="address">
+                  <label for="last_name">Address</label>
+                  </div>
+        
+                  <div class="input-field col s4">
+                    <input placeholder="Enter officeNumber" id="last_name" formControlName="officeNumber" type="text" class="validate">
+                    <label for="last_name">OfficeNumber</label>
+                  </div>
+        
+                  <div class="input-field col s4">
+                    <input placeholder="Enter website" id="last_name" formControlName="website" type="text" class="validate">
+                    <label for="last_name">website</label>
+                  </div>
+        
+                  <div class="input-field col s4">
+                    <button [disabled]='!hospitalForm.valid && !submited' class="waves-effect waves-light btn-large btn"><i class="material-icons right">send</i>Submit</button>
+                    </div>
+                </div>
+              </form>
+        </div>
+      </div>
+    </div>
+    <div class="col m2 total-height">
+    </div>
+  </div>
+</div>

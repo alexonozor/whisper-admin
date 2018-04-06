@@ -13,6 +13,7 @@ import { UserService } from './user.service';
 import { AuthenticationService } from './authentication.service';
 import { AssessmentService } from './assessment.service';
 import { PhamaciesService } from './phamacies.service';
+import { HospitalService } from './hospital.service';
 import { NotificationService } from './notification.service';
 import { ThreadService } from './thread.service';
 
@@ -36,6 +37,7 @@ import { ShippingComponent } from './shipping/shipping.component';
 import { SearchFilterPipe } from './search-filter.pipe';
 import { NotificationComponent } from './notification/notification.component';
 import { ContactUsersComponent } from './contact-users/contact-users.component';
+import { HospitalComponent } from './hospital/hospital.component';
 
 
 
@@ -61,7 +63,8 @@ import { ContactUsersComponent } from './contact-users/contact-users.component';
     ShippingComponent,
     SearchFilterPipe,
     NotificationComponent,
-    ContactUsersComponent
+    ContactUsersComponent,
+    HospitalComponent
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ import { ContactUsersComponent } from './contact-users/contact-users.component';
     AssessmentService,
     PhamaciesService,
     NotificationService,
-    ThreadService
+    ThreadService,
+    HospitalService
   ],
   bootstrap: [AppComponent]
 })
